@@ -1,4 +1,4 @@
-package by.subota.max.dao.impl;
+package by.panasyuk.max.dao.impl;
 
 import org.junit.Test;
 
