@@ -8,6 +8,7 @@ import by.panasyuk.domain.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +19,9 @@ public class UserDaoImpl extends AbstractJdbcDao<User, Integer> implements Gener
 
     @Override
     protected List<User> parseResultSet(ResultSet rs) throws SQLException {
-        User user = new User();
-        if (rs.next()) {
+        List<User> userList = new ArrayList<>();
+        while (rs.next()) {
+            User user = new User();
             user.setId(rs.getInt(1));
             user.setLogin(rs.getString(2));
             user.setPassword(rs.getString(3));
@@ -27,10 +29,13 @@ public class UserDaoImpl extends AbstractJdbcDao<User, Integer> implements Gener
             user.setLastname(rs.getString(5));
             user.setEmail(rs.getString(6));
             user.setRole(rs.getString(7));
+            userList.add(user);
+
         }
 
-        throw new UnsupportedOperationException();
+        return userList;
     }
+
 
     @Override
     protected void prepareStatementForGet(PreparedStatement statement, Integer key) throws SQLException {

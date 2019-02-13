@@ -33,6 +33,11 @@ public abstract class AbstractJdbcDao<T extends Identified<PK>, PK extends Numbe
 
     public abstract String getDeleteQuery();
 
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
     @Override
     public Optional<T> getByPK(PK key) throws DaoException {
 

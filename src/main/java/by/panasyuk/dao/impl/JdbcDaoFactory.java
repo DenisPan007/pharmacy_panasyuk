@@ -4,7 +4,6 @@ import by.panasyuk.dao.*;
 import by.panasyuk.dao.exception.DaoException;
 import by.panasyuk.domain.User;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -90,16 +89,7 @@ public class JdbcDaoFactory implements DaoFactory, TransactionalDaoFactory<Conne
         if (!(dao instanceof AbstractJdbcDao)) {
             throw new DaoException("DAO implementation does not extend AbstractJdbcDao.");
         }
-
-        try {
-            Field connectionField = AbstractJdbcDao.class.getDeclaredField("connection");
-            if (!connectionField.isAccessible()) {
-                connectionField.setAccessible(true);
-            }
-            connectionField.set(dao, connection);
-
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new DaoException("Failed to set connection for transactional DAO. ", e);
-        }
+        AbstractJdbcDao daoAbstract = (AbstractJdbcDao) dao;
+        daoAbstract.setConnection(connection);
     }
-}
+    }

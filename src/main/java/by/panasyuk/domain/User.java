@@ -16,13 +16,14 @@ public class User implements Identified<Integer> {
     private enum Role {CLIENT,DOCTOR,ADMIN}
     private Role role;
 
-    public User(int id, String login, String password, String firstname, String lastname, String email) {
+    public User(int id, String login, String password, String firstname, String lastname, String email,String role) {
         this.id = id;
         this.login = login;
         this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
+        setRole(role);
     }
 
     public User() {
@@ -80,7 +81,7 @@ public class User implements Identified<Integer> {
     }
 
     public void setRole(String role) {
-        this.role = Role.valueOf(role);
+        this.role = Role.valueOf(role.toUpperCase());
     }
 
     @Override
