@@ -10,7 +10,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletInfo</servlet-name>
-        <url-pattern>/info</url-pattern>
+        <url-pattern>pharmacy/info</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>ServletSmile</servlet-name>
@@ -19,6 +19,6 @@
 
     <servlet-mapping>
         <servlet-name>ServletSmile</servlet-name>
-        <url-pattern>/smile</url-pattern>
+        <url-pattern>pharmacy/smile</url-pattern>
     </servlet-mapping>
 </web-app>
