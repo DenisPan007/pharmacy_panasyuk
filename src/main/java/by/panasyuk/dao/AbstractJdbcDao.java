@@ -39,7 +39,8 @@ public abstract class AbstractJdbcDao<T extends Identified<PK>, PK extends Numbe
     }
 
     @Override
-    public Optional<T> getByPK(PK key) throws DaoException {
+    @AutoConnection
+    public T getByPK(PK key) throws DaoException {
 
         String query = getSelectQuery();
         try {
@@ -47,16 +48,14 @@ public abstract class AbstractJdbcDao<T extends Identified<PK>, PK extends Numbe
            prepareStatementForGet(ps,key);
            ResultSet resultSet = ps.executeQuery();
            List<T> list = parseResultSet(resultSet);
-           if (list.isEmpty()){
-               return Optional.empty();
-           }
-           return Optional.of(list.get(0));
+           return list.get(0);
         } catch (SQLException e) {
             throw new DaoException("prepared statement failed",e);
         }
     }
 
     @Override
+    @AutoConnection
     public List<T> getAll() throws DaoException {
 
         // Write your code here
@@ -65,7 +64,8 @@ public abstract class AbstractJdbcDao<T extends Identified<PK>, PK extends Numbe
     }
 
     @Override
-    public Optional<T> persist(T object) throws PersistException {
+    @AutoConnection
+    public T persist(T object) throws PersistException {
 
         // Write your code here
 
@@ -73,6 +73,7 @@ public abstract class AbstractJdbcDao<T extends Identified<PK>, PK extends Numbe
     }
 
     @Override
+    @AutoConnection
     public void update(T object) throws PersistException {
 
         // Write your code here
@@ -81,6 +82,7 @@ public abstract class AbstractJdbcDao<T extends Identified<PK>, PK extends Numbe
     }
 
     @Override
+    @AutoConnection
     public void delete(T object) throws PersistException {
 
         // Write your code here

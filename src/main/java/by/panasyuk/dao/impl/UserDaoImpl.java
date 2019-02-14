@@ -87,12 +87,4 @@ public class UserDaoImpl extends AbstractJdbcDao<User, Integer> implements Gener
 
         throw new UnsupportedOperationException();
     }
-
-
-    @Override
-    public Optional<User> create() throws PersistException {
-        //provide your code here
-
-        throw new UnsupportedOperationException();
-    }
 }

@@ -4,23 +4,28 @@ import by.panasyuk.dao.*;
 import by.panasyuk.dao.exception.DaoException;
 import by.panasyuk.domain.User;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
 
 /**
  * Jdbc DAO Factory
  */
-public class JdbcDaoFactory implements DaoFactory, TransactionalDaoFactory<Connection> {
-    private static volatile JdbcDaoFactory instance;
+public class JdbcDaoFactory implements DaoFactory, TransactionalDaoFactory {
+    private static JdbcDaoFactory instance;
+    private static Lock lock = new ReentrantLock();
     private Map<Class, Supplier<GenericDao>> creators = new HashMap<>();
 
     private class DaoInvocationHandler implements InvocationHandler {
-        private GenericDao dao;
+        private final GenericDao dao;
 
         DaoInvocationHandler(GenericDao dao) {
             this.dao = dao;
@@ -28,15 +33,26 @@ public class JdbcDaoFactory implements DaoFactory, TransactionalDaoFactory<Conne
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            ConnectionPool connectionPool = ConnectionPoolFactory.getInstance().getConnectionPool();
-            Connection connection = connectionPool.retrieveConnection();
+            Object result;
 
-            setConnectionWithReflection(dao, connection);
+            if (Arrays.stream(dao.getClass().getMethods())
+                    .filter(m -> m.isAnnotationPresent(AutoConnection.class))
+                    .map(Method::getName)
+                    .anyMatch(m -> m.equals(method.getName()))) {
 
-            Object result = method.invoke(dao, args);
+                ConnectionPool connectionPool = ConnectionPoolFactory.getInstance().getConnectionPool();
+                Connection connection = connectionPool.retrieveConnection();
 
-            connectionPool.putBackConnection(connection);
-            setConnectionWithReflection(dao, null);
+                TransactionManager.setConnectionWithReflection(dao, connection);
+
+                result = method.invoke(dao, args);
+
+                connectionPool.putBackConnection(connection);
+                TransactionManager.setConnectionWithReflection(dao, null);
+
+            } else {
+                result = method.invoke(dao, args);
+            }
 
             return result;
         }
@@ -48,19 +64,21 @@ public class JdbcDaoFactory implements DaoFactory, TransactionalDaoFactory<Conne
     }
 
     public static JdbcDaoFactory getInstance() {
-        if (instance == null) {
-            synchronized (JdbcDaoFactory.class) {
-                if (instance == null) {
-                    instance = new JdbcDaoFactory();
-                }
+        lock.lock();
+        try {
+            if (instance == null) {
+                instance = new JdbcDaoFactory();
             }
+
+        } finally {
+            lock.unlock();
         }
 
         return instance;
     }
 
     @Override
-    public GenericDao getDao(Class entityClass) throws DaoException {
+    public <T extends Identified<PK>, PK extends Serializable> GenericDao<T, PK> getDao(Class<T> entityClass) throws DaoException {
         Supplier<GenericDao> daoCreator = creators.get(entityClass);
         if (daoCreator == null) {
             throw new DaoException("Entity Class cannot be find");
@@ -73,23 +91,12 @@ public class JdbcDaoFactory implements DaoFactory, TransactionalDaoFactory<Conne
     }
 
     @Override
-    public GenericDao getTransactionalDao(Class entityClass, Connection connection) throws DaoException {
+    public <T extends Identified<PK>, PK extends Serializable> GenericDao<T, PK> getTransactionalDao(Class<T> entityClass) throws DaoException {
         Supplier<GenericDao> daoCreator = creators.get(entityClass);
         if (daoCreator == null) {
             throw new DaoException("Entity Class cannot be find");
         }
-        GenericDao dao = daoCreator.get();
 
-        setConnectionWithReflection(dao, connection);
-
-        return dao;
+        return daoCreator.get();
     }
-
-    private void setConnectionWithReflection(Object dao, Connection connection) throws DaoException {
-        if (!(dao instanceof AbstractJdbcDao)) {
-            throw new DaoException("DAO implementation does not extend AbstractJdbcDao.");
-        }
-        AbstractJdbcDao daoAbstract = (AbstractJdbcDao) dao;
-        daoAbstract.setConnection(connection);
-    }
-    }
+}

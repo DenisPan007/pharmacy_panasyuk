@@ -1,5 +1,6 @@
 package by.panasyuk.dao.impl;
 
+import by.panasyuk.dao.AbstractJdbcDao;
 import by.panasyuk.dao.GenericDao;
 import by.panasyuk.dao.exception.DaoException;
 import by.panasyuk.dao.impl.JdbcDaoFactory;
@@ -40,9 +41,11 @@ public class AbstractJdbcDaoTest {
                 "VALUES('1','den1',\'" + password1 + "\'," +
                 "'Denis','Panasyuk','@mail','client')");
         JdbcDaoFactory factory = JdbcDaoFactory.getInstance();
-        GenericDao<User, Integer> userDao = factory.getTransactionalDao(User.class, connection);
-        Optional<User> expectedUser = Optional.of(new User(1, "den1", password1, "Denis", "Panasyuk", "@mail", "client"));
-        Optional<User> actualUser = userDao.getByPK(1);
+        GenericDao<User, Integer> userDao = factory.getTransactionalDao(User.class);
+        AbstractJdbcDao<User,Integer> abstrDao = (AbstractJdbcDao<User,Integer>) userDao;
+        abstrDao.setConnection(connection);
+        User expectedUser = new User(1, "den1", password1, "Denis", "Panasyuk", "@mail", "client");
+        User actualUser = userDao.getByPK(1);
         assertEquals(expectedUser, actualUser);
     }
 }
