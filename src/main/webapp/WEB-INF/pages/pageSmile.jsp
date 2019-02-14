@@ -13,7 +13,7 @@
 <body>
 Smile
 <img src="smilePict.jpg" height="200px" width="200px">
-<button onclick="location.href='/mypage.html'">Back<//button>
+<button onclick="location.href='/pharmacy/mypage.html'">Back</button>
 </body>
 </html>
 
