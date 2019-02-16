@@ -40,14 +40,14 @@ public class JdbcDaoFactory implements DaoFactory, TransactionalDaoFactory {
                     .map(Method::getName)
                     .anyMatch(m -> m.equals(method.getName()))) {
 
-                ConnectionPool connectionPool = ConnectionPoolFactory.getInstance().getConnectionPool();
-                Connection connection = connectionPool.retrieveConnection();
+                ConnectionPool connectionPool = ConnectionPool.getInstance();
+                Connection connection = connectionPool.getConnection();
 
                 TransactionManager.setConnectionWithReflection(dao, connection);
 
                 result = method.invoke(dao, args);
 
-                connectionPool.putBackConnection(connection);
+                connection.close();
                 TransactionManager.setConnectionWithReflection(dao, null);
 
             } else {

@@ -1,4 +1,4 @@
-package by.panasyuk.service.impl;
+package by.panasyuk.service;
 
 import by.panasyuk.dao.DaoFactory;
 import by.panasyuk.dao.DaoFactoryType;
@@ -7,14 +7,12 @@ import by.panasyuk.dao.GenericDao;
 import by.panasyuk.dao.exception.DaoException;
 import by.panasyuk.dao.exception.PersistException;
 import by.panasyuk.domain.User;
-import by.panasyuk.service.UserService;
 import by.panasyuk.service.exception.ServiceException;
 
 /**
  * Example of user service implementation
  */
-public class UserServiceImpl implements UserService {
-    @Override
+public class UserServiceImpl {
     public User signUp(User user) throws ServiceException {
         DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);
 
@@ -34,5 +32,8 @@ public class UserServiceImpl implements UserService {
         //provide your code here
 
         throw new UnsupportedOperationException();
+    }
+    public User login(User user) throws ServiceException {
+        return new  User();
     }
 }

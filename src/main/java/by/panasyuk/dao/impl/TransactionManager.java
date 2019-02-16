@@ -1,8 +1,6 @@
 package by.panasyuk.dao.impl;
 
 import by.panasyuk.dao.AbstractJdbcDao;
-import by.panasyuk.dao.ConnectionPool;
-import by.panasyuk.dao.ConnectionPoolFactory;
 import by.panasyuk.dao.GenericDao;
 import by.panasyuk.dao.exception.ConnectionPoolException;
 import by.panasyuk.dao.exception.DaoException;
@@ -18,15 +16,15 @@ public final class TransactionManager {
 
     public void begin(GenericDao dao, GenericDao ... daos) throws DaoException {
 
-        ConnectionPool connectionPool = ConnectionPoolFactory.getInstance().getConnectionPool();
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
 
-        try {
-            proxyConnection = connectionPool.retrieveConnection();
+
+            proxyConnection = connectionPool.getConnection();
             setConnectionWithReflection(dao, proxyConnection);
 
-        } catch (ConnectionPoolException e) {
-            throw new DaoException("Failed to get a connection from CP.", e);
-        }
+        //} catch (ConnectionPoolException e) {
+        //    throw new DaoException("Failed to get a connection from CP.", e);
+        //}
 
         //provide your code here
 

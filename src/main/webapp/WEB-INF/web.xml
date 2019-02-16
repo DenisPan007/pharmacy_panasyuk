@@ -1,24 +1,7 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
     <welcome-file-list>
         <welcome-file>
-            mypage.html
+            mypage.jsp
         </welcome-file>
     </welcome-file-list>
-    <servlet>
-        <servlet-name>ServletInfo</servlet-name>
-        <servlet-class>by.panasyuk.controller.servlet.ServletInfo</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ServletInfo</servlet-name>
-        <url-pattern>/info</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>ServletSmile</servlet-name>
-        <servlet-class>by.panasyuk.controller.servlet.ServletSmile</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>ServletSmile</servlet-name>
-        <url-pattern>/smile</url-pattern>
-    </servlet-mapping>
 </web-app>

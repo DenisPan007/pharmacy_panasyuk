@@ -5,6 +5,6 @@
 </head>
 <body>
 Project created by Denis Panasyuk!
-<button onclick="location.href='/pharmacy/mypage.html'">Back</button>
+<button onclick="location.href='../../mypage.jsp'">Back</button>
 </body>
 </html>
