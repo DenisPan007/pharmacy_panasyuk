@@ -11,7 +11,7 @@
 <div>
   <div class="form">
     <form  method="POST" action="${pageContext.request.contextPath}/register">
-      <input type="text" placeholder="name"/>
+      <input type="text" placeholder="login"/>
       <input type="password" placeholder="password"/>
       <button>create</button>
     </form>

@@ -1,14 +1,10 @@
 package by.panasyuk.dao;
 
 import by.panasyuk.dao.exception.DaoException;
-import by.panasyuk.dao.exception.PersistException;
+import by.panasyuk.dao.specification.Specification;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Abstract JDBC DAO
@@ -21,8 +17,14 @@ public abstract class AbstractJdbcDao<T extends Identified<PK>, PK extends Numbe
 
     protected abstract List<T> parseResultSet(ResultSet rs) throws SQLException;
 
+    protected abstract T setGeneratedKey(ResultSet keys, T object) throws SQLException;
+
     protected abstract void prepareStatementForInsert(PreparedStatement statement, T object) throws SQLException;
+
     protected abstract void prepareStatementForGet(PreparedStatement statement, PK key) throws SQLException;
+
+    protected abstract void prepareStatementForCreate(PreparedStatement statement, T object) throws SQLException;
+
     protected abstract void prepareStatementForUpdate(PreparedStatement statement, T object) throws SQLException;
 
     public abstract String getSelectQuery();
@@ -45,18 +47,33 @@ public abstract class AbstractJdbcDao<T extends Identified<PK>, PK extends Numbe
         String query = getSelectQuery();
         try {
             PreparedStatement ps = connection.prepareStatement(query);
-           prepareStatementForGet(ps,key);
-           ResultSet resultSet = ps.executeQuery();
-           List<T> list = parseResultSet(resultSet);
-           return list.get(0);
+            prepareStatementForGet(ps, key);
+            ResultSet resultSet = ps.executeQuery();
+            List<T> list = parseResultSet(resultSet);
+            return list.get(0);
         } catch (SQLException e) {
-            throw new DaoException("prepared statement failed",e);
+            throw new DaoException("prepared statement failed", e);
         }
     }
 
     @Override
     @AutoConnection
-    public List<T> getAll() throws DaoException {
+    public T persist(T object) throws DaoException {
+        String query = getCreateQuery();
+        try {
+            PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            prepareStatementForCreate(ps, object);
+            int rows = ps.executeUpdate();
+            ResultSet keys = ps.getGeneratedKeys();
+            return setGeneratedKey(keys, object);
+        } catch (SQLException e) {
+            throw new DaoException("prepared statement failed", e);
+        }
+    }
+
+    @Override
+    @AutoConnection
+    public void update(T object) throws DaoException {
 
         // Write your code here
 
@@ -65,28 +82,21 @@ public abstract class AbstractJdbcDao<T extends Identified<PK>, PK extends Numbe
 
     @Override
     @AutoConnection
-    public T persist(T object) throws PersistException {
+    public void delete(T object) throws DaoException {
 
         // Write your code here
 
         throw new UnsupportedOperationException();
     }
 
-    @Override
     @AutoConnection
-    public void update(T object) throws PersistException {
-
-        // Write your code here
-
-        throw new UnsupportedOperationException();
-    }
-
     @Override
-    @AutoConnection
-    public void delete(T object) throws PersistException {
-
-        // Write your code here
-
-        throw new UnsupportedOperationException();
+    public List<T> getQuery(T object, Specification<T> spec) throws DaoException {
+        try {
+            ResultSet resultSet = spec.get(object, connection);
+            return parseResultSet(resultSet);
+        } catch (SQLException e) {
+            throw new DaoException("prepared statement failed", e);
+        }
     }
 }

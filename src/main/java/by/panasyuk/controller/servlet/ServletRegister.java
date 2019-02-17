@@ -1,5 +1,9 @@
 package by.panasyuk.controller.servlet;
 
+import by.panasyuk.domain.User;
+import by.panasyuk.service.UserService;
+import by.panasyuk.service.exception.ServiceException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,8 +17,17 @@ public class ServletRegister extends HttpServlet {
         req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req,resp);
     }
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String userName = req.getParameter("userName");
+        String login = req.getParameter("login");
         String password = req.getParameter("password");
+        UserService userService = UserService.getInstance();
+        try {
+            User user = userService.signUp(login,password);
+            if (user != null){
+                req.getRequestDispatcher("/mypage.jsp").forward(req,resp);
+            }
+        } catch (ServiceException e) {
+            resp.sendError(600);
+        }
         req.getRequestDispatcher("/mypage.jsp").forward(req,resp);
 
     }

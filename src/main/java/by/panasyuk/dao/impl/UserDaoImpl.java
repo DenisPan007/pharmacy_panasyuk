@@ -2,7 +2,6 @@ package by.panasyuk.dao.impl;
 
 import by.panasyuk.dao.AbstractJdbcDao;
 import by.panasyuk.dao.GenericDao;
-import by.panasyuk.dao.exception.PersistException;
 import by.panasyuk.domain.User;
 
 import java.sql.PreparedStatement;
@@ -10,12 +9,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Example User DAO implementation
  */
 public class UserDaoImpl extends AbstractJdbcDao<User, Integer> implements GenericDao<User, Integer> {
+    @Override
+    protected User setGeneratedKey(ResultSet keys, User object) throws SQLException {
+        keys.next();
+        int id = (keys.getInt(1));
+        object.setId((int) id);
+        return object;
+    }
 
     @Override
     protected List<User> parseResultSet(ResultSet rs) throws SQLException {
@@ -58,6 +63,16 @@ public class UserDaoImpl extends AbstractJdbcDao<User, Integer> implements Gener
         throw new UnsupportedOperationException();
     }
 
+    protected void prepareStatementForCreate(PreparedStatement statement, User object) throws SQLException {
+        statement.setString(1, object.getLogin());
+        statement.setString(2, object.getPassword());
+        statement.setString(3, object.getFirstname());
+        statement.setString(4, object.getLastname());
+        statement.setString(5, object.getEmail());
+        statement.setString(6, object.getRole().name());
+
+    }
+
     @Override
     public String getSelectQuery() {
 
@@ -67,9 +82,9 @@ public class UserDaoImpl extends AbstractJdbcDao<User, Integer> implements Gener
     @Override
     public String getCreateQuery() {
 
-        //provide your code here
+        return "INSERT INTO user (login,password,firstname,lastname,email,role) " +
+                "VALUES(?,?,?,?,?,?)";
 
-        throw new UnsupportedOperationException();
     }
 
     @Override
