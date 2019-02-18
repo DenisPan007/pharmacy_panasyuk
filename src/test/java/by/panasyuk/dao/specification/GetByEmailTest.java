@@ -42,6 +42,8 @@ public class GetByEmailTest {
 
     @Test
     public void get() throws SQLException, DaoException {String password1 = "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5";
+        statement.executeQuery("DELETE FROM user");
+        statement.executeQuery("ALTER TABLE user ALTER COLUMN id RESTART WITH 0");
         statement.executeQuery(" INSERT INTO user (login,password,firstname,lastname,email,role) " +
                 "VALUES('den1',\'" + password1 + "\'," +
                 "'Denis','Panasyuk','@mail','client')");

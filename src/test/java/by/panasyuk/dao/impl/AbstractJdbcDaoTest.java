@@ -47,6 +47,8 @@ public void connect()throws SQLException, ClassNotFoundException{
     @Test
     public void getByPK() throws  DaoException, SQLException{
         String password1 = "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5";
+        statement.executeQuery("DELETE FROM user");
+        statement.executeQuery("ALTER TABLE user ALTER COLUMN id RESTART WITH 0");
         statement.executeQuery(" INSERT INTO user (login,password,firstname,lastname,email,role) " +
                 "VALUES('den1',\'" + password1 + "\'," +
                 "'Denis','Panasyuk','@mail','client')");
@@ -60,7 +62,9 @@ public void connect()throws SQLException, ClassNotFoundException{
         assertEquals(expectedUser, actualUser);
     }
     @Test
-    public void persist() throws DaoException {
+    public void persist() throws DaoException, SQLException {
+        statement.executeQuery("DELETE FROM user");
+        statement.executeQuery("ALTER TABLE user ALTER COLUMN id RESTART WITH 0");
         JdbcDaoFactory factory = JdbcDaoFactory.getInstance();
         GenericDao<User, Integer> userDao = factory.getTransactionalDao(User.class);
         AbstractJdbcDao<User,Integer> abstrDao = (AbstractJdbcDao<User,Integer>) userDao;
@@ -72,6 +76,8 @@ public void connect()throws SQLException, ClassNotFoundException{
         }
     @Test
     public void getQuery() throws DaoException,SQLException {
+        statement.executeQuery("DELETE FROM user");
+        statement.executeQuery("ALTER TABLE user ALTER COLUMN id RESTART WITH 0");
         String password1 = "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5";
         statement.executeQuery(" INSERT INTO user (login,password,firstname,lastname,email,role) " +
                 "VALUES('den1',\'" + password1 + "\'," +

@@ -23,7 +23,7 @@ import java.util.stream.IntStream;
 @RunWith(JUnit4.class)
 public class ConnectionPoolTest {
     private static final Logger LOGGER = LogManager.getLogger(ConnectionPoolTest.class);
-    private static final int N_THREADS = 30 ;
+    private static final int N_THREADS = 10 ;
     private static final int POOL_CAPACITY = 5 ;
     @Test
     public void shouldGetConnection () throws InterruptedException, SQLException,ClassNotFoundException {
@@ -50,6 +50,6 @@ public class ConnectionPoolTest {
         executorService. awaitTermination ( 5L , TimeUnit.SECONDS);
         Assert. assertEquals (POOL_CAPACITY, hashCodes. size ());
         Mockito. verify (((ConnectionPool) connectionPool),
-                Mockito. times (POOL_CAPACITY)). releaseConnection (Mockito. any ());
+                Mockito. times (N_THREADS)). releaseConnection (Mockito. any ());
     }
 }

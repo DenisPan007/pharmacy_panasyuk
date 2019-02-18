@@ -21,7 +21,7 @@ public class ConnectionPool {
     private  String password;
     private  int poolCapacity;
     Lock lock = new ReentrantLock();
-    Deque<Connection> deque = new ArrayDeque<>();
+    volatile Deque<Connection> deque = new ArrayDeque<>();
 
     private ConnectionPool(String driverClass, String jdbcUrl, String user, String
             password, int poolCapacity) throws SQLException, ClassNotFoundException {
@@ -84,14 +84,17 @@ public class ConnectionPool {
     }
 
     public Connection getConnection() {
-        lock.lock();
-        while (deque.isEmpty()) {
-            //waiting for free connection
+        try {
+            lock.lock();
+            while (deque.isEmpty()) {
+                }
+            Connection connection = deque.poll();
+            InvocationHandler handler = new Handler(connection);
+            return (Connection) Proxy.newProxyInstance(connection.getClass().getClassLoader(), connection.getClass().getInterfaces(), handler);
         }
-        Connection connection = deque.poll();
-        InvocationHandler handler = new Handler(connection);
-        lock.unlock();
-        return (Connection) Proxy.newProxyInstance(connection.getClass().getClassLoader(), connection.getClass().getInterfaces(), handler);
+        finally {
+            lock.unlock();
+        }
     }
 
 

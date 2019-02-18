@@ -27,6 +27,6 @@ public class UserServiceTest {
         String password = "password";
         String email = "@mail";
         UserService userService = UserService.getInstance();
-            User user = userService.signUp(login,password,email);
+            //User user = userService.signUp(login,password,email);
     }
 }
