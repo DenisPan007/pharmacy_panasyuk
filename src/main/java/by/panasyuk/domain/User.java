@@ -26,11 +26,12 @@ public class User implements Identified<Integer> {
         setRole(role);
     }
 
-    public User(String login, String password) {
+    public User(String login, String password, String email) {
         this.login = login;
         this.password = password;
+        this.email = email;
+        setRole("client");
     }
-
     public User() {
     }
     @Override

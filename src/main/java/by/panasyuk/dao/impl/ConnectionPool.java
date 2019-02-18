@@ -32,7 +32,7 @@ public class ConnectionPool {
         this.poolCapacity = poolCapacity;
         Class.forName(driverClass);
         for (int i = 0; i < poolCapacity; i++) {
-            Connection connection = DriverManager.getConnection(jdbcUrl);
+            Connection connection = DriverManager.getConnection(jdbcUrl,user,password);
             deque.push(connection);
         }
     }
@@ -42,11 +42,12 @@ public class ConnectionPool {
         try {
             if (instance == null) {
                 int POOL_CAPACITY = 5 ;
-                String JDBCDRIVER_CLASS = "org.hsqldb.jdbc.JDBCDriver" ;
-                String DB_URL = "jdbc:hsqldb:mem:testdb;DB_CLOSE_DELAY=-1" ;
-                String DB_USER = "sa" ;
+                String JDBCDRIVER_CLASS = "com.mysql.cj.jdbc.Driver" ;
+                String DB_URL = "jdbc:mysql://207.154.220.222:3306/pharmacy?useSSL=false" ;
+                String DB_USER = "dzianis_panasyuk" ;
+                String DB_PASSWORD = "un38B6Fd4hBv2";
                 try {
-                    instance = new ConnectionPool(JDBCDRIVER_CLASS, DB_URL, DB_USER, null , POOL_CAPACITY);
+                    instance = new ConnectionPool(JDBCDRIVER_CLASS, DB_URL, DB_USER, DB_PASSWORD , POOL_CAPACITY);
                 } catch (SQLException e) {
                     throw new IllegalArgumentException("Driver manager failed to connect to DataBase");
                 } catch (ClassNotFoundException e) {

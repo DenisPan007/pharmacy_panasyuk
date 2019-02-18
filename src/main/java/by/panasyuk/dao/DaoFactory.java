@@ -14,5 +14,5 @@ public interface DaoFactory {
      * @return - implementation of DAO for entity class
      * @throws DaoException - should be clarify
      */
-    <T extends Identified<PK>, PK extends Serializable> GenericDao<T, PK> getDao(Class<T> entityClass) throws DaoException;
+    <T extends Identified<PK>, PK extends Serializable> GenericDao<T, PK> getDao(Class<T> entityClass);
 }

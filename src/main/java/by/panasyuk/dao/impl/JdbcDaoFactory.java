@@ -78,11 +78,8 @@ public class JdbcDaoFactory implements DaoFactory, TransactionalDaoFactory {
     }
 
     @Override
-    public <T extends Identified<PK>, PK extends Serializable> GenericDao<T, PK> getDao(Class<T> entityClass) throws DaoException {
+    public <T extends Identified<PK>, PK extends Serializable> GenericDao<T, PK> getDao(Class<T> entityClass)  {
         Supplier<GenericDao> daoCreator = creators.get(entityClass);
-        if (daoCreator == null) {
-            throw new DaoException("Entity Class cannot be find");
-        }
         GenericDao dao = daoCreator.get();
 
         return (GenericDao) Proxy.newProxyInstance(dao.getClass().getClassLoader(),

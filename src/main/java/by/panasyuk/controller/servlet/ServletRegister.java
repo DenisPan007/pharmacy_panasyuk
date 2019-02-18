@@ -19,16 +19,21 @@ public class ServletRegister extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
+        String email = req.getParameter("email");
         UserService userService = UserService.getInstance();
         try {
-            User user = userService.signUp(login,password);
-            if (user != null){
-                req.getRequestDispatcher("/mypage.jsp").forward(req,resp);
+            if(userService.isResevedLogin(login)){
+                req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req,resp);
+            }
+            else if(userService.isResevedEmail(email)){
+                req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req,resp);
+            }
+            else{
+                User user = userService.signUp(login,password,email);
+                req.getRequestDispatcher("/WEB-INF/views/successful_registration.jsp").forward(req,resp);
             }
         } catch (ServiceException e) {
             resp.sendError(600);
         }
-        req.getRequestDispatcher("/mypage.jsp").forward(req,resp);
-
     }
 }
