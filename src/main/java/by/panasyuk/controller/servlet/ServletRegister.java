@@ -30,6 +30,7 @@ public class ServletRegister extends HttpServlet {
             }
             else{
                 User user = userService.signUp(login,password,email);
+                req.setAttribute("user",user);
                 req.getRequestDispatcher("/WEB-INF/views/successful_registration.jsp").forward(req,resp);
             }
         } catch (ServiceException e) {

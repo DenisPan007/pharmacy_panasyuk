@@ -1,7 +1,2 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
-    <welcome-file-list>
-        <welcome-file>
-            mypage.jsp
-        </welcome-file>
-    </welcome-file-list>
 </web-app>

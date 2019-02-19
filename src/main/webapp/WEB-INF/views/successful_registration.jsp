@@ -12,6 +12,6 @@
 </head>
 <jsp:include page="../../mypage.jsp"></jsp:include>
 <body>
-<h1>You do it, now you'r in my base!</h1>
+<h1>You did it! Now you'r in my base, mr ${user.login}!</h1>
 </body>
 </html>
