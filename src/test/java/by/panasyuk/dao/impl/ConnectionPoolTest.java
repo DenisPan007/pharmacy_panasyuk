@@ -47,7 +47,7 @@ public class ConnectionPoolTest {
                 throw new RuntimeException (e);
             }
         }));
-        executorService. awaitTermination ( 5L , TimeUnit.SECONDS);
+        executorService. awaitTermination ( 4L , TimeUnit.SECONDS);
         Assert. assertEquals (POOL_CAPACITY, hashCodes. size ());
         Mockito. verify (((ConnectionPool) connectionPool),
                 Mockito. times (N_THREADS)). releaseConnection (Mockito. any ());
