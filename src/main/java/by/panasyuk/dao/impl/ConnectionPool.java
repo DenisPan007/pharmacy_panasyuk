@@ -8,6 +8,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -20,8 +24,9 @@ public class ConnectionPool {
     private  String user;
     private  String password;
     private  int poolCapacity;
+    Semaphore semaphore = new Semaphore(0);
     Lock lock = new ReentrantLock();
-    volatile Deque<Connection> deque = new ArrayDeque<>();
+    BlockingDeque<Connection> deque = new LinkedBlockingDeque<>();
 
     private ConnectionPool(String driverClass, String jdbcUrl, String user, String
             password, int poolCapacity) throws SQLException, ClassNotFoundException {
@@ -34,6 +39,7 @@ public class ConnectionPool {
         for (int i = 0; i < poolCapacity; i++) {
             Connection connection = DriverManager.getConnection(jdbcUrl,user,password);
             deque.push(connection);
+            semaphore.release();
         }
     }
 
@@ -86,10 +92,17 @@ public class ConnectionPool {
     public Connection getConnection() {
         try {
             lock.lock();
-            while (deque.isEmpty()) {
-                }
+            try {
+                semaphore.acquire();
+            } catch (InterruptedException e) {
+                System.out.println("FFFUUUUCKKKK");
+            }
             Connection connection = deque.poll();
             InvocationHandler handler = new Handler(connection);
+            if (connection == null){
+                System.out.println("!!!!!!!null!!!!!!");
+                System.out.println(semaphore.getQueueLength());
+            }
             return (Connection) Proxy.newProxyInstance(connection.getClass().getClassLoader(), connection.getClass().getInterfaces(), handler);
         }
         finally {
@@ -100,5 +113,6 @@ public class ConnectionPool {
 
     void releaseConnection(Connection connection) {
         deque.push(connection);
+        semaphore.release();
     }
 }
