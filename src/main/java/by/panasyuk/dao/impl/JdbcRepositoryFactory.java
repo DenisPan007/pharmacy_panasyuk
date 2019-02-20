@@ -30,10 +30,13 @@ public class JdbcRepositoryFactory implements RepositoryFactory{
             Object result;
 
             if (Arrays.stream(repository.getClass().getMethods())
-                    .filter(m -> m.isAnnotationPresent(AutoConnection.class))
+                    .filter(m -> m.isAnnotationPresent(WithoutConnection.class))
                     .map(Method::getName)
                     .anyMatch(m -> m.equals(method.getName()))) {
 
+                result = method.invoke(repository, args);
+
+            } else {
                 ConnectionPool connectionPool = ConnectionPool.getInstance();
                 Connection connection = connectionPool.getConnection();
 
@@ -43,9 +46,6 @@ public class JdbcRepositoryFactory implements RepositoryFactory{
 
                 connection.close();
                 TransactionManager.setConnectionWithReflection(repository, null);
-
-            } else {
-                result = method.invoke(repository, args);
             }
 
             return result;

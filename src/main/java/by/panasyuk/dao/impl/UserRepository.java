@@ -1,7 +1,7 @@
 package by.panasyuk.dao.impl;
 
 import by.panasyuk.dao.AbstractJdbcRepository;
-import by.panasyuk.dao.AutoConnection;
+import by.panasyuk.dao.WithoutConnection;
 import by.panasyuk.dao.Repository;
 import by.panasyuk.dao.exception.RepositoryException;
 import by.panasyuk.dao.specification.Specification;
@@ -19,7 +19,6 @@ import java.util.List;
  */
 public class UserRepository extends AbstractJdbcRepository<User, Integer> implements Repository<User, Integer> {
     @Override
-    @AutoConnection
     public User add(User user) throws RepositoryException {
         String query = "INSERT INTO user (login,password,firstname,lastname,email,role) " +
                 "VALUES(?,?,?,?,?,?)";
@@ -43,7 +42,6 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
     }
 
     @Override
-    @AutoConnection
     public void update(User object) throws RepositoryException {
 
         // Write your code here
@@ -52,7 +50,6 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
     }
 
     @Override
-    @AutoConnection
     public void delete(User object) throws RepositoryException {
 
         // Write your code here
@@ -60,7 +57,6 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
         throw new UnsupportedOperationException();
     }
 
-    @AutoConnection
     @Override
     public List<User> getQuery(User user, Specification<User> spec) throws RepositoryException {
         try {
