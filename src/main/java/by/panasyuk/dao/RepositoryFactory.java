@@ -3,6 +3,7 @@ package by.panasyuk.dao;
 import by.panasyuk.dao.exception.RepositoryException;
 
 import java.io.Serializable;
+import java.util.function.Supplier;
 
 /**
  * Repository Factory
@@ -10,9 +11,8 @@ import java.io.Serializable;
 public interface RepositoryFactory {
     /**
      * Return implementation of Repository for entity class
-     * @param entityClass - entity class
      * @return - implementation of Repository for entity class
      * @throws RepositoryException - should be clarify
      */
-    <T extends Identified<PK>, PK extends Serializable> Repository<T, PK> getRepository(Class<T> entityClass);
+    <T extends Identified<PK>, PK extends Serializable> Repository<T, PK> getRepository(Supplier<Repository<T,PK>> supplier);
 }

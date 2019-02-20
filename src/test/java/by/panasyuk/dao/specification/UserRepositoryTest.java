@@ -4,6 +4,7 @@ import by.panasyuk.dao.AbstractJdbcRepository;
 import by.panasyuk.dao.Repository;
 import by.panasyuk.dao.exception.RepositoryException;
 import by.panasyuk.dao.impl.JdbcRepositoryFactory;
+import by.panasyuk.dao.impl.UserRepository;
 import by.panasyuk.domain.User;
 import org.junit.*;
 
@@ -37,7 +38,7 @@ public class UserRepositoryTest {
         Class.forName(driver);
         connection = DriverManager.getConnection(url, user, password);
         JdbcRepositoryFactory factory = JdbcRepositoryFactory.getInstance();
-        userDao = factory.getTransactionalDao(User.class);
+        userDao = factory.getTransactionalDao(UserRepository::new);
         AbstractJdbcRepository<User, Integer> abstrDao = (AbstractJdbcRepository<User, Integer>) userDao;
         abstrDao.setConnection(connection);
         statement = connection.createStatement();

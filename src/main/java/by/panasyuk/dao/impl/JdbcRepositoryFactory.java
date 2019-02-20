@@ -2,7 +2,6 @@ package by.panasyuk.dao.impl;
 
 import by.panasyuk.dao.*;
 import by.panasyuk.dao.exception.RepositoryException;
-import by.panasyuk.domain.User;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
@@ -10,8 +9,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
@@ -22,20 +19,19 @@ import java.util.function.Supplier;
 public class JdbcRepositoryFactory implements RepositoryFactory, TransactionalDaoFactory {
     private static JdbcRepositoryFactory instance;
     private static Lock lock = new ReentrantLock();
-    private Map<Class, Supplier<Repository>> creators = new HashMap<>();
 
     private class DaoInvocationHandler implements InvocationHandler {
-        private final Repository dao;
+        private final Repository repository;
 
-        DaoInvocationHandler(Repository dao) {
-            this.dao = dao;
+        DaoInvocationHandler(Repository repository) {
+            this.repository = repository;
         }
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             Object result;
 
-            if (Arrays.stream(dao.getClass().getMethods())
+            if (Arrays.stream(repository.getClass().getMethods())
                     .filter(m -> m.isAnnotationPresent(AutoConnection.class))
                     .map(Method::getName)
                     .anyMatch(m -> m.equals(method.getName()))) {
@@ -43,15 +39,15 @@ public class JdbcRepositoryFactory implements RepositoryFactory, TransactionalDa
                 ConnectionPool connectionPool = ConnectionPool.getInstance();
                 Connection connection = connectionPool.getConnection();
 
-                TransactionManager.setConnectionWithReflection(dao, connection);
+                TransactionManager.setConnectionWithReflection(repository, connection);
 
-                result = method.invoke(dao, args);
+                result = method.invoke(repository, args);
 
                 connection.close();
-                TransactionManager.setConnectionWithReflection(dao, null);
+                TransactionManager.setConnectionWithReflection(repository, null);
 
             } else {
-                result = method.invoke(dao, args);
+                result = method.invoke(repository, args);
             }
 
             return result;
@@ -60,7 +56,6 @@ public class JdbcRepositoryFactory implements RepositoryFactory, TransactionalDa
     }
 
     private JdbcRepositoryFactory() {
-        creators.put(User.class, UserRepository::new);
     }
 
     public static JdbcRepositoryFactory getInstance() {
@@ -78,22 +73,16 @@ public class JdbcRepositoryFactory implements RepositoryFactory, TransactionalDa
     }
 
     @Override
-    public <T extends Identified<PK>, PK extends Serializable> Repository<T, PK> getRepository(Class<T> entityClass)  {
-        Supplier<Repository> daoCreator = creators.get(entityClass);
-        Repository dao = daoCreator.get();
+    public <T extends Identified<PK>, PK extends Serializable> Repository<T, PK> getRepository(Supplier<Repository<T,PK>> supplier)  {
+        Repository<T,PK> repository = supplier.get();
 
-        return (Repository) Proxy.newProxyInstance(dao.getClass().getClassLoader(),
-                dao.getClass().getInterfaces(),
-                new DaoInvocationHandler(dao));
+        return (Repository<T,PK>) Proxy.newProxyInstance(repository.getClass().getClassLoader(),
+                repository.getClass().getInterfaces(),
+                new DaoInvocationHandler(repository));
     }
 
     @Override
-    public <T extends Identified<PK>, PK extends Serializable> Repository<T, PK> getTransactionalDao(Class<T> entityClass) throws RepositoryException {
-        Supplier<Repository> daoCreator = creators.get(entityClass);
-        if (daoCreator == null) {
-            throw new RepositoryException("Entity Class cannot be find");
-        }
-
-        return daoCreator.get();
+    public <T extends Identified<PK>, PK extends Serializable> Repository<T, PK> getTransactionalDao(Supplier<Repository<T,PK>> supplier) throws RepositoryException {
+        return supplier.get();
     }
 }

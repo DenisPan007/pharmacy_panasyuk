@@ -4,6 +4,7 @@ import by.panasyuk.dao.RepositoryFactory;
 import by.panasyuk.dao.Repository;
 import by.panasyuk.dao.exception.RepositoryException;
 import by.panasyuk.dao.impl.JdbcRepositoryFactory;
+import by.panasyuk.dao.impl.UserRepository;
 import by.panasyuk.dao.specification.GetByEmail;
 import by.panasyuk.dao.specification.GetByLogin;
 import by.panasyuk.dao.specification.Specification;
@@ -17,7 +18,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class UserService {
     private RepositoryFactory repositoryFactory = JdbcRepositoryFactory.getInstance();
-    private Repository<User, Integer> userDao = repositoryFactory.getRepository(User.class);
+    private Repository<User, Integer> userDao = repositoryFactory.getRepository(UserRepository::new);
     private static UserService instance;
     private static Lock lockForSingleTone = new ReentrantLock();
 
