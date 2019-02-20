@@ -1,5 +1,6 @@
 package by.panasyuk.dao.impl;
 
+import by.panasyuk.dao.exception.ConnectionPoolException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
@@ -27,7 +28,7 @@ public class ConnectionPoolTest {
     private static final int N_THREADS = 20 ;
     private static final int POOL_CAPACITY = 5 ;
     @Test
-    public void shouldGetConnection () throws InterruptedException, SQLException,ClassNotFoundException {
+    public void shouldGetConnection () throws InterruptedException, ConnectionPoolException {
         ConnectionPool connectionPool = Mockito. spy (
                 ConnectionPool.getInstance ());
         Set< Integer > hashCodes = new HashSet<>();

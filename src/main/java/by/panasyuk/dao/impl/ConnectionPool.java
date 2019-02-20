@@ -1,17 +1,19 @@
 package by.panasyuk.dao.impl;
 
+import by.panasyuk.dao.exception.ConnectionPoolException;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.Properties;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -19,45 +21,40 @@ import java.util.concurrent.locks.ReentrantLock;
 public class ConnectionPool {
     private static ConnectionPool instance;
     private static Lock lockForSingleTone = new ReentrantLock();
-    private  final String driverClass;
-    private  final String jdbcUrl;
-    private  String user;
-    private  String password;
-    private  int poolCapacity;
-    Semaphore semaphore = new Semaphore(0);
-    Lock lock = new ReentrantLock();
-    BlockingDeque<Connection> deque = new LinkedBlockingDeque<>();
+    private Semaphore semaphore = new Semaphore(0);
+    private Lock lock = new ReentrantLock();
+    private BlockingDeque<Connection> deque = new LinkedBlockingDeque<>();
 
     private ConnectionPool(String driverClass, String jdbcUrl, String user, String
             password, int poolCapacity) throws SQLException, ClassNotFoundException {
-        this.driverClass = driverClass;
-        this.jdbcUrl = jdbcUrl;
-        this.user = user;
-        this.password = password;
-        this.poolCapacity = poolCapacity;
         Class.forName(driverClass);
         for (int i = 0; i < poolCapacity; i++) {
-            Connection connection = DriverManager.getConnection(jdbcUrl,user,password);
+            Connection connection = DriverManager.getConnection(jdbcUrl, user, password);
             deque.push(connection);
             semaphore.release();
         }
     }
 
-    public static ConnectionPool getInstance(){
+    public static ConnectionPool getInstance() throws ConnectionPoolException {
         lockForSingleTone.lock();
         try {
             if (instance == null) {
-                int POOL_CAPACITY = 5 ;
-                String JDBCDRIVER_CLASS = "com.mysql.cj.jdbc.Driver" ;
-                String DB_URL = "jdbc:mysql://207.154.220.222:3306/pharmacy?useSSL=false" ;
-                String DB_USER = "dzianis_panasyuk" ;
-                String DB_PASSWORD = "un38B6Fd4hBv2";
                 try {
-                    instance = new ConnectionPool(JDBCDRIVER_CLASS, DB_URL, DB_USER, DB_PASSWORD , POOL_CAPACITY);
+                    InputStream inputStream = ConnectionPool.class.getResourceAsStream("/db.properties");
+                    Properties properties = new Properties();
+                    properties.load(inputStream);
+                    String url = properties.getProperty("url");
+                    String driver = properties.getProperty("driver");
+                    String user = properties.getProperty("user");
+                    String password = properties.getProperty("password");
+                    int poolCapacity = Integer.parseInt(properties.getProperty("poolCapacity"));
+                    instance = new ConnectionPool(driver, url, user, password, poolCapacity);
                 } catch (SQLException e) {
-                    throw new IllegalArgumentException("Driver manager failed to connect to DataBase");
+                    throw new ConnectionPoolException("Driver manager failed to connect to DataBase", e);
                 } catch (ClassNotFoundException e) {
-                    throw new IllegalArgumentException("can't load JdbcDriverClass");
+                    throw new ConnectionPoolException("can't load JdbcDriverClass", e);
+                } catch (IOException e) {
+                    throw new ConnectionPoolException("can't load property file", e);
                 }
             }
 
@@ -67,6 +64,7 @@ public class ConnectionPool {
 
         return instance;
     }
+
     private class Handler implements InvocationHandler {
         private Connection connection;
 
@@ -89,23 +87,14 @@ public class ConnectionPool {
         }
     }
 
-    public Connection getConnection() {
+    public Connection getConnection() throws InterruptedException {
         try {
             lock.lock();
-            try {
-                semaphore.acquire();
-            } catch (InterruptedException e) {
-                System.out.println("FFFUUUUCKKKK");
-            }
+            semaphore.acquire();
             Connection connection = deque.poll();
             InvocationHandler handler = new Handler(connection);
-            if (connection == null){
-                System.out.println("!!!!!!!null!!!!!!");
-                System.out.println(semaphore.getQueueLength());
-            }
             return (Connection) Proxy.newProxyInstance(connection.getClass().getClassLoader(), connection.getClass().getInterfaces(), handler);
-        }
-        finally {
+        } finally {
             lock.unlock();
         }
     }

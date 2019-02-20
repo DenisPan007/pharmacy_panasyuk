@@ -2,6 +2,7 @@ package by.panasyuk.dao.impl;
 
 import by.panasyuk.dao.AbstractJdbcRepository;
 import by.panasyuk.dao.Repository;
+import by.panasyuk.dao.exception.ConnectionPoolException;
 import by.panasyuk.dao.exception.DaoException;
 
 import java.lang.reflect.Field;
@@ -13,7 +14,7 @@ import java.sql.Connection;
 public final class TransactionManager {
     private Connection proxyConnection;
 
-    public void begin(Repository dao, Repository... daos) throws DaoException {
+    public void begin(Repository dao, Repository... daos) throws DaoException, InterruptedException, ConnectionPoolException {
 
         ConnectionPool connectionPool = ConnectionPool.getInstance();
 

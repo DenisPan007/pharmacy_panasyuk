@@ -19,8 +19,8 @@ import java.util.function.Supplier;
 /**
  * Jdbc DAO Factory
  */
-public class JdbcDaoFactory implements DaoFactory, TransactionalDaoFactory {
-    private static JdbcDaoFactory instance;
+public class JdbcRepositoryFactory implements DaoFactory, TransactionalDaoFactory {
+    private static JdbcRepositoryFactory instance;
     private static Lock lock = new ReentrantLock();
     private Map<Class, Supplier<Repository>> creators = new HashMap<>();
 
@@ -59,15 +59,15 @@ public class JdbcDaoFactory implements DaoFactory, TransactionalDaoFactory {
 
     }
 
-    private JdbcDaoFactory() {
+    private JdbcRepositoryFactory() {
         creators.put(User.class, UserRepository::new);
     }
 
-    public static JdbcDaoFactory getInstance() {
+    public static JdbcRepositoryFactory getInstance() {
         lock.lock();
         try {
             if (instance == null) {
-                instance = new JdbcDaoFactory();
+                instance = new JdbcRepositoryFactory();
             }
 
         } finally {
