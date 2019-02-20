@@ -1,7 +1,7 @@
 package by.panasyuk.dao.impl;
 
 import by.panasyuk.dao.*;
-import by.panasyuk.dao.exception.DaoException;
+import by.panasyuk.dao.exception.RepositoryException;
 import by.panasyuk.domain.User;
 
 import java.io.Serializable;
@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 /**
  * Jdbc DAO Factory
  */
-public class JdbcRepositoryFactory implements DaoFactory, TransactionalDaoFactory {
+public class JdbcRepositoryFactory implements RepositoryFactory, TransactionalDaoFactory {
     private static JdbcRepositoryFactory instance;
     private static Lock lock = new ReentrantLock();
     private Map<Class, Supplier<Repository>> creators = new HashMap<>();
@@ -78,7 +78,7 @@ public class JdbcRepositoryFactory implements DaoFactory, TransactionalDaoFactor
     }
 
     @Override
-    public <T extends Identified<PK>, PK extends Serializable> Repository<T, PK> getDao(Class<T> entityClass)  {
+    public <T extends Identified<PK>, PK extends Serializable> Repository<T, PK> getRepository(Class<T> entityClass)  {
         Supplier<Repository> daoCreator = creators.get(entityClass);
         Repository dao = daoCreator.get();
 
@@ -88,10 +88,10 @@ public class JdbcRepositoryFactory implements DaoFactory, TransactionalDaoFactor
     }
 
     @Override
-    public <T extends Identified<PK>, PK extends Serializable> Repository<T, PK> getTransactionalDao(Class<T> entityClass) throws DaoException {
+    public <T extends Identified<PK>, PK extends Serializable> Repository<T, PK> getTransactionalDao(Class<T> entityClass) throws RepositoryException {
         Supplier<Repository> daoCreator = creators.get(entityClass);
         if (daoCreator == null) {
-            throw new DaoException("Entity Class cannot be find");
+            throw new RepositoryException("Entity Class cannot be find");
         }
 
         return daoCreator.get();

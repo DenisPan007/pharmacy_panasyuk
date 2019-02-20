@@ -2,7 +2,7 @@ package by.panasyuk.dao.specification;
 
 import by.panasyuk.dao.AbstractJdbcRepository;
 import by.panasyuk.dao.Repository;
-import by.panasyuk.dao.exception.DaoException;
+import by.panasyuk.dao.exception.RepositoryException;
 import by.panasyuk.dao.impl.JdbcRepositoryFactory;
 import by.panasyuk.domain.User;
 import org.junit.*;
@@ -26,7 +26,7 @@ public class UserRepositoryTest {
     private static Repository<User, Integer> userDao;
 
     @BeforeClass
-    public static void connect() throws SQLException, ClassNotFoundException, IOException,DaoException {
+    public static void connect() throws SQLException, ClassNotFoundException, IOException, RepositoryException {
         InputStream inputStream = UserRepositoryTest.class.getResourceAsStream("/db.properties");
         Properties properties = new Properties();
         properties.load(inputStream);
@@ -64,7 +64,7 @@ public class UserRepositoryTest {
         statement.executeQuery("ALTER TABLE user ALTER COLUMN id RESTART WITH 0");
     }
 
-    private List<User> getBySpecification(User user, Specification<User> specification) throws SQLException, DaoException {
+    private List<User> getBySpecification(User user, Specification<User> specification) throws SQLException, RepositoryException {
         statement.executeQuery(" INSERT INTO user (login,password,firstname,lastname,email,role) " +
                 "VALUES('den1','passwordTest','Denis','Panasyuk','@mail','client')");
         statement.executeQuery(" INSERT INTO user (login,role,email) " +
@@ -73,7 +73,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void GetByEmail() throws SQLException, DaoException {
+    public void GetByEmail() throws SQLException, RepositoryException {
         User user = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client");
         Specification<User> spec = new GetByEmail();
         User expectedUser1 = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client");
@@ -84,7 +84,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void getById() throws DaoException, SQLException {
+    public void getById() throws RepositoryException, SQLException {
         User user = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client");
         Specification<User> spec = new GetById();
         User expectedUser1 = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client");
@@ -93,7 +93,7 @@ public class UserRepositoryTest {
         assertEquals(expectedList, actualList);
     }
     @Test
-    public void GetByLogin() throws DaoException, SQLException {
+    public void GetByLogin() throws RepositoryException, SQLException {
         User user = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client");
         Specification<User> spec = new GetByLogin();
         User expectedUser1 = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client");
@@ -103,7 +103,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void add() throws DaoException, SQLException {
+    public void add() throws RepositoryException, SQLException {
         User expectedUser = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client");
         User actualUser = userDao.add(expectedUser);
         assertEquals(expectedUser, actualUser);

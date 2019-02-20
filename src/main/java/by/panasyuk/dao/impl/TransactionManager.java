@@ -3,7 +3,7 @@ package by.panasyuk.dao.impl;
 import by.panasyuk.dao.AbstractJdbcRepository;
 import by.panasyuk.dao.Repository;
 import by.panasyuk.dao.exception.ConnectionPoolException;
-import by.panasyuk.dao.exception.DaoException;
+import by.panasyuk.dao.exception.RepositoryException;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
@@ -14,7 +14,7 @@ import java.sql.Connection;
 public final class TransactionManager {
     private Connection proxyConnection;
 
-    public void begin(Repository dao, Repository... daos) throws DaoException, InterruptedException, ConnectionPoolException {
+    public void begin(Repository dao, Repository... daos) throws RepositoryException, InterruptedException, ConnectionPoolException {
 
         ConnectionPool connectionPool = ConnectionPool.getInstance();
 
@@ -23,7 +23,7 @@ public final class TransactionManager {
             setConnectionWithReflection(dao, proxyConnection);
 
         //} catch (ConnectionPoolException e) {
-        //    throw new DaoException("Failed to get a connection from CP.", e);
+        //    throw new RepositoryException("Failed to get a connection from CP.", e);
         //}
 
         //provide your code here
@@ -53,9 +53,9 @@ public final class TransactionManager {
     }
 
 
-    static void setConnectionWithReflection(Object dao, Connection connection) throws DaoException {
+    static void setConnectionWithReflection(Object dao, Connection connection) throws RepositoryException {
         if (!(dao instanceof AbstractJdbcRepository)) {
-            throw new DaoException("DAO implementation does not extend AbstractJdbcRepository.");
+            throw new RepositoryException("DAO implementation does not extend AbstractJdbcRepository.");
         }
 
         try {
@@ -68,7 +68,7 @@ public final class TransactionManager {
             connectionField.set(dao, connection);
 
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new DaoException("Failed to set connection for transactional DAO. ", e);
+            throw new RepositoryException("Failed to set connection for transactional DAO. ", e);
         }
     }
 

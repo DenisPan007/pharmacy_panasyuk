@@ -41,6 +41,7 @@ public class ConnectionPoolTest {
                     Thread.sleep(1_00L);
                     Assert.assertTrue(connection instanceof Proxy);
                     int hashCode = connection.hashCode();
+                    System.out.println("add");
                     hashCodes.add(hashCode);
                     //LOGGER. info ( "release connection: " + hashCode);
                 } catch (SQLException | IllegalStateException e) {

@@ -1,9 +1,6 @@
 package by.panasyuk.service;
 
-import by.panasyuk.dao.AbstractJdbcRepository;
-import by.panasyuk.dao.Repository;
-import by.panasyuk.dao.exception.DaoException;
-import by.panasyuk.dao.impl.JdbcRepositoryFactory;
+import by.panasyuk.dao.exception.RepositoryException;
 import by.panasyuk.dao.specification.UserRepositoryTest;
 import by.panasyuk.domain.User;
 import by.panasyuk.service.exception.ServiceException;
@@ -22,7 +19,7 @@ import static org.junit.Assert.*;
 
 public class UserServiceTest {
     @BeforeClass
-    public static void connect() throws SQLException, ClassNotFoundException, IOException, DaoException {
+    public static void connect() throws SQLException, ClassNotFoundException, IOException, RepositoryException {
         InputStream inputStream = UserRepositoryTest.class.getResourceAsStream("/db.properties");
         Properties properties = new Properties();
         properties.load(inputStream);

@@ -21,17 +21,17 @@ import java.util.concurrent.locks.ReentrantLock;
 public class ConnectionPool {
     private static ConnectionPool instance;
     private static Lock lockForSingleTone = new ReentrantLock();
-    private Semaphore semaphore = new Semaphore(0);
+    private Semaphore availableConnectionAmount = new Semaphore(0);
     private Lock lock = new ReentrantLock();
-    private BlockingDeque<Connection> deque = new LinkedBlockingDeque<>();
+    private BlockingDeque<Connection> connectionDeque = new LinkedBlockingDeque<>();
 
     private ConnectionPool(String driverClass, String jdbcUrl, String user, String
             password, int poolCapacity) throws SQLException, ClassNotFoundException {
         Class.forName(driverClass);
         for (int i = 0; i < poolCapacity; i++) {
             Connection connection = DriverManager.getConnection(jdbcUrl, user, password);
-            deque.push(connection);
-            semaphore.release();
+            connectionDeque.push(connection);
+            availableConnectionAmount.release();
         }
     }
 
@@ -90,8 +90,8 @@ public class ConnectionPool {
     public Connection getConnection() throws InterruptedException {
         try {
             lock.lock();
-            semaphore.acquire();
-            Connection connection = deque.poll();
+            availableConnectionAmount.acquire();
+            Connection connection = connectionDeque.poll();
             InvocationHandler handler = new Handler(connection);
             return (Connection) Proxy.newProxyInstance(connection.getClass().getClassLoader(), connection.getClass().getInterfaces(), handler);
         } finally {
@@ -101,7 +101,7 @@ public class ConnectionPool {
 
 
     void releaseConnection(Connection connection) {
-        deque.push(connection);
-        semaphore.release();
+        connectionDeque.push(connection);
+        availableConnectionAmount.release();
     }
 }

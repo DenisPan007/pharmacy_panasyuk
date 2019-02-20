@@ -2,7 +2,7 @@ package by.panasyuk.dao;
 
 
 
-import by.panasyuk.dao.exception.DaoException;
+import by.panasyuk.dao.exception.RepositoryException;
 
 import java.io.Serializable;
 
@@ -14,7 +14,7 @@ public interface TransactionalDaoFactory {
      * Get generic DAO of entity without connection
      * @param entityClass
      * @return transactional DAO
-     * @throws DaoException should be clarify
+     * @throws RepositoryException should be clarify
      */
-    <T extends Identified<PK>, PK extends Serializable> Repository getTransactionalDao(Class<T> entityClass) throws DaoException;
+    <T extends Identified<PK>, PK extends Serializable> Repository getTransactionalDao(Class<T> entityClass) throws RepositoryException;
 }

@@ -1,8 +1,8 @@
 package by.panasyuk.service;
 
-import by.panasyuk.dao.DaoFactory;
+import by.panasyuk.dao.RepositoryFactory;
 import by.panasyuk.dao.Repository;
-import by.panasyuk.dao.exception.DaoException;
+import by.panasyuk.dao.exception.RepositoryException;
 import by.panasyuk.dao.impl.JdbcRepositoryFactory;
 import by.panasyuk.dao.specification.GetByEmail;
 import by.panasyuk.dao.specification.GetByLogin;
@@ -16,8 +16,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 
 public class UserService {
-    private DaoFactory daoFactory = JdbcRepositoryFactory.getInstance();
-    private Repository<User, Integer> userDao = daoFactory.getDao(User.class);
+    private RepositoryFactory repositoryFactory = JdbcRepositoryFactory.getInstance();
+    private Repository<User, Integer> userDao = repositoryFactory.getRepository(User.class);
     private static UserService instance;
     private static Lock lockForSingleTone = new ReentrantLock();
 
@@ -45,7 +45,7 @@ public class UserService {
             Specification<User> spec = new GetByLogin();
             List list = userDao.getQuery(user, spec);
             return !list.isEmpty();
-        } catch (DaoException e) {
+        } catch (RepositoryException e) {
             throw new ServiceException("Failed to get user DAO. ", e);
         }
     }
@@ -57,7 +57,7 @@ public class UserService {
             Specification<User> spec = new GetByEmail();
             List list = userDao.getQuery(user, spec);
             return !list.isEmpty();
-        } catch (DaoException e) {
+        } catch (RepositoryException e) {
             throw new ServiceException("Failed to get user DAO. ", e);
         }
     }
@@ -67,7 +67,7 @@ public class UserService {
 
         try {
             return userDao.add(user);
-        } catch (DaoException e) {
+        } catch (RepositoryException e) {
             throw new ServiceException("Failed to get user DAO. ", e);
         }
     }
