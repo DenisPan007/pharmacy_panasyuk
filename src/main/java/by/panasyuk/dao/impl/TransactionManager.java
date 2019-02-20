@@ -1,6 +1,6 @@
 package by.panasyuk.dao.impl;
 
-import by.panasyuk.dao.AbstractJdbcDao;
+import by.panasyuk.dao.AbstractJdbcRepository;
 import by.panasyuk.dao.Repository;
 import by.panasyuk.dao.exception.DaoException;
 
@@ -53,13 +53,13 @@ public final class TransactionManager {
 
 
     static void setConnectionWithReflection(Object dao, Connection connection) throws DaoException {
-        if (!(dao instanceof AbstractJdbcDao)) {
-            throw new DaoException("DAO implementation does not extend AbstractJdbcDao.");
+        if (!(dao instanceof AbstractJdbcRepository)) {
+            throw new DaoException("DAO implementation does not extend AbstractJdbcRepository.");
         }
 
         try {
 
-            Field connectionField = AbstractJdbcDao.class.getDeclaredField("connection");
+            Field connectionField = AbstractJdbcRepository.class.getDeclaredField("connection");
             if (!connectionField.isAccessible()) {
                 connectionField.setAccessible(true);
             }

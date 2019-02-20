@@ -1,6 +1,6 @@
 package by.panasyuk.dao.specification;
 
-import by.panasyuk.dao.AbstractJdbcDao;
+import by.panasyuk.dao.AbstractJdbcRepository;
 import by.panasyuk.dao.Repository;
 import by.panasyuk.dao.exception.DaoException;
 import by.panasyuk.dao.impl.JdbcDaoFactory;
@@ -38,7 +38,7 @@ public class UserRepositoryTest {
         connection = DriverManager.getConnection(url, user, password);
         JdbcDaoFactory factory = JdbcDaoFactory.getInstance();
         userDao = factory.getTransactionalDao(User.class);
-        AbstractJdbcDao<User, Integer> abstrDao = (AbstractJdbcDao<User, Integer>) userDao;
+        AbstractJdbcRepository<User, Integer> abstrDao = (AbstractJdbcRepository<User, Integer>) userDao;
         abstrDao.setConnection(connection);
         statement = connection.createStatement();
         statement.executeQuery("CREATE TABLE IF NOT EXISTS user (\n" +

@@ -37,7 +37,6 @@ public class ConnectionPoolTest {
                 LOGGER.info("Try to get connection");
                 try (Connection connection = connectionPool.getConnection()) {
                     //LOGGER. info ( "working with connection..." );
-                    System.out.println("work");
                     Thread.sleep(1_00L);
                     Assert.assertTrue(connection instanceof Proxy);
                     int hashCode = connection.hashCode();
