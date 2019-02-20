@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.function.Supplier;
 
 import static org.junit.Assert.*;
 
@@ -38,7 +39,8 @@ public class UserRepositoryTest {
         Class.forName(driver);
         connection = DriverManager.getConnection(url, user, password);
         JdbcRepositoryFactory factory = JdbcRepositoryFactory.getInstance();
-        userDao = factory.getTransactionalDao(UserRepository::new);
+        Supplier<UserRepository> userCreator = (UserRepository::new);
+        userDao = userCreator.get();
         AbstractJdbcRepository<User, Integer> abstrDao = (AbstractJdbcRepository<User, Integer>) userDao;
         abstrDao.setConnection(connection);
         statement = connection.createStatement();

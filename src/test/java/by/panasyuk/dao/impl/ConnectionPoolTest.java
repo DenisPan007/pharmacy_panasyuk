@@ -8,18 +8,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mockito;
-
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.IntStream;
 
 
 @RunWith(JUnit4.class)
@@ -41,7 +37,6 @@ public class ConnectionPoolTest {
                     Thread.sleep(1_00L);
                     Assert.assertTrue(connection instanceof Proxy);
                     int hashCode = connection.hashCode();
-                    System.out.println("add");
                     hashCodes.add(hashCode);
                     //LOGGER. info ( "release connection: " + hashCode);
                 } catch (SQLException | IllegalStateException e) {

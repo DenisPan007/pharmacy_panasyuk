@@ -1,8 +1,6 @@
 package by.panasyuk.dao.impl;
 
 import by.panasyuk.dao.*;
-import by.panasyuk.dao.exception.RepositoryException;
-
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -16,7 +14,7 @@ import java.util.function.Supplier;
 /**
  * Jdbc DAO Factory
  */
-public class JdbcRepositoryFactory implements RepositoryFactory, TransactionalDaoFactory {
+public class JdbcRepositoryFactory implements RepositoryFactory{
     private static JdbcRepositoryFactory instance;
     private static Lock lock = new ReentrantLock();
 
@@ -79,10 +77,5 @@ public class JdbcRepositoryFactory implements RepositoryFactory, TransactionalDa
         return (Repository<T,PK>) Proxy.newProxyInstance(repository.getClass().getClassLoader(),
                 repository.getClass().getInterfaces(),
                 new DaoInvocationHandler(repository));
-    }
-
-    @Override
-    public <T extends Identified<PK>, PK extends Serializable> Repository<T, PK> getTransactionalDao(Supplier<Repository<T,PK>> supplier) throws RepositoryException {
-        return supplier.get();
     }
 }
