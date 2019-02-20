@@ -1,7 +1,7 @@
 package by.panasyuk.service;
 
 import by.panasyuk.dao.DaoFactory;
-import by.panasyuk.dao.GenericDao;
+import by.panasyuk.dao.Repository;
 import by.panasyuk.dao.exception.DaoException;
 import by.panasyuk.dao.impl.JdbcDaoFactory;
 import by.panasyuk.dao.specification.GetByEmail;
@@ -17,7 +17,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class UserService {
     private DaoFactory daoFactory = JdbcDaoFactory.getInstance();
-    private GenericDao<User, Integer> userDao = daoFactory.getDao(User.class);
+    private Repository<User, Integer> userDao = daoFactory.getDao(User.class);
     private static UserService instance;
     private static Lock lockForSingleTone = new ReentrantLock();
 
@@ -66,7 +66,7 @@ public class UserService {
         User user = new User(login, password, email);
 
         try {
-            return userDao.persist(user);
+            return userDao.add(user);
         } catch (DaoException e) {
             throw new ServiceException("Failed to get user DAO. ", e);
         }

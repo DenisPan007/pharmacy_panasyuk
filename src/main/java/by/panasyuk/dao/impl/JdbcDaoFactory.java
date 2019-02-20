@@ -22,12 +22,12 @@ import java.util.function.Supplier;
 public class JdbcDaoFactory implements DaoFactory, TransactionalDaoFactory {
     private static JdbcDaoFactory instance;
     private static Lock lock = new ReentrantLock();
-    private Map<Class, Supplier<GenericDao>> creators = new HashMap<>();
+    private Map<Class, Supplier<Repository>> creators = new HashMap<>();
 
     private class DaoInvocationHandler implements InvocationHandler {
-        private final GenericDao dao;
+        private final Repository dao;
 
-        DaoInvocationHandler(GenericDao dao) {
+        DaoInvocationHandler(Repository dao) {
             this.dao = dao;
         }
 
@@ -60,7 +60,7 @@ public class JdbcDaoFactory implements DaoFactory, TransactionalDaoFactory {
     }
 
     private JdbcDaoFactory() {
-        creators.put(User.class, UserDaoImpl::new);
+        creators.put(User.class, UserRepository::new);
     }
 
     public static JdbcDaoFactory getInstance() {
@@ -78,18 +78,18 @@ public class JdbcDaoFactory implements DaoFactory, TransactionalDaoFactory {
     }
 
     @Override
-    public <T extends Identified<PK>, PK extends Serializable> GenericDao<T, PK> getDao(Class<T> entityClass)  {
-        Supplier<GenericDao> daoCreator = creators.get(entityClass);
-        GenericDao dao = daoCreator.get();
+    public <T extends Identified<PK>, PK extends Serializable> Repository<T, PK> getDao(Class<T> entityClass)  {
+        Supplier<Repository> daoCreator = creators.get(entityClass);
+        Repository dao = daoCreator.get();
 
-        return (GenericDao) Proxy.newProxyInstance(dao.getClass().getClassLoader(),
+        return (Repository) Proxy.newProxyInstance(dao.getClass().getClassLoader(),
                 dao.getClass().getInterfaces(),
                 new DaoInvocationHandler(dao));
     }
 
     @Override
-    public <T extends Identified<PK>, PK extends Serializable> GenericDao<T, PK> getTransactionalDao(Class<T> entityClass) throws DaoException {
-        Supplier<GenericDao> daoCreator = creators.get(entityClass);
+    public <T extends Identified<PK>, PK extends Serializable> Repository<T, PK> getTransactionalDao(Class<T> entityClass) throws DaoException {
+        Supplier<Repository> daoCreator = creators.get(entityClass);
         if (daoCreator == null) {
             throw new DaoException("Entity Class cannot be find");
         }

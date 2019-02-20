@@ -16,5 +16,5 @@ public interface TransactionalDaoFactory {
      * @return transactional DAO
      * @throws DaoException should be clarify
      */
-    <T extends Identified<PK>, PK extends Serializable> GenericDao getTransactionalDao(Class<T> entityClass) throws DaoException;
+    <T extends Identified<PK>, PK extends Serializable> Repository getTransactionalDao(Class<T> entityClass) throws DaoException;
 }

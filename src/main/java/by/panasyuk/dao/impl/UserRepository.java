@@ -1,7 +1,7 @@
 package by.panasyuk.dao.impl;
 
 import by.panasyuk.dao.AbstractJdbcDao;
-import by.panasyuk.dao.GenericDao;
+import by.panasyuk.dao.Repository;
 import by.panasyuk.domain.User;
 
 import java.sql.PreparedStatement;
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Example User DAO implementation
  */
-public class UserDaoImpl extends AbstractJdbcDao<User, Integer> implements GenericDao<User, Integer> {
+public class UserRepository extends AbstractJdbcDao<User, Integer> implements Repository<User, Integer> {
     @Override
     protected User setGeneratedKey(ResultSet keys, User object) throws SQLException {
         keys.next();

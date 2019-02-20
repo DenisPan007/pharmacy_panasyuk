@@ -12,7 +12,7 @@ import java.util.List;
  * @param <T>  - Identified entity
  * @param <PK> - Type primary key of entity
  */
-public abstract class AbstractJdbcDao<T extends Identified<PK>, PK extends Number> implements GenericDao<T, PK> {
+public abstract class AbstractJdbcDao<T extends Identified<PK>, PK extends Number> implements Repository<T, PK> {
     protected Connection connection;
 
     protected abstract List<T> parseResultSet(ResultSet rs) throws SQLException;
@@ -42,23 +42,7 @@ public abstract class AbstractJdbcDao<T extends Identified<PK>, PK extends Numbe
 
     @Override
     @AutoConnection
-    public T getByPK(PK key) throws DaoException {
-
-        String query = getSelectQuery();
-        try {
-            PreparedStatement ps = connection.prepareStatement(query);
-            prepareStatementForGet(ps, key);
-            ResultSet resultSet = ps.executeQuery();
-            List<T> list = parseResultSet(resultSet);
-            return list.get(0);
-        } catch (SQLException e) {
-            throw new DaoException("prepared statement failed", e);
-        }
-    }
-
-    @Override
-    @AutoConnection
-    public T persist(T object) throws DaoException {
+    public T add(T object) throws DaoException {
         String query = getCreateQuery();
         try {
             PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);

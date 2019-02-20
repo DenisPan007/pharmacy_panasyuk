@@ -12,22 +12,14 @@ import java.util.Optional;
  * @param <T> - Identified entity
  * @param <PK> - Entity primary key
  */
-public interface GenericDao<T extends Identified<PK>, PK extends Serializable> {
+public interface Repository<T extends Identified<PK>, PK extends Serializable> {
     /**
      * Save identified entity in DB
      * @param object identified entity
      * @return identified entity in DB
      * @throws DaoException should be clarify
      */
-    T persist(T object) throws DaoException;
-
-    /**
-     * Get identified entity by PK
-     * @param id id
-     * @return identified entity
-     * @throws DaoException should be clarify
-     */
-    T getByPK(PK id) throws DaoException;
+    T add(T object) throws DaoException;
 
     /**
      * Update identified entity
