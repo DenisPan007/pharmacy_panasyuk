@@ -1,6 +1,5 @@
 package by.panasyuk.controller.command;
 
-import by.panasyuk.dao.AbstractJdbcRepository;
 import by.panasyuk.dao.Repository;
 import by.panasyuk.dao.RepositoryFactory;
 import by.panasyuk.dao.exception.RepositoryException;
@@ -9,11 +8,8 @@ import by.panasyuk.dao.impl.UserRepository;
 import by.panasyuk.dao.specification.GetAll;
 import by.panasyuk.dao.specification.Specification;
 import by.panasyuk.domain.User;
-import by.panasyuk.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class GetUserList implements Command {
