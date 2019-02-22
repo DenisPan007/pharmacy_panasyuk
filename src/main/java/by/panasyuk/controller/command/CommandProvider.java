@@ -15,7 +15,8 @@ public class CommandProvider {
     }
 
     private CommandProvider() {
-        commandMap.put("CommandExample", new CommandExample());
+        commandMap.put("redirect", new Redirect());
+        commandMap.put("getUserList", new GetUserList());
     }
 
     /**
@@ -24,8 +25,6 @@ public class CommandProvider {
      * @return command implementation
      */
     public Command takeCommand(String command) {
-        // Provide your code here
-
-        throw new UnsupportedOperationException();
+       return commandMap.get(command);
     }
 }

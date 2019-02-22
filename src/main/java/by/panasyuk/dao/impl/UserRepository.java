@@ -1,7 +1,6 @@
 package by.panasyuk.dao.impl;
 
 import by.panasyuk.dao.AbstractJdbcRepository;
-import by.panasyuk.dao.WithoutConnection;
 import by.panasyuk.dao.Repository;
 import by.panasyuk.dao.exception.RepositoryException;
 import by.panasyuk.dao.specification.Specification;
@@ -26,8 +25,8 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
             PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, user.getLogin());
             ps.setString(2, user.getPassword());
-            ps.setString(3, user.getFirstname());
-            ps.setString(4, user.getLastname());
+            ps.setString(3, user.getFirstName());
+            ps.setString(4, user.getLastName());
             ps.setString(5, user.getEmail());
             ps.setString(6, user.getRole().name());
             ps.executeUpdate();
@@ -67,8 +66,8 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
                 resultUser.setId(resultSet.getInt(1));
                 resultUser.setLogin(resultSet.getString(2));
                 resultUser.setPassword(resultSet.getString(3));
-                resultUser.setFirstname(resultSet.getString(4));
-                resultUser.setLastname(resultSet.getString(5));
+                resultUser.setFirstName(resultSet.getString(4));
+                resultUser.setLastName(resultSet.getString(5));
                 resultUser.setEmail(resultSet.getString(6));
                 resultUser.setRole(resultSet.getString(7));
                 userList.add(resultUser);

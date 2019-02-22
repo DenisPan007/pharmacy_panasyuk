@@ -22,10 +22,10 @@ public class ServletRegister extends HttpServlet {
         String email = req.getParameter("email");
         UserService userService = UserService.getInstance();
         try {
-            if(userService.isResevedLogin(login)){
+            if(userService.isReservedLogin(login)){
                 req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req,resp);
             }
-            else if(userService.isResevedEmail(email)){
+            else if(userService.isReservedEmail(email)){
                 req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req,resp);
             }
             else{

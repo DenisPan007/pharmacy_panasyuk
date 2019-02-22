@@ -10,18 +10,18 @@ public class User implements Identified<Integer> {
     private int id;
     private String login;
     private String password;
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private String email;
     public enum Role {CLIENT,DOCTOR,ADMIN}
     private Role role;
 
-    public User(int id, String login, String password, String firstname, String lastname, String email,String role) {
+    public User(int id, String login, String password, String firstName, String lastName, String email, String role) {
         this.id = id;
         this.login = login;
         this.password = password;
-        this.firstname = firstname;
-        this.lastname = lastname;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         setRole(role);
     }
@@ -58,20 +58,20 @@ public class User implements Identified<Integer> {
         this.password = password;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -99,14 +99,14 @@ public class User implements Identified<Integer> {
         return id == user.id &&
                 Objects.equals(login, user.login) &&
                 Objects.equals(password, user.password) &&
-                Objects.equals(firstname, user.firstname) &&
-                Objects.equals(lastname, user.lastname) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
                 Objects.equals(email, user.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, password, firstname, lastname, email);
+        return Objects.hash(id, login, password, firstName, lastName, email);
     }
 
     @Override
@@ -115,8 +115,8 @@ public class User implements Identified<Integer> {
                 "id=" + id +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }

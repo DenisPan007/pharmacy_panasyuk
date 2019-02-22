@@ -14,5 +14,5 @@ public interface Command {
      * @param request is used for extracting request parameters
      * @return response content
      */
-    ResponseContent execute(HttpServletRequest request);
+    String execute(HttpServletRequest request) throws CommandException;
 }

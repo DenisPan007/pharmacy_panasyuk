@@ -24,8 +24,8 @@ public class AjaxController extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Command command = CommandProvider.getInstance().takeCommand("CommandExample");
-        ResponseContent responseContent = command.execute(request);
+        Command command = CommandProvider.getInstance().takeCommand("Redirect");
+        //ResponseContent responseContent = command.execute(request);
 
         // Provide your code here
 

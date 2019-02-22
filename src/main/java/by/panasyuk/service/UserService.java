@@ -18,7 +18,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class UserService {
     private RepositoryFactory repositoryFactory = JdbcRepositoryFactory.getInstance();
-    private Repository<User, Integer> userDao = repositoryFactory.getRepository(UserRepository::new);
+    private Repository<User, Integer> userRepository = repositoryFactory.getRepository(UserRepository::new);
     private static UserService instance;
     private static Lock lockForSingleTone = new ReentrantLock();
 
@@ -39,24 +39,24 @@ public class UserService {
     private UserService() {
     }
 
-    public boolean isResevedLogin(String login) throws ServiceException {
+    public boolean isReservedLogin(String login) throws ServiceException {
         User user = new User();
         user.setLogin(login);
         try {
             Specification<User> spec = new GetByLogin();
-            List list = userDao.getQuery(user, spec);
+            List list = userRepository.getQuery(user, spec);
             return !list.isEmpty();
         } catch (RepositoryException e) {
             throw new ServiceException("Failed to get user DAO. ", e);
         }
     }
 
-    public boolean isResevedEmail(String email) throws ServiceException {
+    public boolean isReservedEmail(String email) throws ServiceException {
         User user = new User();
         user.setEmail(email);
         try {
             Specification<User> spec = new GetByEmail();
-            List list = userDao.getQuery(user, spec);
+            List list = userRepository.getQuery(user, spec);
             return !list.isEmpty();
         } catch (RepositoryException e) {
             throw new ServiceException("Failed to get user DAO. ", e);
@@ -67,7 +67,7 @@ public class UserService {
         User user = new User(login, password, email);
 
         try {
-            return userDao.add(user);
+            return userRepository.add(user);
         } catch (RepositoryException e) {
             throw new ServiceException("Failed to get user DAO. ", e);
         }

@@ -47,14 +47,14 @@ public class UserServiceTest {
     public void isReservedByLogin()throws ServiceException {
         String login = "admin";
         UserService userService = UserService.getInstance();
-        Boolean result = userService.isResevedLogin(login);
+        Boolean result = userService.isReservedLogin(login);
         assertTrue(result);
     }
     @Test
     public void isReservedByEmail()throws ServiceException {
         String email = "@mail";
         UserService userService = UserService.getInstance();
-        Boolean result = userService.isResevedEmail(email);
+        Boolean result = userService.isReservedEmail(email);
         assertTrue(result);
     }
 
