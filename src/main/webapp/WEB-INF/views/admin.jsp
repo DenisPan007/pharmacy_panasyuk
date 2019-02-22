@@ -23,8 +23,8 @@
                 <th>Role</th>
             </tr>
         </thead>
-    <c:forEach var="elem" items="${list}" varStatus="status">
         <tbody>
+        <c:forEach var="elem" items="${list}" varStatus="status">
             <tr>
                 <td>${elem.id}</td>
                 <td>${elem.login}</td>
@@ -33,8 +33,8 @@
                 <td>${elem.email}</td>
                 <td>${elem.role}</td>
             </tr>
+            </c:forEach>
         </tbody>
-    </c:forEach>
         <tfoot>
             <tr>
                 <th>Id</th>
