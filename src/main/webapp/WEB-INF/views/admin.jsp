@@ -1,16 +1,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <script>
+        function go(id, button) {
+            var tdTag = button.parentElement;
+            var trTag = tdTag.parentElement;
+            var tbodyTag = trTag.parentElement;
+            tbodyTag.removeChild(trTag);
+        }
+    </script>
 </head>
-БЛЕТКИ
 <body>
+<c:set var="commandFix" value="getUserList" scope="page"/>
 <form method="POST" action="${pageContext.request.contextPath}/start">
-    <c:set var="commandFix" value="getUserList" scope="page"/>
     <input type="hidden" name="command" value=${commandFix}>
-    <button type="submit" class="btn btn-primary">Refresh</button>
+    <button type="submit" >Refresh</button>
 </form>
+
 
 <table id="example" class="display" style="width:100%">
     <thead>
@@ -24,25 +32,24 @@
         <th>Role</th>
     </tr>
     </thead>
-    <tbody>
+    <tbody id="body">
     <c:forEach var="elem" items="${list}" varStatus="status">
         <tr>
             <td>
-                <form action="${pageContext.request.contextPath}/ajax">
-                    <button type="submit" class="btn btn-primary">Delete</button>
-                </form>
+                    <button class="btn btn-primary" onclick="go(${elem.id},this)">Delete</button>
             </td>
-            <td>${elem.id}</td>
-            <td>${elem.login}</td>
-            <td>${elem.firstName}</td>
-            <td>${elem.lastName}</td>
-            <td>${elem.email}</td>
-            <td>${elem.role}</td>
+            <td><c:out value="${elem.id}"></c:out></td>
+            <td><c:out value="${elem.login}"></c:out></td>
+            <td><c:out value="${elem.firstName}"></c:out></td>
+            <td><c:out value="${elem.lastName}"></c:out></td>
+            <td><c:out value="${elem.email}"></c:out></td>
+            <td><c:out value="${elem.role}"></c:out></td>
         </tr>
     </c:forEach>
     </tbody>
     <tfoot>
     <tr>
+        <th></th>
         <th>Id</th>
         <th>Login</th>
         <th>FirstName</th>
@@ -64,4 +71,4 @@
     });
 </script>
 </body>
-</html>
+        </html>
