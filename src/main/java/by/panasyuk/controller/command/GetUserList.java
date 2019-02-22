@@ -25,8 +25,7 @@ public class GetUserList implements Command {
         try {
             List<User> listUsers = repository.getQuery(new User(), spec);
             request.setAttribute("list",listUsers);
-            String prefix = request.getContextPath();
-            return  prefix+'/'+"WEB-INF/views/admin.jsp";
+            return  '/'+"WEB-INF/views/admin.jsp";
         } catch (RepositoryException e) {
             throw new CommandException();
         }
