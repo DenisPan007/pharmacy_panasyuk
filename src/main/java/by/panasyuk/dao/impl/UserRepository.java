@@ -49,32 +49,38 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
     }
 
     @Override
-    public void delete(User object) throws RepositoryException {
+    public void delete(User user) throws RepositoryException {
 
-        // Write your code here
-
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public List<User> getQuery(User user, Specification<User> spec) throws RepositoryException {
+        String query = "DELETE * FROM user WHERE id = ?";
         try {
-            ResultSet resultSet = spec.get(user, connection);
-            List<User> userList = new ArrayList<>();
-            while (resultSet.next()) {
-                User resultUser = new User();
-                resultUser.setId(resultSet.getInt(1));
-                resultUser.setLogin(resultSet.getString(2));
-                resultUser.setPassword(resultSet.getString(3));
-                resultUser.setFirstName(resultSet.getString(4));
-                resultUser.setLastName(resultSet.getString(5));
-                resultUser.setEmail(resultSet.getString(6));
-                resultUser.setRole(resultSet.getString(7));
-                userList.add(resultUser);
-            }
-            return userList;
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, user.getId());
+            statement.executeQuery();
         } catch (SQLException e) {
             throw new RepositoryException("prepared statement failed", e);
+
         }
     }
-}
+
+        @Override
+        public List<User> getQuery (User user, Specification < User > spec) throws RepositoryException {
+            try {
+                ResultSet resultSet = spec.get(user, connection);
+                List<User> userList = new ArrayList<>();
+                while (resultSet.next()) {
+                    User resultUser = new User();
+                    resultUser.setId(resultSet.getInt(1));
+                    resultUser.setLogin(resultSet.getString(2));
+                    resultUser.setPassword(resultSet.getString(3));
+                    resultUser.setFirstName(resultSet.getString(4));
+                    resultUser.setLastName(resultSet.getString(5));
+                    resultUser.setEmail(resultSet.getString(6));
+                    resultUser.setRole(resultSet.getString(7));
+                    userList.add(resultUser);
+                }
+                return userList;
+            } catch (SQLException e) {
+                throw new RepositoryException("prepared statement failed", e);
+            }
+        }
+    }

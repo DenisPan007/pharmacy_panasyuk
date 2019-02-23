@@ -76,4 +76,13 @@ public class UserService {
     public User login(User user) throws ServiceException {
         return new User();
     }
+    public void delete(int id) throws ServiceException{
+        User user = new User();
+        user.setId(id);
+        try {
+            userRepository.delete(user);
+        } catch (RepositoryException e) {
+            throw new ServiceException("Failed to get user DAO. ", e);
+        }
+    }
 }

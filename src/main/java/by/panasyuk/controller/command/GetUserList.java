@@ -18,6 +18,7 @@ public class GetUserList implements Command {
         RepositoryFactory factory = JdbcRepositoryFactory.getInstance();
         Repository<User,Integer> repository = factory.getRepository(UserRepository::new);
         Specification<User> spec = new GetAll();
+        //Specification<User> spec1 = (user,connection)->{return  connection.createStatement().executeQuery("123");};
         try {
             List<User> listUsers = repository.getQuery(new User(), spec);
             request.setAttribute("list",listUsers);
