@@ -3,12 +3,47 @@
 <head>
 <meta charset="utf-8">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <script>function getXMLHttpRequest() {
+        var xmlHttpReq;
+        // to create XMLHttpRequest object in non-Microsoft browsers
+        if (window.XMLHttpRequest) {
+            xmlHttpReq = new XMLHttpRequest();
+        } else if (window.ActiveXObject) {
+            try {
+                //to create XMLHttpRequest object in later versions of Internet Explorer
+                xmlHttpReq = new ActiveXObject("Msxml2.XMLHTTP");
+            } catch (exp1) {
+                try {
+                    //to create XMLHttpRequest object in later versions of Internet Explorer
+                    xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
+                } catch (exp2) {
+                    //xmlHttpReq = false;
+                    alert("Exception in getXMLHttpRequest()!");
+                }
+            }
+        }
+        return xmlHttpReq;
+    }
+    </script>
     <script>
         function go(id, button) {
-            var tdTag = button.parentElement;
-            var trTag = tdTag.parentElement;
-            var tbodyTag = trTag.parentElement;
-            tbodyTag.removeChild(trTag);
+            var req = getXMLHttpRequest();
+            req.open('POST', '/pharmacy/ajax', true);
+            req.onreadystatechange = function() {
+                if (req.readyState === 4) {
+                    if (req.status === 200) {
+                        alert(req.responseXML);
+                        alert("yes");
+                        var tdTag = button.parentElement;
+                        var trTag = tdTag.parentElement;
+                        var tbodyTag = trTag.parentElement;
+                        tbodyTag.removeChild(trTag);
+                    }
+                }
+            };
+            alert(req.readyState);
+            req.send();
+            alert(req.readyState);
         }
     </script>
 </head>
