@@ -12,6 +12,9 @@
                     <a class="nav-link" href="${pageContext.request.contextPath}/register">Sign-up</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/start?command=redirect&path=login.jsp">Login</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="${pageContext.request.contextPath}/start?command=redirect&path=admin.jsp">Admin</a>
                 </li>
                 <li class="nav-item dropdown">

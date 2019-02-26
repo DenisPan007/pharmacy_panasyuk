@@ -73,8 +73,22 @@ public class UserService {
         }
     }
 
-    public User login(User user) throws ServiceException {
-        return new User();
+    public boolean login(String login, String password) throws ServiceException {
+        User user = new User();
+        user.setLogin(login);
+        try {
+            Specification<User> spec = new GetByLogin();
+            List<User> list = userRepository.getQuery(user, spec);
+            if (list.isEmpty()){
+                return false;
+            }
+            user = list.get(0);
+           return (user.getPassword().equals(password));
+
+
+        } catch (RepositoryException e) {
+            throw new ServiceException("Failed to get user DAO. ", e);
+        }
     }
     public void delete(int id) throws ServiceException{
         User user = new User();

@@ -18,6 +18,7 @@ public class CommandProvider {
         commandMap.put("redirect", new Redirect());
         commandMap.put("getUserList", new GetUserList());
         commandMap.put("deleteUser", new DeleteUser());
+        commandMap.put("login", new Login());
     }
 
     /**
