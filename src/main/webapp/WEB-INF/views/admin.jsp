@@ -1,8 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <head>
-<meta charset="utf-8">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <script>function getXMLHttpRequest() {
         var xmlHttpReq;
         // to create XMLHttpRequest object in non-Microsoft browsers
@@ -27,13 +27,12 @@
     </script>
     <script>
         function go(id, button) {
+            var body = 'command=' + encodeURIComponent("deleteUser") + '&id=' + encodeURIComponent(id);
             var req = getXMLHttpRequest();
-            req.open('POST', '/pharmacy/ajax', true);
-            req.onreadystatechange = function() {
+            req.onreadystatechange = function () {
                 if (req.readyState === 4) {
                     if (req.status === 200) {
-                        alert(req.responseXML);
-                        alert("yes");
+                        alert(req.responseText);
                         var tdTag = button.parentElement;
                         var trTag = tdTag.parentElement;
                         var tbodyTag = trTag.parentElement;
@@ -41,9 +40,9 @@
                     }
                 }
             };
-            alert(req.readyState);
-            req.send();
-            alert(req.readyState);
+            req.open('POST', '/pharmacy/ajax', true);
+            req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            req.send(body);
         }
     </script>
 </head>
@@ -51,7 +50,7 @@
 <c:set var="commandFix" value="getUserList" scope="page"/>
 <form method="POST" action="${pageContext.request.contextPath}/start">
     <input type="hidden" name="command" value=${commandFix}>
-    <button type="submit" >Refresh</button>
+    <button type="submit">Refresh</button>
 </form>
 
 
@@ -71,7 +70,7 @@
     <c:forEach var="elem" items="${list}" varStatus="status">
         <tr>
             <td>
-                    <button class="btn btn-primary" onclick="go(${elem.id},this)">Delete</button>
+                <button class="btn btn-primary" onclick="go(${elem.id},this)">Delete</button>
             </td>
             <td><c:out value="${elem.id}"></c:out></td>
             <td><c:out value="${elem.login}"></c:out></td>
@@ -106,4 +105,4 @@
     });
 </script>
 </body>
-        </html>
+</html>

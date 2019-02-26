@@ -1,7 +1,9 @@
 package by.panasyuk.controller;
 
 import by.panasyuk.controller.command.Command;
+import by.panasyuk.controller.command.CommandException;
 import by.panasyuk.controller.command.CommandProvider;
+import by.panasyuk.controller.command.DeleteUser;
 import by.panasyuk.dto.ResponseContent;
 import by.panasyuk.service.UserService;
 import by.panasyuk.service.exception.ServiceException;
@@ -26,16 +28,17 @@ public class AjaxController extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserService service = UserService.getInstance();
+        String commandString = request.getParameter("command");
+        Command command = CommandProvider.getInstance().takeCommand(commandString);
+        String text;
         try {
-            service.delete(5);
-        } catch (ServiceException e) {
+            text = command.execute(request);
+            response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
+            response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
+            response.getWriter().write(text);
+        } catch (CommandException e) {
             e.printStackTrace();
         }
-        String text = "some text";
 
-        response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
-        response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
-        response.getWriter().write(text);
     }
 }

@@ -53,23 +53,12 @@ public final class TransactionManager {
     }
 
 
-    static void setConnectionWithReflection(Object dao, Connection connection) throws RepositoryException {
-        if (!(dao instanceof AbstractJdbcRepository)) {
+    static void setConnectionWithReflection(Object repository, Connection connection) throws RepositoryException {
+        if (!(repository instanceof AbstractJdbcRepository)) {
             throw new RepositoryException("DAO implementation does not extend AbstractJdbcRepository.");
         }
-
-        try {
-
-            Field connectionField = AbstractJdbcRepository.class.getDeclaredField("connection");
-            if (!connectionField.isAccessible()) {
-                connectionField.setAccessible(true);
-            }
-
-            connectionField.set(dao, connection);
-
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RepositoryException("Failed to set connection for transactional DAO. ", e);
-        }
+        AbstractJdbcRepository abstrRepo = (AbstractJdbcRepository) repository;
+        abstrRepo.setConnection(connection);
     }
 
 }

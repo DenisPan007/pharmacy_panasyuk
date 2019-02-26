@@ -51,11 +51,11 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
     @Override
     public void delete(User user) throws RepositoryException {
 
-        String query = "DELETE * FROM user WHERE id = ?";
+        String query = "DELETE FROM user WHERE id = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, user.getId());
-            statement.executeQuery();
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new RepositoryException("prepared statement failed", e);
 
