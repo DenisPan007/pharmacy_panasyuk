@@ -28,7 +28,7 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
             ps.setString(3, user.getFirstName());
             ps.setString(4, user.getLastName());
             ps.setString(5, user.getEmail());
-            ps.setString(6, user.getRole().name());
+            ps.setString(6, user.getRole());
             ps.executeUpdate();
             ResultSet keys = ps.getGeneratedKeys();
             keys.next();
@@ -41,11 +41,26 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
     }
 
     @Override
-    public void update(User object) throws RepositoryException {
+    public void update(User user) throws RepositoryException {
 
-        // Write your code here
+        String query = "UPDATE user " +
+                "SET login=?, password=?, firstname=?, lastname=?, email=?, role=?" +
+                "WHERE id = ?";
 
-        throw new UnsupportedOperationException();
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, user.getLogin());
+            statement.setString(2, user.getPassword());
+            statement.setString(3, user.getFirstName());
+            statement.setString(4, user.getLastName());
+            statement.setString(5, user.getEmail());
+            statement.setString(6, user.getRole());
+            statement.setInt(7, user.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RepositoryException("prepared statement failed", e);
+
+        }
     }
 
     @Override

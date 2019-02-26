@@ -8,6 +8,8 @@ public class ServiceException extends Exception {
         super(message, cause);
     }
 
-    //provide your code here
+    public ServiceException( Throwable cause) {
+        super(cause);
+    }
 
 }

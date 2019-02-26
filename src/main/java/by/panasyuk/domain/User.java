@@ -82,8 +82,8 @@ public class User implements Identified<Integer> {
         this.email = email;
     }
 
-    public Role getRole() {
-        return role;
+    public String getRole() {
+        return role.name();
     }
 
 

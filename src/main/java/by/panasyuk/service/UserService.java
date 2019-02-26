@@ -1,5 +1,6 @@
 package by.panasyuk.service;
 
+import by.panasyuk.controller.command.Login;
 import by.panasyuk.dao.RepositoryFactory;
 import by.panasyuk.dao.Repository;
 import by.panasyuk.dao.exception.RepositoryException;
@@ -11,6 +12,7 @@ import by.panasyuk.dao.specification.Specification;
 import by.panasyuk.domain.User;
 import by.panasyuk.service.exception.ServiceException;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -79,18 +81,19 @@ public class UserService {
         try {
             Specification<User> spec = new GetByLogin();
             List<User> list = userRepository.getQuery(user, spec);
-            if (list.isEmpty()){
+            if (list.isEmpty()) {
                 return false;
             }
             user = list.get(0);
-           return (user.getPassword().equals(password));
+            return (user.getPassword().equals(password));
 
 
         } catch (RepositoryException e) {
             throw new ServiceException("Failed to get user DAO. ", e);
         }
     }
-    public void delete(int id) throws ServiceException{
+
+    public void delete(int id) throws ServiceException {
         User user = new User();
         user.setId(id);
         try {
@@ -98,5 +101,28 @@ public class UserService {
         } catch (RepositoryException e) {
             throw new ServiceException("Failed to get user DAO. ", e);
         }
+    }
+
+    public boolean changePassword(String login, String email) throws ServiceException {
+        User user = new User();
+        user.setLogin(login);
+        try {
+            Specification<User> spec = new GetByLogin();
+            List<User> list = userRepository.getQuery(user, spec);
+            user = list.get(0);
+            if (!user.getEmail().equals(email)) {
+                return false;
+            }
+            String newPassword = "newPassword";
+            user.setPassword(Login.passwordHash(newPassword));
+            userRepository.update(user);
+            EmailSender sender = new EmailSender();
+            sender.send("your new password", "there is your new password: " + newPassword, email);
+        } catch (RepositoryException e) {
+            throw new ServiceException("Failed to get user DAO. ", e);
+        } catch (NoSuchAlgorithmException e) {
+            throw new ServiceException("Failed to get hash Algorithm. ", e);
+        }
+        return true;
     }
 }
