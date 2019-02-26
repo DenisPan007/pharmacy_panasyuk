@@ -22,7 +22,7 @@ public class GetUserList implements Command {
         try {
             List<User> listUsers = repository.getQuery(new User(), spec);
             request.setAttribute("list",listUsers);
-            return  '/'+"WEB-INF/views/admin.jsp";
+            return  "/WEB-INF/views/admin.jsp";
         } catch (RepositoryException e) {
             throw new CommandException();
         }
