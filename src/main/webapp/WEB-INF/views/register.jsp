@@ -24,12 +24,12 @@
 <jsp:include page="header.jsp"></jsp:include>
 <main role="main" class="container">
     <h3>Register for fun</h3>
-    <form method="POST" action="${pageContext.request.contextPath}/register">
+    <form method="POST" action="${pageContext.request.contextPath}/start?command=signUp">
         <div class="form-group col-md-6 " >
             <label for="inputLogin">Login</label>
             <input type="text" name="login" class="form-control" id="inputLogin" placeholder="login" required/>
         </div>
-        <div class="fform-group col-md-6">
+        <div class="form-group col-md-6">
             <label for="inputPassword">Password</label>
             <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password" required/>
         </div>
@@ -40,6 +40,7 @@
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    <h1>${error}</h1>
 
 </main>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
