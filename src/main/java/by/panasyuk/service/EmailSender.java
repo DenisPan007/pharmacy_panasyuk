@@ -8,8 +8,8 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 public class EmailSender {
-    private final String username = "denispan007@gmail.com" ;
-    private final String password = "3812238122Den";
+    private final String username = "pharma.task007@gmail.com" ;
+    private final String password = "27.02.pharma.Task007";
     private Properties props;
 
     public EmailSender() {
