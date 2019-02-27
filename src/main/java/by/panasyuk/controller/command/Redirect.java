@@ -11,7 +11,7 @@ public class Redirect implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         String path = request.getParameter("path");
-        String resultPath = '/'+"WEB-INF/views/"+path;
+        String resultPath ="/WEB-INF/views/"+path;
         request.setAttribute(path,resultPath);
         return resultPath;
     }

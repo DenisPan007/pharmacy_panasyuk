@@ -19,7 +19,7 @@ public class CommandProvider {
         commandMap.put("getUserList", new GetUserList());
         commandMap.put("deleteUser", new DeleteUser());
         commandMap.put("login", new Login());
-        commandMap.put("sendEmail", new SendEmail());
+        commandMap.put("changePassword", new ChangePassword());
         commandMap.put("signUp", new SignUp());
     }
 

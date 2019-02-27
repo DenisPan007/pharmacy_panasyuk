@@ -46,15 +46,15 @@ public class UserServiceTest {
     @Test
     public void isReservedByLogin()throws ServiceException {
         String login = "admin";
-        UserService userService = UserService.getInstance();
-        Boolean result = userService.isReservedLogin(login);
+        PresentChecker presentChecker = PresentChecker.getInstance();
+        Boolean result = presentChecker.isReservedLogin(login);
         assertTrue(result);
     }
     @Test
     public void isReservedByEmail()throws ServiceException {
         String email = "@mail";
-        UserService userService = UserService.getInstance();
-        Boolean result = userService.isReservedEmail(email);
+        PresentChecker presentChecker = PresentChecker.getInstance();
+        Boolean result = presentChecker.isReservedEmail(email);
         assertTrue(result);
     }
 
@@ -65,8 +65,8 @@ public class UserServiceTest {
         String email = "@mail";
         User expectedUser = new User(login,password,email);
         expectedUser.setId(2);
-        UserService userService = UserService.getInstance();
-            User actualUser = userService.signUp(login,password,email);
+        SignUpService signUpService = SignUpService.getInstance();
+            User actualUser = signUpService.signUp(login,password,email);
             assertEquals(expectedUser,actualUser);
     }
 }

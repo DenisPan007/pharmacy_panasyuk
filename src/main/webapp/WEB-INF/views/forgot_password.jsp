@@ -24,7 +24,7 @@
 <jsp:include page="header.jsp"></jsp:include>
 <main role="main" class="container">
     <h3>Register for fun</h3>
-    <form method="POST" action="${pageContext.request.contextPath}/start?command=sendEmail">
+    <form method="POST" action="${pageContext.request.contextPath}/start?command=changePassword">
         <div class="form-group col-md-6 " >
             <label for="inputLogin">Login</label>
             <input type="text" name="login" class="form-control" id="inputLogin" placeholder="login" required/>
