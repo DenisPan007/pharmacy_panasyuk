@@ -3,10 +3,6 @@ package by.panasyuk.controller;
 import by.panasyuk.controller.command.Command;
 import by.panasyuk.controller.command.CommandException;
 import by.panasyuk.controller.command.CommandProvider;
-import by.panasyuk.controller.command.DeleteUser;
-import by.panasyuk.dto.ResponseContent;
-import by.panasyuk.service.UserService;
-import by.panasyuk.service.exception.ServiceException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

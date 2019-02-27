@@ -1,6 +1,5 @@
-package by.panasyuk.service;
+package by.panasyuk.service.user;
 
-import by.panasyuk.controller.command.Login;
 import by.panasyuk.dao.exception.RepositoryException;
 import by.panasyuk.dao.specification.GetByLogin;
 import by.panasyuk.dao.specification.Specification;
@@ -46,7 +45,7 @@ public class PasswordService extends UserService {
             if (!user.getEmail().equals(email)) {
                 throw new ArgumentCorrectException();
             }
-            String newPassword = "newPassword";
+            String newPassword = Long.toHexString(Double.doubleToLongBits(Math.random()));
             user.setPassword(passwordHash(newPassword));
             userRepository.update(user);
             return newPassword;
@@ -69,4 +68,5 @@ public class PasswordService extends UserService {
         }
         return sb.toString();
     }
+
 }

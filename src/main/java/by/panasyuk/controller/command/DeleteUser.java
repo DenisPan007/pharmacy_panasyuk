@@ -1,7 +1,7 @@
 package by.panasyuk.controller.command;
 
 
-import by.panasyuk.service.CrudService;
+import by.panasyuk.service.user.CrudService;
 import by.panasyuk.service.exception.ServiceException;
 
 import javax.servlet.http.HttpServletRequest;

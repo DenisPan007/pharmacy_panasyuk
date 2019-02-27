@@ -1,10 +1,9 @@
 package by.panasyuk.controller.command;
 
 import by.panasyuk.domain.User;
-import by.panasyuk.service.PasswordService;
-import by.panasyuk.service.PresentChecker;
-import by.panasyuk.service.SignUpService;
-import by.panasyuk.service.UserService;
+import by.panasyuk.service.user.PasswordService;
+import by.panasyuk.service.user.PresentChecker;
+import by.panasyuk.service.user.SignUpService;
 import by.panasyuk.service.exception.ServiceException;
 
 import javax.servlet.http.HttpServletRequest;

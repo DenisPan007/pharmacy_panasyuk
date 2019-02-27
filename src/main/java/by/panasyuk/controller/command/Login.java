@@ -1,12 +1,10 @@
 package by.panasyuk.controller.command;
 
-import by.panasyuk.service.LoginService;
-import by.panasyuk.service.PasswordService;
-import by.panasyuk.service.UserService;
+import by.panasyuk.service.user.LoginService;
+import by.panasyuk.service.user.PasswordService;
 import by.panasyuk.service.exception.ServiceException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Login implements Command {

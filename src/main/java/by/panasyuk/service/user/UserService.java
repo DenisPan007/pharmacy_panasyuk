@@ -1,4 +1,4 @@
-package by.panasyuk.service;
+package by.panasyuk.service.user;
 
 import by.panasyuk.dao.RepositoryFactory;
 import by.panasyuk.dao.Repository;
@@ -12,6 +12,5 @@ public abstract class UserService {
 
     public UserService() {
     }
-
 
 }

@@ -1,4 +1,4 @@
-package by.panasyuk.service;
+package by.panasyuk.service.user;
 
 import by.panasyuk.dao.exception.RepositoryException;
 import by.panasyuk.dao.specification.GetByLogin;
