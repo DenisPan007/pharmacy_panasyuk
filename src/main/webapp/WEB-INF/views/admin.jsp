@@ -25,7 +25,6 @@
     </script>
     <script>
         function deleteDrug(id, button) {
-            alert("mess");
             var body = 'command=' + encodeURIComponent("deleteDrug") + '&id=' + encodeURIComponent(id);
             var req = getXMLHttpRequest();
             req.onreadystatechange = function () {
@@ -41,7 +40,6 @@
             };
             req.open('POST', '/pharmacy/ajax', true);
             req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            alert("mess");
             req.send(body);
         }
     </script>
