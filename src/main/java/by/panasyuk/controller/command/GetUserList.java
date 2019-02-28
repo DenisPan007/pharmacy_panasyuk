@@ -5,7 +5,7 @@ import by.panasyuk.dao.RepositoryFactory;
 import by.panasyuk.dao.exception.RepositoryException;
 import by.panasyuk.dao.impl.JdbcRepositoryFactory;
 import by.panasyuk.dao.impl.UserRepository;
-import by.panasyuk.dao.specification.GetAll;
+import by.panasyuk.dao.specification.user.GetAll;
 import by.panasyuk.dao.specification.Specification;
 import by.panasyuk.domain.User;
 

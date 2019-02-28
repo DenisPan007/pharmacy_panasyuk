@@ -5,6 +5,9 @@ import by.panasyuk.dao.Repository;
 import by.panasyuk.dao.exception.RepositoryException;
 import by.panasyuk.dao.impl.JdbcRepositoryFactory;
 import by.panasyuk.dao.impl.UserRepository;
+import by.panasyuk.dao.specification.user.GetByEmail;
+import by.panasyuk.dao.specification.user.GetById;
+import by.panasyuk.dao.specification.user.GetByLogin;
 import by.panasyuk.domain.User;
 import org.junit.*;
 

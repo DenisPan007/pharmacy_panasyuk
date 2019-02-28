@@ -21,6 +21,8 @@ public class CommandProvider {
         commandMap.put("login", new Login());
         commandMap.put("changePassword", new ChangePassword());
         commandMap.put("signUp", new SignUp());
+        commandMap.put("getDrugList", new GetDrugList());
+        commandMap.put("deleteDrug", new DeleteDrug());
     }
 
     /**

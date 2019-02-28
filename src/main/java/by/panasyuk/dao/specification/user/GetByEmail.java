@@ -1,5 +1,6 @@
-package by.panasyuk.dao.specification;
+package by.panasyuk.dao.specification.user;
 
+import by.panasyuk.dao.specification.Specification;
 import by.panasyuk.domain.User;
 
 import java.sql.Connection;

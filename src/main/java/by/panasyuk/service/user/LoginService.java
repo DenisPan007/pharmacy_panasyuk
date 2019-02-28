@@ -1,7 +1,7 @@
 package by.panasyuk.service.user;
 
 import by.panasyuk.dao.exception.RepositoryException;
-import by.panasyuk.dao.specification.GetByLogin;
+import by.panasyuk.dao.specification.user.GetByLogin;
 import by.panasyuk.dao.specification.Specification;
 import by.panasyuk.domain.User;
 import by.panasyuk.service.exception.ServiceException;

@@ -22,18 +22,22 @@ public class Drug implements Identified<Integer> {
 
     @Override
     public Integer getId() {
-        return null;
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
-    public boolean isPrescriptionRequired() {
+    public boolean getIsPrescriptionRequired() {
         return isPrescriptionRequired;
     }
 
@@ -70,7 +74,7 @@ public class Drug implements Identified<Integer> {
         return "Drug{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", isPrescriptionRequired=" + isPrescriptionRequired +
+                ", getIsPrescriptionRequired=" + isPrescriptionRequired +
                 ", price=" + price +
                 '}';
     }
