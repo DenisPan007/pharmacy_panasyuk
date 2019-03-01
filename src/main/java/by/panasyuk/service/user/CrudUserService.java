@@ -1,24 +1,24 @@
-package by.panasyuk.service.drug;
+package by.panasyuk.service.user;
 
 import by.panasyuk.repository.exception.RepositoryException;
 import by.panasyuk.repository.specification.Specification;
-import by.panasyuk.repository.specification.drug.GetAllDrugs;
-import by.panasyuk.domain.Drug;
+import by.panasyuk.repository.specification.user.GetAllUsers;
+import by.panasyuk.domain.User;
 import by.panasyuk.service.exception.ServiceException;
 
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class CrudDrugService extends DrugService {
-    private static CrudDrugService instance;
+public class CrudUserService extends UserService {
+    private static CrudUserService instance;
     private static Lock lockForSingleTone = new ReentrantLock();
 
-    public static CrudDrugService getInstance() {
+    public static CrudUserService getInstance() {
         lockForSingleTone.lock();
         try {
             if (instance == null) {
-                instance = new CrudDrugService();
+                instance = new CrudUserService();
             }
 
         } finally {
@@ -27,18 +27,18 @@ public class CrudDrugService extends DrugService {
         return instance;
     }
     public void delete(int id) throws ServiceException {
-        Drug drug = new Drug();
-        drug.setId(id);
+        User user = new User();
+        user.setId(id);
         try {
-            drugRepository.delete(drug);
+            userRepository.delete(user);
         } catch (RepositoryException e) {
             throw new ServiceException("Failed to get user DAO. ", e);
         }
     }
-    public List<Drug> getAll() throws ServiceException{
-        Specification<Drug> spec = new GetAllDrugs();
+    public List<User> getAll() throws  ServiceException{
+        Specification<User> spec = new GetAllUsers();
         try {
-            return drugRepository.getQuery(new Drug(), spec);
+            return userRepository.getQuery(new User(), spec);
         } catch (RepositoryException e) {
             throw new ServiceException(e);
         }

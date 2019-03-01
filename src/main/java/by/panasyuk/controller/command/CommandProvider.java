@@ -16,13 +16,14 @@ public class CommandProvider {
 
     private CommandProvider() {
         commandMap.put("redirect", new Redirect());
-        commandMap.put("getUserList", new GetUserList());
         commandMap.put("deleteUser", new DeleteUser());
         commandMap.put("login", new Login());
         commandMap.put("changePassword", new ChangePassword());
         commandMap.put("signUp", new SignUp());
-        commandMap.put("getDrugList", new GetDrugList());
+        commandMap.put("toSignUpPage", new ToSignUpPage());
+        commandMap.put("toAdmin", new ToAdmin());
         commandMap.put("deleteDrug", new DeleteDrug());
+        commandMap.put("toStartPage", new ToStartPage());
     }
 
     /**

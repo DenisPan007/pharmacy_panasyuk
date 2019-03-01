@@ -1,6 +1,6 @@
 package by.panasyuk.service.user;
 
-import by.panasyuk.dao.exception.RepositoryException;
+import by.panasyuk.repository.exception.RepositoryException;
 import by.panasyuk.domain.User;
 import by.panasyuk.service.exception.ServiceException;
 

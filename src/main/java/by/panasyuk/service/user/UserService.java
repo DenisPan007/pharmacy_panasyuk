@@ -1,9 +1,9 @@
 package by.panasyuk.service.user;
 
-import by.panasyuk.dao.RepositoryFactory;
-import by.panasyuk.dao.Repository;
-import by.panasyuk.dao.impl.JdbcRepositoryFactory;
-import by.panasyuk.dao.impl.UserRepository;
+import by.panasyuk.repository.RepositoryFactory;
+import by.panasyuk.repository.Repository;
+import by.panasyuk.repository.impl.JdbcRepositoryFactory;
+import by.panasyuk.repository.impl.UserRepository;
 import by.panasyuk.domain.User;
 
 public abstract class UserService {

@@ -1,6 +1,6 @@
 package by.panasyuk.domain;
 
-import by.panasyuk.dao.Identified;
+import by.panasyuk.repository.Identified;
 import lombok.Data;
 
 import java.util.Objects;

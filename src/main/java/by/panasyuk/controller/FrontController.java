@@ -3,7 +3,9 @@ package by.panasyuk.controller;
 import by.panasyuk.controller.command.Command;
 import by.panasyuk.controller.command.CommandException;
 import by.panasyuk.controller.command.CommandProvider;
+import by.panasyuk.controller.command.Router;
 import by.panasyuk.dto.ResponseContent;
+import org.apache.logging.log4j.core.appender.routing.Route;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -35,9 +37,13 @@ public class FrontController extends HttpServlet {
             request.setAttribute("error", e.getStackTrace());
             request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
         }
-        request.getRequestDispatcher(path).forward(request, response);
-
-        // Provide your code here
+        Router.Type type = (Router.Type)request.getAttribute("route");
+        if (type.equals(Router.Type.FORWARD)) {
+            request.getRequestDispatcher(path).forward(request, response);
+        }
+        else{
+            response.sendRedirect(path);
+        }
 
     }
 }

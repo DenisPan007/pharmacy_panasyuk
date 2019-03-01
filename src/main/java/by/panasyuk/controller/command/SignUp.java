@@ -30,7 +30,9 @@ public class SignUp implements Command {
             } else {
                 User user = signUpService.signUp(login, password, email);
                 req.setAttribute("user", user);
-                return "/WEB-INF/views/successful_registration.jsp";
+                req.setAttribute("route",Router.Type.REDIRECT);
+                String contextPath = req.getContextPath();
+                return contextPath + "/start?command=toStartPage";
             }
         } catch (ServiceException e) {
             throw new CommandException(e);

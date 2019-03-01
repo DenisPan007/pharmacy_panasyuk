@@ -1,12 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <body>
-<c:set var="commandFix" value="getUserList" scope="page"/>
-<form method="POST" action="${pageContext.request.contextPath}/start">
-    <input type="hidden" name="command" value=${commandFix}>
-    <button type="submit">Refresh</button>
-</form>
-
-
 <table id="example" class="display" style="width:100%">
     <thead>
     <tr>
@@ -20,10 +13,10 @@
     </tr>
     </thead>
     <tbody id="body">
-    <c:forEach var="elem" items="${list}" varStatus="status">
+    <c:forEach var="elem" items="${userList}" varStatus="status">
         <tr>
             <td>
-                <button class="btn btn-primary" onclick="go(${elem.id},this)">Delete</button>
+                <button class="btn btn-primary" onclick="deleteUser(${elem.id},this)">Delete</button>
             </td>
             <td><c:out value="${elem.id}"></c:out></td>
             <td><c:out value="${elem.login}"></c:out></td>

@@ -9,13 +9,13 @@
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/start?command=redirect&path=register.jsp">Sign-up</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/start?command=toSignUpPage">Sign-up</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="${pageContext.request.contextPath}/start?command=redirect&path=login.jsp">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/start?command=redirect&path=admin.jsp">Admin</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/start?command=toAdmin">Admin</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown"

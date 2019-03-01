@@ -1,7 +1,7 @@
 package by.panasyuk.service;
 
-import by.panasyuk.dao.exception.RepositoryException;
-import by.panasyuk.dao.specification.UserRepositoryTest;
+import by.panasyuk.repository.exception.RepositoryException;
+import by.panasyuk.repository.specification.UserRepositoryTest;
 import by.panasyuk.domain.User;
 import by.panasyuk.service.exception.ServiceException;
 import by.panasyuk.service.user.PresentChecker;

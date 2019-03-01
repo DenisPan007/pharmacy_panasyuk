@@ -33,19 +33,22 @@
                         alert(req.responseText);
                         var tdTag = button.parentElement;
                         var trTag = tdTag.parentElement;
-                        var tbodyTag = trTag.parentElement;
-                        tbodyTag.removeChild(trTag);
+                        trTag.parentElement.removeChild(trTag);
                     }
-                }
-            };
+                    else
+                        {
+                            alert("can'not delete user");
+                        }
+                    }
+                };
             req.open('POST', '/pharmacy/ajax', true);
             req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             req.send(body);
         }
     </script>
+
     <script>
-        function go(id, button) {
-            alert("mess");
+        function deleteUser(id, button) {
             var body = 'command=' + encodeURIComponent("deleteUser") + '&id=' + encodeURIComponent(id);
             var req = getXMLHttpRequest();
             req.onreadystatechange = function () {
@@ -54,8 +57,10 @@
                         alert(req.responseText);
                         var tdTag = button.parentElement;
                         var trTag = tdTag.parentElement;
-                        var tbodyTag = trTag.parentElement;
-                        tbodyTag.removeChild(trTag);
+                      trTag.parentElement.removeChild(trTag);
+                    }
+                    else {
+                        alert("can'not delete user");
                     }
                 }
             };
@@ -126,6 +131,7 @@
         $('#example').DataTable({
             "order": [[3, "desc"]]
         });
+        alert("createTable");
     });
 </script>
 <script type="text/javascript">
