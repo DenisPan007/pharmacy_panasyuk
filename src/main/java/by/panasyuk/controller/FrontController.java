@@ -42,7 +42,8 @@ public class FrontController extends HttpServlet {
             request.getRequestDispatcher(path).forward(request, response);
         }
         else{
-            response.sendRedirect(path);
+            String contextPath = request.getContextPath();
+            response.sendRedirect(contextPath+path);
         }
 
     }

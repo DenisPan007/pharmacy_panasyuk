@@ -7,11 +7,13 @@ import by.panasyuk.service.user.SignUpService;
 import by.panasyuk.service.exception.ServiceException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
 
 public class SignUp implements Command {
     @Override
     public String execute(HttpServletRequest req) throws CommandException {
+        HttpSession session = req.getSession();
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         String email = req.getParameter("email");
@@ -22,17 +24,19 @@ public class SignUp implements Command {
         try {
             password = passwordService.passwordHash(password);
             if (presentChecker.isReservedLogin(login)) {
-                req.setAttribute("error","this login is reserved");
-                return "/WEB-INF/views/register.jsp";
+                session.setAttribute("errorSignUp","this login is reserved");
+                req.setAttribute("route", Router.Type.REDIRECT);
+                return "/start?command=toSignUpPage";
             } else if (presentChecker.isReservedEmail(email)) {
-                req.setAttribute("error","this email is reserved");
-                return "/WEB-INF/views/register.jsp";
+                session.setAttribute("error","this email is reserved");
+                req.setAttribute("route", Router.Type.REDIRECT);
+                return "/start?command=toSignUpPage";
             } else {
                 User user = signUpService.signUp(login, password, email);
-                req.setAttribute("user", user);
+                session.setAttribute("login", login);
+                session.setAttribute("role", "client");
                 req.setAttribute("route",Router.Type.REDIRECT);
-                String contextPath = req.getContextPath();
-                return contextPath + "/start?command=toStartPage";
+                return "/start?command=toAccount";
             }
         } catch (ServiceException e) {
             throw new CommandException(e);

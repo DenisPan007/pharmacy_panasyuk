@@ -5,12 +5,15 @@ import by.panasyuk.service.user.PasswordService;
 import by.panasyuk.service.exception.ServiceException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
 
 public class Login implements Command {
 
     @Override
     public String execute(HttpServletRequest req) throws CommandException {
+        HttpSession session = req.getSession();
+        String initialCommand =(String)session.getAttribute("initialCommand");
         LoginService loginService = LoginService.getInstance();
         PasswordService passwordService = PasswordService.getInstance();
         String login = req.getParameter("login");
@@ -18,12 +21,21 @@ public class Login implements Command {
         try {
             password = passwordService.passwordHash(password);
             if (!loginService.login(login,password)){
-               // req.setAttribute("invalidLogin",true);
-                return "/WEB-INF/views/login.jsp";
+                req.setAttribute("errorLogin","Логин либо пароль введены неверно");
+                req.setAttribute("route", Router.Type.REDIRECT);
+                return "/start?command=toLogin&error=1";
             }
             else{
-                req.setAttribute("login",login);
-                return "/WEB-INF/views/successfulLogin.jsp";
+
+                if (login.equals("admin")) {
+                    session.setAttribute("role","admin");
+                }
+                else{
+                    session.setAttribute("role","client");
+                }
+                session.setAttribute("login",login);
+                req.setAttribute("route", Router.Type.REDIRECT);
+                return "/start?command="+initialCommand;
             }
         }catch (ServiceException | NoSuchAlgorithmException e){
             throw new CommandException(e);

@@ -5,6 +5,7 @@ import by.panasyuk.service.user.CrudUserService;
 import by.panasyuk.service.exception.ServiceException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class DeleteUser implements Command {
     public String execute(HttpServletRequest request) throws CommandException {

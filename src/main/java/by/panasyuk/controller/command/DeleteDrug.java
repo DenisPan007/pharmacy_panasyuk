@@ -4,6 +4,7 @@ import by.panasyuk.service.drug.CrudDrugService;
 import by.panasyuk.service.exception.ServiceException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class DeleteDrug implements Command {
     @Override

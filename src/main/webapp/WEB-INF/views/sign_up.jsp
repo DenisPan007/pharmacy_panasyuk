@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" xmlns:jsp="http://java.sun.com/JSP/Page">
 <head>
     <title>Register</title>
@@ -40,7 +41,7 @@
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-    <h1>${error}</h1>
+    <h1>${errorSignUp}</h1>
 
 </main>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
