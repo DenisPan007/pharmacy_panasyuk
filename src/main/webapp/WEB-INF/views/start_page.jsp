@@ -30,7 +30,52 @@
     </style>
     <!-- Custom styles for this template -->
     <link href="${pageContext.request.contextPath}/css/starter-template.css" rel="stylesheet">
-
+    <script>function getXMLHttpRequest() {
+        var xmlHttpReq;
+        // to create XMLHttpRequest object in non-Microsoft browsers
+        if (window.XMLHttpRequest) {
+            xmlHttpReq = new XMLHttpRequest();
+        } else if (window.ActiveXObject) {
+            try {
+                //to create XMLHttpRequest object in later versions of Internet Explorer
+                xmlHttpReq = new ActiveXObject("Msxml2.XMLHTTP");
+            } catch (exp1) {
+                try {
+                    //to create XMLHttpRequest object in later versions of Internet Explorer
+                    xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
+                } catch (exp2) {
+                    //xmlHttpReq = false;
+                    alert("Exception in getXMLHttpRequest()!");
+                }
+            }
+        }
+        return xmlHttpReq;
+    }
+    </script>
+    <script>
+        $(function () {
+            var body = 'command=' + encodeURIComponent("getDrugList");
+            var req = getXMLHttpRequest();
+            req.onreadystatechange = function () {
+                if (req.readyState === 4) {
+                    if (req.status === 200) {
+                        alert(req.responseText);
+                        var jasonText = req.responseText;
+                        var jason = JSON.parse(jasonText);
+                        alert(jason);
+                        mySearch(jason);
+                    }
+                    else
+                    {
+                        alert("can'not get drugs");
+                    }
+                }
+            };
+            req.open('POST', '/pharmacy/ajax', true);
+            req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            req.send(body);
+        });
+    </script>
 </head>
 <body>
 <jsp:include page="header.jsp"></jsp:include>
@@ -50,13 +95,14 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 <script>
-    $(function () {
-        var langs = ["ActionScript", "appleScript", "Asp", "BASIC", "C", "C++", "Clojure", "COBOL", "ColdFusion", "Erlang", "Fortran", "Groovy", "Haskell", "Java", "JavaScript", "Lisp", "Perl", "PHP", "Python", "Ruby", "Scala", "Scheme"];
+    function mySearch(drugList) {
+       alert(drugList);
+        var list = ["ActionScript", "appleScript", "Asp", "BASIC", "C", "C++", "Clojure", "COBOL", "ColdFusion", "Erlang", "Fortran", "Groovy", "Haskell", "Java", "JavaScript", "Lisp", "Perl", "PHP", "Python", "Ruby", "Scala", "Scheme"];
 
         $("#search").autocomplete({
-            source: langs
+            source: drugList
         });
-    });
+    }
 </script>
 </body>
 </html>
