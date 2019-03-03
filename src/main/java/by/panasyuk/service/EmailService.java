@@ -1,4 +1,4 @@
-package by.panasyuk.service.user;
+package by.panasyuk.service;
 
 import by.panasyuk.service.exception.ServiceException;
 

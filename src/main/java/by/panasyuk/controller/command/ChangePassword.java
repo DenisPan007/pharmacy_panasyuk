@@ -1,6 +1,6 @@
 package by.panasyuk.controller.command;
 
-import by.panasyuk.service.user.EmailService;
+import by.panasyuk.service.EmailService;
 import by.panasyuk.service.user.PasswordService;
 import by.panasyuk.service.exception.ArgumentCorrectException;
 import by.panasyuk.service.exception.ServiceException;

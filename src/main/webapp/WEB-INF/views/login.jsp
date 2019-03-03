@@ -43,7 +43,10 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 <c:if test="${error!=null && error==1}">
-    <h1>Huinia</h1>
+    <h1>Huinia1</h1>
+</c:if>
+<c:if test="${error!=null && error==2}">
+    <h1>Huinia2</h1>
 </c:if>
 </body>
 </html>

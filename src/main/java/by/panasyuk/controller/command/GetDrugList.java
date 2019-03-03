@@ -6,7 +6,6 @@ import by.panasyuk.service.exception.ServiceException;
 import com.google.gson.Gson;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

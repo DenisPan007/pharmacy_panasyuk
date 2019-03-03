@@ -11,6 +11,7 @@
     <title>error</title>
 </head>
 <body>
+<h1>Ups!</h1>
 ${error}
 </body>
 </html>

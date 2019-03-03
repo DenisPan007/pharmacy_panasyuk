@@ -30,12 +30,17 @@ public class FrontController extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String commandString =request.getParameter("command");
         Command command = CommandProvider.getInstance().takeCommand(commandString);
+        if (command == null){
+            request.getRequestDispatcher("WEB-INF/views/error.jsp").forward(request,response);
+            return;
+        }
         String path = null;
         try {
             path = command.execute(request);
         } catch (CommandException e) {
             request.setAttribute("error", e.getStackTrace());
             request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
+            return;
         }
         Router.Type type = (Router.Type)request.getAttribute("route");
         if (type.equals(Router.Type.FORWARD)) {

@@ -1,5 +1,7 @@
 package by.panasyuk.controller.filter;
 
+import by.panasyuk.controller.command.RoleEnum;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +24,7 @@ public class LoginFilter implements Filter {
 
         HttpSession session = httpServletRequest.getSession(true);
         if(session.getAttribute("role")==null) {
-            session.setAttribute("role", "guest");
+            session.setAttribute("role", RoleEnum.GUEST);
         }
         String command = req.getParameter("command");
         if (command.charAt(0)=='t' &&command.charAt(1)=='o'){

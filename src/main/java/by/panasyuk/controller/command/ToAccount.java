@@ -7,15 +7,15 @@ public class ToAccount implements Command {
     @Override
     public String execute(HttpServletRequest req) throws CommandException {
         HttpSession session = req.getSession();
-        String role = (String)session.getAttribute("role");
+        RoleEnum role = (RoleEnum)session.getAttribute("role");
         switch (role) {
-            case "admin":
+            case ADMIN:
                 req.setAttribute("route", Router.Type.REDIRECT);
                 return "/start?command=toAdmin";
-            case "client":
+            case CLIENT:
                 req.setAttribute("route", Router.Type.FORWARD);
                 return "/WEB-INF/views/account.jsp";
-            case "guest":
+            case GUEST:
                 req.setAttribute("route", Router.Type.FORWARD);
                 return "/start?command=toLogin";
             default:

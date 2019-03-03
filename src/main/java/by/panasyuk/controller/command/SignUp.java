@@ -5,6 +5,11 @@ import by.panasyuk.service.user.PasswordService;
 import by.panasyuk.service.user.PresentChecker;
 import by.panasyuk.service.user.SignUpService;
 import by.panasyuk.service.exception.ServiceException;
+import by.panasyuk.service.validation.EmailValidator;
+import by.panasyuk.service.validation.LoginValidator;
+import by.panasyuk.service.validation.PasswordValidator;
+import by.panasyuk.service.validation.ValidationService;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,34 +19,48 @@ public class SignUp implements Command {
     @Override
     public String execute(HttpServletRequest req) throws CommandException {
         HttpSession session = req.getSession();
+
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         String email = req.getParameter("email");
 
+        ValidationService loginValidator = new LoginValidator();
+        ValidationService passwordValidator = new PasswordValidator();
+        ValidationService emailValidator = new EmailValidator();
+        if(login==null||!loginValidator.isValid(login)){
+            req.setAttribute("route", Router.Type.REDIRECT);
+            return "/start?command=toSignUpPage&error=invalidLogin";
+        }
+        if(password==null||!passwordValidator.isValid(password)){
+            req.setAttribute("route", Router.Type.REDIRECT);
+            return "/start?command=toSignUpPage&error=invalidPassword";
+        }
+        if(email==null||!emailValidator.isValid(email)){
+            req.setAttribute("route", Router.Type.REDIRECT);
+            return "/start?command=toSignUpPage&error=invalidEmail";
+        }
         PresentChecker presentChecker = PresentChecker.getInstance();
         SignUpService signUpService = SignUpService.getInstance();
         PasswordService passwordService = PasswordService.getInstance();
         try {
             password = passwordService.passwordHash(password);
             if (presentChecker.isReservedLogin(login)) {
-                session.setAttribute("errorSignUp","this login is reserved");
                 req.setAttribute("route", Router.Type.REDIRECT);
-                return "/start?command=toSignUpPage";
-            } else if (presentChecker.isReservedEmail(email)) {
-                session.setAttribute("error","this email is reserved");
+                return "/start?command=toSignUpPage&error=reservedLogin";
+            }
+            if (presentChecker.isReservedEmail(email)) {
                 req.setAttribute("route", Router.Type.REDIRECT);
-                return "/start?command=toSignUpPage";
-            } else {
+                return "/start?command=toSignUpPage&error=reservedEmail";
+            }
                 User user = signUpService.signUp(login, password, email);
                 session.setAttribute("login", login);
-                session.setAttribute("role", "client");
-                req.setAttribute("route",Router.Type.REDIRECT);
+                session.setAttribute("role", RoleEnum.valueOf(user.getRole()));
+                req.setAttribute("route", Router.Type.REDIRECT);
                 return "/start?command=toAccount";
-            }
         } catch (ServiceException e) {
             throw new CommandException(e);
         } catch (NoSuchAlgorithmException e) {
-            throw new CommandException("There is no such algorithm",e);
+            throw new CommandException("There is no such algorithm", e);
         }
     }
 }

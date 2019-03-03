@@ -131,7 +131,6 @@
         $('#example').DataTable({
             "order": [[3, "desc"]]
         });
-        alert("createTable");
     });
 </script>
 <script type="text/javascript">

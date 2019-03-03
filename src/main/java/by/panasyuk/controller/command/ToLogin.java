@@ -7,7 +7,8 @@ public class ToLogin implements Command {
     @Override
     public String execute(HttpServletRequest req) throws CommandException {
         HttpSession session = req.getSession();
-        if (session.getAttribute("role")!="guest"){
+        RoleEnum role = (RoleEnum)session.getAttribute("role");
+        if (!role.equals(RoleEnum.GUEST)){
             req.setAttribute("route", Router.Type.REDIRECT);
             return "/start?command=toStartPage";
         }

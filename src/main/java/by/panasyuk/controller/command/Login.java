@@ -21,17 +21,16 @@ public class Login implements Command {
         try {
             password = passwordService.passwordHash(password);
             if (!loginService.login(login,password)){
-                req.setAttribute("errorLogin","Логин либо пароль введены неверно");
                 req.setAttribute("route", Router.Type.REDIRECT);
                 return "/start?command=toLogin&error=1";
             }
             else{
 
                 if (login.equals("admin")) {
-                    session.setAttribute("role","admin");
+                    session.setAttribute("role",RoleEnum.ADMIN);
                 }
                 else{
-                    session.setAttribute("role","client");
+                    session.setAttribute("role",RoleEnum.CLIENT);
                 }
                 session.setAttribute("login",login);
                 req.setAttribute("route", Router.Type.REDIRECT);

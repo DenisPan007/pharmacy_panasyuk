@@ -22,6 +22,13 @@
             z-index: inherit;
         }
 
+        .ui-autocomplete {
+            max-height: 200px;
+            overflow-y: auto;
+            /* prevent horizontal scrollbar */
+            overflow-x: hidden;
+        }
+
         @media (min-width: 768px) {
             .bd-placeholder-img-lg {
                 font-size: 3.5rem;
@@ -59,14 +66,10 @@
             req.onreadystatechange = function () {
                 if (req.readyState === 4) {
                     if (req.status === 200) {
-                        alert(req.responseText);
-                        var jasonText = req.responseText;
-                        var jason = JSON.parse(jasonText);
-                        alert(jason);
-                        mySearch(jason);
-                    }
-                    else
-                    {
+                        var jsonText = req.responseText;
+                        var json = JSON.parse(jsonText);
+                        mySearch(json);
+                    } else {
                         alert("can'not get drugs");
                     }
                 }
@@ -96,11 +99,13 @@
         crossorigin="anonymous"></script>
 <script>
     function mySearch(drugList) {
-       alert(drugList);
-        var list = ["ActionScript", "appleScript", "Asp", "BASIC", "C", "C++", "Clojure", "COBOL", "ColdFusion", "Erlang", "Fortran", "Groovy", "Haskell", "Java", "JavaScript", "Lisp", "Perl", "PHP", "Python", "Ruby", "Scala", "Scheme"];
-
         $("#search").autocomplete({
-            source: drugList
+            source: drugList,
+            select: function (event, ui) {
+                alert("Selected: " + ui.item.value);
+				return false;
+            }
+
         });
     }
 </script>
