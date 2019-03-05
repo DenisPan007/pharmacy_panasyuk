@@ -1,9 +1,11 @@
 package by.panasyuk.controller.command;
 
+import by.panasyuk.util.PathManager;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-public class ToAccount implements Command {
+public class ToAccount implements Command,RedirectCommand{
     @Override
     public String execute(HttpServletRequest req) throws CommandException {
         HttpSession session = req.getSession();
@@ -11,13 +13,13 @@ public class ToAccount implements Command {
         switch (role) {
             case ADMIN:
                 req.setAttribute("route", Router.Type.REDIRECT);
-                return "/start?command=toAdmin";
+                return PathManager.getProperty("redirect.admin");
             case CLIENT:
                 req.setAttribute("route", Router.Type.FORWARD);
-                return "/WEB-INF/views/account.jsp";
+                return PathManager.getProperty("forward.account");
             case GUEST:
                 req.setAttribute("route", Router.Type.FORWARD);
-                return "/start?command=toLogin";
+                return PathManager.getProperty("forward.login");
             default:
                 throw new CommandException();
         }

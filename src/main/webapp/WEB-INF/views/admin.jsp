@@ -1,5 +1,9 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page  contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
+<fmt:setLocale value="${lang}"/>
+<fmt:setBundle  basename="pagecontent" var="rb" scope="request" />
 <head>
     <script>function getXMLHttpRequest() {
         var xmlHttpReq;
@@ -69,9 +73,7 @@
             req.send(body);
         }
     </script>
-    <title>Bootstrap Admin Theme v3</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
@@ -79,15 +81,15 @@
     <link href="${pageContext.request.contextPath}/css/starter-template.css" rel="stylesheet">
 </head>
 <body>
-<jsp:include page="header.jsp"></jsp:include>
+<c:import url="header.jsp"/>
 <div class=container>
     <div class="row">
         <div class="col-3">
             <div class="nav flex-column nav-tabs" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
-                   aria-controls="v-pills-home" aria-selected="true">Home</a>
+                   aria-controls="v-pills-home" aria-selected="true">Users</a>
                 <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
-                   aria-controls="v-pills-profile" aria-selected="false">Profile</a>
+                   aria-controls="v-pills-profile" aria-selected="false">Drugs</a>
                 <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
                    aria-controls="v-pills-messages" aria-selected="false">Messages</a>
                 <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
@@ -98,16 +100,16 @@
             <div class="tab-content" id="v-pills-tabContent">
                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
                      aria-labelledby="v-pills-home-tab">
-                    <jsp:include page="user_list.jsp"></jsp:include>
+                    <c:import url="user_list.jsp"/>
                 </div>
                 <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                    <jsp:include page="drug_list.jsp"></jsp:include>
+                    <c:import url="drug_list.jsp"/>
                 </div>
                 <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
                     Yes
                 </div>
                 <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                    Damn
+                    another message
                 </div>
             </div>
         </div>

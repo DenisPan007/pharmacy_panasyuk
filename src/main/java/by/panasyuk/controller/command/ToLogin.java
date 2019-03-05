@@ -1,5 +1,7 @@
 package by.panasyuk.controller.command;
 
+import by.panasyuk.util.PathManager;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -10,11 +12,11 @@ public class ToLogin implements Command {
         RoleEnum role = (RoleEnum)session.getAttribute("role");
         if (!role.equals(RoleEnum.GUEST)){
             req.setAttribute("route", Router.Type.REDIRECT);
-            return "/start?command=toStartPage";
+            return PathManager.getProperty("redirect.initial");
         }
         String errorType = req.getParameter("error");
         req.setAttribute("error",errorType);
         req.setAttribute("route",Router.Type.FORWARD);
-        return  "/WEB-INF/views/login.jsp";
+        return PathManager.getProperty("forward.login");
     }
 }

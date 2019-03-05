@@ -4,6 +4,7 @@ import by.panasyuk.service.EmailService;
 import by.panasyuk.service.user.PasswordService;
 import by.panasyuk.service.exception.ArgumentCorrectException;
 import by.panasyuk.service.exception.ServiceException;
+import by.panasyuk.util.PathManager;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,13 +18,14 @@ public class ChangePassword implements Command {
             String newPassword = passwordService.changePassword(login,email);
             EmailService sender = EmailService.getInstance();
             sender.send("your new password", "there is your new password: " + newPassword, email);
-        return "/WEB-INF/views/login.jsp";
+            request.setAttribute("route", Router.Type.REDIRECT);
+        return PathManager.getProperty("redirect.login");
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
         catch (ArgumentCorrectException e) {
-            request.setAttribute("error", "there is no such a user with this email");
-            return "/WEB-INF/views/forgot_password.jsp";
+            request.setAttribute("route", Router.Type.REDIRECT);
+            return PathManager.getProperty("redirect.forgot-password") +"&error=incorrectData";
         }
     }
 }

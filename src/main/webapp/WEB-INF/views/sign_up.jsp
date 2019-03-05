@@ -1,8 +1,21 @@
+<%@ page  contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html lang="en" xmlns:jsp="http://java.sun.com/JSP/Page">
+<html>
+<fmt:setLocale value="${lang}"/>
+<fmt:setBundle  basename="pagecontent" var="rb" scope="request" />
+<fmt:setBundle  basename="messages" var="messageRb" scope="request" />
 <head>
-    <title>Register</title>
+    <title><fmt:message key="sign-up.title" bundle="${ rb }" /></title>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
     <link href="${pageContext.request.contextPath}/css/starter-template.css" rel="stylesheet">
     <style>
@@ -23,65 +36,54 @@
     </style>
 </head>
 <body>
-<jsp:include page="header.jsp"></jsp:include>
+<c:import url="header.jsp"/>
 <main role="main" class="container">
-    <h3>Register for fun</h3>
-    <form method="POST" action="${pageContext.request.contextPath}/start?command=signUp">
+    <form method="POST" action="${pageContext.request.contextPath}/?command=signUp">
         <div class="form-group col-md-6 ">
-            <label for="inputLogin">Login</label>
+            <label for="inputLogin"><fmt:message key="label.login" bundle="${ rb }" /></label>
             <input type="text" name="login" class="form-control" id="inputLogin" placeholder="login" required/>
             <c:choose>
                 <c:when test="${error!=null && error=='invalidLogin'}">
                     <div class="alert alert-danger" role="alert">
-                        login must begin from letter
+                        <fmt:message key="alert.invalid-login" bundle="${ messageRb }" />
                     </div>
                 </c:when>
                 <c:when test="${error!=null && error=='reservedLogin'}">
                     <div class="alert alert-danger" role="alert">
-                        this login is reserved
+                        <fmt:message key="alert.reserved-login" bundle="${ messageRb }" />
                     </div>
                 </c:when>
             </c:choose>
         </div>
         <div class="form-group col-md-6">
-            <label for="inputPassword">Password</label>
+            <label for="inputPassword"><fmt:message key="label.password" bundle="${ rb }" /></label>
             <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password"
                    required/>
             <c:if test="${error!=null && error=='invalidPassword'}">
             <div class="alert alert-danger" role="alert">
-                password length must be >=8
+                <fmt:message key="alert.invalid-password" bundle="${ messageRb }" />
             </div>
             </c:if>
         </div>
         <div class="form-group col-md-6">
-            <label for="inputEmail">Email address</label>
+            <label for="inputEmail"><fmt:message key="label.email" bundle="${ rb }" /></label>
             <input type="email" name="email" class="form-control" id="inputEmail" aria-describedby="emailHelp"
                    placeholder="Enter email" required/>
-            <small id="emailHelp" class="form-text text-muted">We'll send you a message.</small>
             <c:choose>
                 <c:when test="${error!=null && error=='invalidEmail'}">
                     <div class="alert alert-danger" role="alert">
-                        please, enter correct email
+                        <fmt:message key="alert.invalid-email" bundle="${ messageRb }" />
                     </div>
                 </c:when>
                 <c:when test="${error!=null && error=='reservedEmail'}">
                     <div class="alert alert-danger" role="alert">
-                        this login is reserved
+                        <fmt:message key="alert.reserved-email" bundle="${ messageRb }" />
                     </div>
                 </c:when>
             </c:choose>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary"><fmt:message key="button.sign-up" bundle="${ rb }" /></button>
     </form>
 
 </main>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
 </body>

@@ -19,7 +19,7 @@ public class CommandProvider {
         commandMap.put("login", new Login());
         commandMap.put("changePassword", new ChangePassword());
         commandMap.put("signUp", new SignUp());
-        commandMap.put("toSignUpPage", new ToSignUpPage());
+        commandMap.put("toSignUp", new ToSignUp());
         commandMap.put("toAdmin", new ToAdmin());
         commandMap.put("deleteDrug", new DeleteDrug());
         commandMap.put("toStartPage", new ToStartPage());
@@ -27,6 +27,8 @@ public class CommandProvider {
         commandMap.put("toLogin", new ToLogin());
         commandMap.put("logout", new Logout());
         commandMap.put("getDrugList", new GetDrugList());
+        commandMap.put("doInitialRedirectCommand", new DoInitialRedirectCommand());
+        commandMap.put("toForgotPassword", new ToForgotPassword());
 
     }
 

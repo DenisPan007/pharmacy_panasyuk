@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/start")
+@WebServlet(name = "control",urlPatterns = {"/"})
 public class FrontController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,12 +28,9 @@ public class FrontController extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String commandString =request.getParameter("command");
-        Command command = CommandProvider.getInstance().takeCommand(commandString);
-        if (command == null){
-            request.getRequestDispatcher("WEB-INF/views/error.jsp").forward(request,response);
-            return;
-        }
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        Command command = (Command)request.getAttribute("command");
         String path = null;
         try {
             path = command.execute(request);

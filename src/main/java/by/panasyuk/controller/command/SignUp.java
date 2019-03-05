@@ -9,6 +9,7 @@ import by.panasyuk.service.validation.EmailValidator;
 import by.panasyuk.service.validation.LoginValidator;
 import by.panasyuk.service.validation.PasswordValidator;
 import by.panasyuk.service.validation.ValidationService;
+import by.panasyuk.util.PathManager;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,15 +30,15 @@ public class SignUp implements Command {
         ValidationService emailValidator = new EmailValidator();
         if(login==null||!loginValidator.isValid(login)){
             req.setAttribute("route", Router.Type.REDIRECT);
-            return "/start?command=toSignUpPage&error=invalidLogin";
+            return PathManager.getProperty("redirect.sign.up") +"&error=invalidLogin";
         }
         if(password==null||!passwordValidator.isValid(password)){
             req.setAttribute("route", Router.Type.REDIRECT);
-            return "/start?command=toSignUpPage&error=invalidPassword";
+            return PathManager.getProperty("redirect.sign.up")+"&error=invalidPassword";
         }
         if(email==null||!emailValidator.isValid(email)){
             req.setAttribute("route", Router.Type.REDIRECT);
-            return "/start?command=toSignUpPage&error=invalidEmail";
+            return PathManager.getProperty("redirect.sign.up")+"&error=invalidEmail";
         }
         PresentChecker presentChecker = PresentChecker.getInstance();
         SignUpService signUpService = SignUpService.getInstance();
@@ -46,17 +47,17 @@ public class SignUp implements Command {
             password = passwordService.passwordHash(password);
             if (presentChecker.isReservedLogin(login)) {
                 req.setAttribute("route", Router.Type.REDIRECT);
-                return "/start?command=toSignUpPage&error=reservedLogin";
+                return PathManager.getProperty("redirect.sign.up")+"&error=reservedLogin";
             }
             if (presentChecker.isReservedEmail(email)) {
                 req.setAttribute("route", Router.Type.REDIRECT);
-                return "/start?command=toSignUpPage&error=reservedEmail";
+                return PathManager.getProperty("redirect.sign.up")+"&error=reservedEmail";
             }
                 User user = signUpService.signUp(login, password, email);
                 session.setAttribute("login", login);
                 session.setAttribute("role", RoleEnum.valueOf(user.getRole()));
                 req.setAttribute("route", Router.Type.REDIRECT);
-                return "/start?command=toAccount";
+                return PathManager.getProperty("redirect.account");
         } catch (ServiceException e) {
             throw new CommandException(e);
         } catch (NoSuchAlgorithmException e) {
