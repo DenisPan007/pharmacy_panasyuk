@@ -7,13 +7,15 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
-public class GetAllDrugs implements Specification<Drug> {
+public class GetAllDrugs implements GetDrugSpecification {
     @Override
-    public ResultSet get(Drug drug, Connection connection) throws SQLException {
+    public List<Drug> get(Drug drug, Connection connection) throws SQLException {
         String query = "SELECT * FROM drug ";
         try (Statement statement = connection.createStatement()) {
-            return statement.executeQuery(query);
+            ResultSet resultSet =  statement.executeQuery(query);
+            return parseResultSet(resultSet);
         }
     }
 }

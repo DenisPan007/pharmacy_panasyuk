@@ -70,17 +70,7 @@ public Drug add(Drug drug) throws RepositoryException {
     @Override
     public List<Drug> getQuery (Drug drug, Specification< Drug > spec) throws RepositoryException {
         try {
-            ResultSet resultSet = spec.get(drug, connection);
-            List<Drug> drugList = new ArrayList<>();
-            while (resultSet.next()) {
-                Drug resultDrug = new Drug();
-                resultDrug.setId(resultSet.getInt(1));
-                resultDrug.setName(resultSet.getString(2));
-                resultDrug.setPrescriptionRequired(resultSet.getBoolean(3));
-                resultDrug.setPrice(resultSet.getInt(4));
-                drugList.add(resultDrug);
-            }
-            return drugList;
+            return spec.get(drug, connection);
         } catch (SQLException e) {
             throw new RepositoryException("prepared statement failed", e);
         }

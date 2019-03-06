@@ -77,20 +77,8 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
         @Override
         public List<User> getQuery (User user, Specification < User > spec) throws RepositoryException {
             try {
-                ResultSet resultSet = spec.get(user, connection);
-                List<User> userList = new ArrayList<>();
-                while (resultSet.next()) {
-                    User resultUser = new User();
-                    resultUser.setId(resultSet.getInt(1));
-                    resultUser.setLogin(resultSet.getString(2));
-                    resultUser.setPassword(resultSet.getString(3));
-                    resultUser.setFirstName(resultSet.getString(4));
-                    resultUser.setLastName(resultSet.getString(5));
-                    resultUser.setEmail(resultSet.getString(6));
-                    resultUser.setRole(resultSet.getString(7));
-                    userList.add(resultUser);
-                }
-                return userList;
+                return spec.get(user, connection);
+
             } catch (SQLException e) {
                 throw new RepositoryException("prepared statement failed", e);
             }

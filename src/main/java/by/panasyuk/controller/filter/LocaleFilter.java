@@ -28,7 +28,7 @@ public class LocaleFilter implements Filter {
             Cookie langCookie = new Cookie("lang",lang);
             response.addCookie(langCookie);
             Command initialCommand =(Command) session.getAttribute("initialCommand");
-            request.setAttribute("route", Router.Type.REDIRECT);
+            request.setAttribute("command",initialCommand);
             request.getRequestDispatcher("/").forward(request,response);
         }
         filterChain.doFilter(servletRequest, servletResponse);

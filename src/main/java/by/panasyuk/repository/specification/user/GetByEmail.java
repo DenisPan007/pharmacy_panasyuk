@@ -7,14 +7,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
-public class GetByEmail implements Specification<User> {
+public class GetByEmail implements GetUserSpecification {
     @Override
-    public ResultSet get(User user, Connection connection) throws SQLException {
+    public List<User> get(User user, Connection connection) throws SQLException {
         String query = "SELECT * FROM user WHERE email = ?";
         try(PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, user.getEmail());
-            return statement.executeQuery();
+            ResultSet resultSet = statement.executeQuery();
+            return parseResultSet(resultSet);
         }
     }
 }
