@@ -10,6 +10,7 @@ import by.panasyuk.service.validation.LoginValidator;
 import by.panasyuk.service.validation.PasswordValidator;
 import by.panasyuk.service.validation.ValidationService;
 import by.panasyuk.util.PathManager;
+import by.panasyuk.util.RoleEnum;
 
 
 import javax.servlet.http.HttpServletRequest;

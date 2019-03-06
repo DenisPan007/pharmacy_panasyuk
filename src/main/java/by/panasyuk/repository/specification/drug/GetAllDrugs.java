@@ -12,7 +12,8 @@ public class GetAllDrugs implements Specification<Drug> {
     @Override
     public ResultSet get(Drug drug, Connection connection) throws SQLException {
         String query = "SELECT * FROM drug ";
-        Statement statement = connection.createStatement();
-        return statement.executeQuery(query);
+        try (Statement statement = connection.createStatement()) {
+            return statement.executeQuery(query);
+        }
     }
 }

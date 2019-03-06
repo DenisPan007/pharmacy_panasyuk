@@ -14,15 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Example User DAO implementation
+ * User Repository implementation
  */
 public class UserRepository extends AbstractJdbcRepository<User, Integer> implements Repository<User, Integer> {
     @Override
     public User add(User user) throws RepositoryException {
         String query = "INSERT INTO user (login,password,firstname,lastname,email,role) " +
                 "VALUES(?,?,?,?,?,?)";
-        try {
-            PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        try (PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
             ps.setString(1, user.getLogin());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getFirstName());
@@ -47,8 +46,7 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
                 "SET login=?, password=?, firstname=?, lastname=?, email=?, role=?" +
                 "WHERE id = ?";
 
-        try {
-            PreparedStatement statement = connection.prepareStatement(query);
+        try (PreparedStatement statement = connection.prepareStatement(query)){
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getFirstName());
@@ -67,8 +65,7 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
     public void delete(User user) throws RepositoryException {
 
         String query = "DELETE FROM user WHERE id = ?";
-        try {
-            PreparedStatement statement = connection.prepareStatement(query);
+        try (PreparedStatement statement = connection.prepareStatement(query)){
             statement.setInt(1, user.getId());
             statement.executeUpdate();
         } catch (SQLException e) {

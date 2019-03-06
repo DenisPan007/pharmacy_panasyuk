@@ -1,5 +1,7 @@
 package by.panasyuk.controller.command;
 
+import by.panasyuk.controller.command.redirect.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,12 +24,12 @@ public class CommandProvider {
         commandMap.put("toSignUp", new ToSignUp());
         commandMap.put("toAdmin", new ToAdmin());
         commandMap.put("deleteDrug", new DeleteDrug());
-        commandMap.put("toStartPage", new ToStartPage());
+        commandMap.put("toStartPage", new ToHome());
         commandMap.put("toAccount", new ToAccount());
         commandMap.put("toLogin", new ToLogin());
         commandMap.put("logout", new Logout());
         commandMap.put("getDrugList", new GetDrugList());
-        commandMap.put("doInitialRedirectCommand", new DoInitialRedirectCommand());
+        commandMap.put("doInitialRedirectCommand", new DoInitialCommand());
         commandMap.put("toForgotPassword", new ToForgotPassword());
 
     }

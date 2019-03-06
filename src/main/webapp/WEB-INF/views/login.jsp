@@ -1,9 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <fmt:setLocale value="${lang}"/>
-<fmt:setBundle  basename="pagecontent" var="rb" scope="request" />
-<fmt:setBundle  basename="messages" var="messageRb" scope="request" />
+<fmt:setBundle basename="pagecontent" var="rb" scope="request"/>
+<fmt:setBundle basename="messages" var="messageRb" scope="request"/>
 <html>
 <head>
     <title>login</title>
@@ -26,24 +26,29 @@
         <input type="hidden" name="initialCommand" value=${initialCommand}>
         <input type="hidden" name="command" value="login">
         <div class="form-group col-md-6 ">
-            <label for="inputLogin"><fmt:message key="label.login" bundle="${ rb }" /></label>
+            <label for="inputLogin"><fmt:message key="label.login" bundle="${ rb }"/></label>
             <input type="text" name="login" class="form-control" id="inputLogin" placeholder="login" required/>
         </div>
         <div class="form-group col-md-6">
-            <label for="inputPassword"><fmt:message key="label.password" bundle="${ rb }" /></label>
+            <label for="inputPassword"><fmt:message key="label.password" bundle="${ rb }"/></label>
             <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password"
                    required/>
         </div>
         <c:if test="${error=='incorrectAuthentication'}">
             <div class="alert alert-danger" role="alert">
-                <fmt:message key="alert.incorrect-authentication" bundle="${ messageRb }" />
+                <fmt:message key="alert.incorrect-authentication" bundle="${ messageRb }"/>
             </div>
         </c:if>
-        <button type="submit" class="btn btn-primary"><fmt:message key="button.login" bundle="${ rb }" /></button>
-        <div id="formFooter">
-            <a class="underlineHover"
-               href="${pageContext.request.contextPath}/?command=toForgotPassword"><fmt:message key="link.forgot-password" bundle="${ rb }" /></a>
-        </div>
+        <ul class="list-inline">
+            <li class="list-inline">
+                <button type="submit" class="btn btn-primary"><fmt:message key="button.login"
+                                                                           bundle="${ rb }"/></button>
+            <li class="list-inline">
+            <li><a class="underlineHover"
+                   href="${pageContext.request.contextPath}/?command=toForgotPassword"><fmt:message
+                    key="link.forgot-password" bundle="${ rb }"/></a>
+            </li>
+        </ul>
     </form>
     <h1>Login: admin</h1>
     <h1>Password: admin</h1>

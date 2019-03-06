@@ -1,5 +1,9 @@
-package by.panasyuk.controller.command;
+package by.panasyuk.controller.command.redirect;
 
+import by.panasyuk.controller.command.Command;
+import by.panasyuk.controller.command.CommandException;
+import by.panasyuk.util.RoleEnum;
+import by.panasyuk.controller.command.Router;
 import by.panasyuk.util.PathManager;
 
 import javax.servlet.http.HttpServletRequest;

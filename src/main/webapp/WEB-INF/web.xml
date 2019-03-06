@@ -10,4 +10,29 @@
         <servlet-name>DefaultServlet</servlet-name>
         <url-pattern>/css/*</url-pattern>
     </servlet-mapping>
+    <filter>
+        <filter-name>SessionFilter</filter-name>
+        <filter-class>by.panasyuk.controller.filter.SessionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SessionFilter</filter-name>
+        <servlet-name>controller</servlet-name>
+    </filter-mapping>
+    <filter>
+        <filter-name>CommandFilter</filter-name>
+        <filter-class>by.panasyuk.controller.filter.CommandFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CommandFilter</filter-name>
+        <servlet-name>controller</servlet-name>
+    </filter-mapping>
+    <filter>
+        <filter-name>LocaleFilter</filter-name>
+        <filter-class>by.panasyuk.controller.filter.LocaleFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LocaleFilter</filter-name>
+        <servlet-name>controller</servlet-name>
+    </filter-mapping>
+
 </web-app>

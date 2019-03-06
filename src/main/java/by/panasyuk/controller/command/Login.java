@@ -4,6 +4,7 @@ import by.panasyuk.service.user.LoginService;
 import by.panasyuk.service.user.PasswordService;
 import by.panasyuk.service.exception.ServiceException;
 import by.panasyuk.util.PathManager;
+import by.panasyuk.util.RoleEnum;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -27,7 +28,7 @@ public class Login implements Command {
             else{
 
                 if (login.equals("admin")) {
-                    session.setAttribute("role",RoleEnum.ADMIN);
+                    session.setAttribute("role", RoleEnum.ADMIN);
                 }
                 else{
                     session.setAttribute("role",RoleEnum.CLIENT);

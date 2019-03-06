@@ -9,7 +9,8 @@ public class GetAllUsers implements Specification<User> {
     @Override
     public ResultSet get(User user, Connection connection) throws SQLException {
         String query = "SELECT * FROM user ";
-        Statement statement = connection.createStatement();
-        return statement.executeQuery(query);
+        try (Statement statement = connection.createStatement()) {
+            return statement.executeQuery(query);
+        }
     }
 }

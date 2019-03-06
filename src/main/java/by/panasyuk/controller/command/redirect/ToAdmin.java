@@ -1,5 +1,9 @@
-package by.panasyuk.controller.command;
+package by.panasyuk.controller.command.redirect;
 
+import by.panasyuk.controller.command.Command;
+import by.panasyuk.controller.command.CommandException;
+import by.panasyuk.util.RoleEnum;
+import by.panasyuk.controller.command.Router;
 import by.panasyuk.domain.Drug;
 import by.panasyuk.domain.User;
 import by.panasyuk.service.drug.CrudDrugService;
@@ -17,7 +21,7 @@ public class ToAdmin implements Command,RedirectCommand {
         HttpSession session = req.getSession();
         RoleEnum role = (RoleEnum)session.getAttribute("role");
         if (!role.equals(RoleEnum.ADMIN)){
-            req.setAttribute("route",Router.Type.REDIRECT);
+            req.setAttribute("route", Router.Type.REDIRECT);
             return PathManager.getProperty("redirect.home");
         }
         CrudDrugService drugService = new CrudDrugService();
