@@ -1,6 +1,7 @@
 package by.panasyuk.controller.filter;
 
 import by.panasyuk.controller.command.Command;
+import by.panasyuk.controller.command.CommandProvider;
 import by.panasyuk.controller.command.Router;
 
 import javax.servlet.*;
@@ -29,9 +30,13 @@ public class LocaleFilter implements Filter {
             response.addCookie(langCookie);
             Command initialCommand =(Command) session.getAttribute("initialCommand");
             request.setAttribute("command",initialCommand);
-            request.getRequestDispatcher("/").forward(request,response);
+            String contextPath = request.getContextPath();
+            String commandString = (String)session.getAttribute("initialCommandString");
+          response.sendRedirect(contextPath + "/?command=" + commandString);
         }
-        filterChain.doFilter(servletRequest, servletResponse);
+        else {
+            filterChain.doFilter(servletRequest, servletResponse);
+        }
     }
 
     @Override

@@ -2,7 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-<fmt:setLocale value="${lang}"/>
+<fmt:setLocale value="${cookie['lang'].value}"/>
 <fmt:setBundle  basename="pagecontent" var="rb" scope="request" />
 <head>
     <title>welcome</title>

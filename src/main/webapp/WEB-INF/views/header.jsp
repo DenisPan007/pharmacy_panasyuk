@@ -21,11 +21,11 @@
                     <a class="nav-link" href="${pageContext.request.contextPath}/?command=logout"><fmt:message key="link.logout" bundle="${rb}"/></a>
                 </li>
                 <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/?lang=ru_RU" >Ru</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/?command=doInitialRedirectCommand&lang=ru_RU" >Ru</a>
                 </li>
                 <li class="nav-item">|</li>
                 <li class="nav-item">
-                    <a class="nav-link"  href="${pageContext.request.contextPath}/?lang=en_US" >En</a>
+                    <a class="nav-link"  href="${pageContext.request.contextPath}/?command=doInitialRedirectCommand&lang=en_US" >En</a>
                 </li>
 
             </ul>

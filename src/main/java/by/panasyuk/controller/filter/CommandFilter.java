@@ -23,11 +23,13 @@ public class CommandFilter implements Filter {
         CommandProvider provider = CommandProvider.getInstance();
         Command command = provider.takeCommand(commandString);
         if (command == null){
-            command = provider.takeCommand("doInitialRedirectCommand");
+            commandString = "toStartPage";
+            command = provider.takeCommand(commandString);
         }
 
         if (command instanceof RedirectCommand){
             session.setAttribute("initialCommand",command);
+            session.setAttribute("initialCommandString",commandString);
         }
         servletRequest.setAttribute("command",command);
         filterChain.doFilter(servletRequest, servletResponse);
