@@ -40,11 +40,11 @@
 <main role="main" class="container">
     <form method="POST" action="${pageContext.request.contextPath}/?command=changePassword">
         <div class="form-group col-md-6 " >
-            <label for="inputLogin"><fmt:message key="label.login" bundle="${ rb }" /></label>
+            <label for="inputLogin"><fmt:message key="placeholder.login" bundle="${ rb }" /></label>
             <input type="text" name="login" class="form-control" id="inputLogin" placeholder="login" required/>
         </div>
         <div class="form-group col-md-6">
-            <label for="inputEmail"><fmt:message key="label.email" bundle="${ rb }" /></label>
+            <label for="inputEmail"><fmt:message key="placeholder.email" bundle="${ rb }" /></label>
             <input type="email" name="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="email" required/>
 
         </div>

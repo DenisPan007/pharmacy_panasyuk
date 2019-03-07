@@ -25,14 +25,13 @@
     <form method="POST" action="${pageContext.request.contextPath}/">
         <input type="hidden" name="initialCommand" value=${initialCommand}>
         <input type="hidden" name="command" value="login">
+        <fmt:message key="placeholder.login" bundle="${ rb }" var="loginPlaceholder"/>
         <div class="form-group col-md-6 ">
-            <label for="inputLogin"><fmt:message key="label.login" bundle="${ rb }"/></label>
-            <input type="text" name="login" class="form-control" id="inputLogin" placeholder="login" required/>
+            <input type="text" name="login" class="form-control" id="inputLogin" placeholder=${loginPlaceholder} required/>
         </div>
+        <fmt:message key="placeholder.password" bundle="${ rb }" var="passwordPlaceholder"/>
         <div class="form-group col-md-6">
-            <label for="inputPassword"><fmt:message key="label.password" bundle="${ rb }"/></label>
-            <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password"
-                   required/>
+            <input type="password" name="password" class="form-control" id="inputPassword" placeholder=${passwordPlaceholder} required/>
         </div>
         <c:if test="${error=='incorrectAuthentication'}">
             <div class="alert alert-danger" role="alert">

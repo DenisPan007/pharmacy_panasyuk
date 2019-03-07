@@ -12,5 +12,11 @@
       <file value="file://$PROJECT_DIR$/src/main/resources/messages_ru_RU.properties" />
       <base-name>messages</base-name>
     </custom-resource-bundle>
+    <custom-resource-bundle>
+      <file value="file://$PROJECT_DIR$/src/main/resources/pagecontent.properties" />
+      <file value="file://$PROJECT_DIR$/src/main/resources/pagecontent_en_US.properties" />
+      <file value="file://$PROJECT_DIR$/src/main/resources/pagecontent_ru_RU.properties" />
+      <base-name>pagecontent</base-name>
+    </custom-resource-bundle>
   </component>
 </project>

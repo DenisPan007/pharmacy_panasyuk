@@ -40,8 +40,8 @@
 <main role="main" class="container">
     <form method="POST" action="${pageContext.request.contextPath}/?command=signUp">
         <div class="form-group col-md-6 ">
-            <label for="inputLogin"><fmt:message key="label.login" bundle="${ rb }" /></label>
-            <input type="text" name="login" class="form-control" id="inputLogin" placeholder="login" required/>
+            <fmt:message key="placeholder.login" bundle="${ rb }" var="loginPlaceholder"/>
+            <input type="text" name="login" class="form-control" id="inputLogin" placeholder="${loginPlaceholder}" required/>
             <c:choose>
                 <c:when test="${error!=null && error=='invalidLogin'}">
                     <div class="alert alert-danger" role="alert">
@@ -56,9 +56,8 @@
             </c:choose>
         </div>
         <div class="form-group col-md-6">
-            <label for="inputPassword"><fmt:message key="label.password" bundle="${ rb }" /></label>
-            <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password"
-                   required/>
+            <fmt:message key="placeholder.password" bundle="${ rb }" var="passwordPlaceholder"/>
+            <input type="password" name="password" class="form-control" id="inputPassword" placeholder=${passwordPlaceholder} required/>
             <c:if test="${error!=null && error=='invalidPassword'}">
             <div class="alert alert-danger" role="alert">
                 <fmt:message key="alert.invalid-password" bundle="${ messageRb }" />
@@ -66,7 +65,7 @@
             </c:if>
         </div>
         <div class="form-group col-md-6">
-            <label for="inputEmail"><fmt:message key="label.email" bundle="${ rb }" /></label>
+            <label for="inputEmail"><fmt:message key="placeholder.email" bundle="${ rb }" /></label>
             <input type="email" name="email" class="form-control" id="inputEmail" aria-describedby="emailHelp"
                    placeholder="Enter email" required/>
             <c:choose>
