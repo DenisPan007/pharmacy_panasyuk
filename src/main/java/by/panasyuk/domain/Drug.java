@@ -9,12 +9,16 @@ public class Drug implements Identified<Integer> {
     private String name;
     private boolean isPrescriptionRequired;
     private int price;
+    private Manufacturer manufacturer;
+    private ReleaseForm releaseForm;
 
-    public Drug(int id, String name, boolean isPrescriptionRequired, int price) {
+    public Drug(int id, String name, boolean isPrescriptionRequired, int price, Manufacturer manufacturer, ReleaseForm releaseForm) {
         this.id = id;
         this.name = name;
         this.isPrescriptionRequired = isPrescriptionRequired;
         this.price = price;
+        this.manufacturer = manufacturer;
+        this.releaseForm = releaseForm;
     }
 
     public Drug() {
@@ -27,6 +31,22 @@ public class Drug implements Identified<Integer> {
 
     public String getName() {
         return name;
+    }
+
+    public Manufacturer getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(Manufacturer manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public ReleaseForm getReleaseForm() {
+        return releaseForm;
+    }
+
+    public void setReleaseForm(ReleaseForm releaseForm) {
+        this.releaseForm = releaseForm;
     }
 
     public void setId(int id) {
@@ -61,12 +81,14 @@ public class Drug implements Identified<Integer> {
         return id == drug.id &&
                 isPrescriptionRequired == drug.isPrescriptionRequired &&
                 price == drug.price &&
-                Objects.equals(name, drug.name);
+                Objects.equals(name, drug.name) &&
+                Objects.equals(manufacturer, drug.manufacturer) &&
+                Objects.equals(releaseForm, drug.releaseForm);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, isPrescriptionRequired, price);
+        return Objects.hash(id, name, isPrescriptionRequired, price, manufacturer, releaseForm);
     }
 
     @Override
@@ -74,8 +96,10 @@ public class Drug implements Identified<Integer> {
         return "Drug{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", getIsPrescriptionRequired=" + isPrescriptionRequired +
+                ", isPrescriptionRequired=" + isPrescriptionRequired +
                 ", price=" + price +
+                ", manufacturer=" + manufacturer +
+                ", releaseForm=" + releaseForm +
                 '}';
     }
 }

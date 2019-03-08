@@ -89,7 +89,7 @@
                         <th> </th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id = "tbodyTeg">
                     <tr>
                         <td>Product Name Dada</td>
                         <td>tablet </td>

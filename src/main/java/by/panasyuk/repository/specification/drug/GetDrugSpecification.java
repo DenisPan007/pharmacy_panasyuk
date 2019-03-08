@@ -1,6 +1,8 @@
 package by.panasyuk.repository.specification.drug;
 
 import by.panasyuk.domain.Drug;
+import by.panasyuk.domain.Manufacturer;
+import by.panasyuk.domain.ReleaseForm;
 import by.panasyuk.repository.specification.Specification;
 
 import java.sql.ResultSet;
@@ -17,6 +19,12 @@ public interface GetDrugSpecification extends Specification<Drug> {
             resultDrug.setName(resultSet.getString(2));
             resultDrug.setPrescriptionRequired(resultSet.getBoolean(3));
             resultDrug.setPrice(resultSet.getInt(4));
+            int manufacturerId = resultSet.getInt(5);
+            String manufacturerName = resultSet.getString(6);
+            int releaseFormId = resultSet.getInt(7);
+            String releaseFormDescription = resultSet.getString(8);
+            resultDrug.setManufacturer(new Manufacturer(manufacturerId,manufacturerName));
+            resultDrug.setReleaseForm(new ReleaseForm(releaseFormId,releaseFormDescription));
             drugList.add(resultDrug);
         }
         return drugList;

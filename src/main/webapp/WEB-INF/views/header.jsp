@@ -65,7 +65,7 @@
                     var json = JSON.parse(jsonText);
                     mySearch(json);
                 } else {
-                    alert("can'not get drugs");
+                    alert("can't get drugs");
                 }
             }
         };
