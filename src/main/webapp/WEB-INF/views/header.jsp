@@ -1,4 +1,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <a class="navbar-brand" href="${pageContext.request.contextPath}/?command=toStartPage"><fmt:message
             key="link.home" bundle="${rb}"/></a>
@@ -9,7 +11,7 @@
             <div class="collapse navbar-collapse flex-md-column" id="navbarsExampleDefault">
                 <ul class="navbar-nav mr-auto">
                     <li  class="nav-item">
-                        <a class="btn btn-success btn-sm " href="cart.html">
+                        <a class="btn btn-success btn-sm " href="${pageContext.request.contextPath}/?command=toCart">
                             <i class="fa fa-shopping-cart"></i> Cart
                             <span class="badge badge-light">3</span>
                         </a>

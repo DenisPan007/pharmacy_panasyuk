@@ -31,7 +31,7 @@ public class CommandProvider {
         commandMap.put("getDrugList", new GetDrugList());
         commandMap.put("doInitialRedirectCommand", new DoInitialCommand());
         commandMap.put("toForgotPassword", new ToForgotPassword());
-
+        commandMap.put("toCart", new ToCart());
     }
 
     /**

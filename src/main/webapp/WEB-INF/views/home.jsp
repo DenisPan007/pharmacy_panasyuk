@@ -1,14 +1,13 @@
-<%@ page  contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <fmt:setLocale value="${cookie['lang'].value}"/>
-<fmt:setBundle  basename="pagecontent" var="rb" scope="request" />
+<fmt:setBundle basename="pagecontent" var="rb" scope="request"/>
 <head>
-    <title><fmt:message key="home.title" bundle="${ rb }" /></title>
-    <!--for cart img -->
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <title><fmt:message key="home.title" bundle="${ rb }"/></title>
+    <!-- css for cart img -->
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
     <link href="/pharmacy/css/bootstrap.min.css" rel="stylesheet">
     <link href="/pharmacy/css/starter-template.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -78,7 +77,7 @@
 <main role="main" class="container">
     <div class="starter-template">
         <p class="lead">
-            <fmt:message key="label.description" bundle="${ rb }" />
+            <fmt:message key="label.description" bundle="${ rb }"/>
         </p>
     </div>
 
