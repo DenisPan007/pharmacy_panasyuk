@@ -6,6 +6,8 @@
 <fmt:setBundle  basename="pagecontent" var="rb" scope="request" />
 <head>
     <title><fmt:message key="home.title" bundle="${ rb }" /></title>
+    <!--for cart img -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link href="/pharmacy/css/bootstrap.min.css" rel="stylesheet">
     <link href="/pharmacy/css/starter-template.css" rel="stylesheet">
