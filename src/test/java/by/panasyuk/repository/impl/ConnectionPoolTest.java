@@ -39,7 +39,7 @@ public class ConnectionPoolTest {
                     int hashCode = connection.hashCode();
                     hashCodes.add(hashCode);
                     //LOGGER. info ( "release connection: " + hashCode);
-                } catch (SQLException | IllegalStateException e) {
+                } catch (SQLException | IllegalStateException|ConnectionPoolException e) {
                     LOGGER.error(e);
                 } catch (InterruptedException e) {
                     LOGGER.error(e);

@@ -24,12 +24,17 @@ public class ConnectionPool {
     private Semaphore availableConnectionAmount = new Semaphore(0);
     private Lock lock = new ReentrantLock();
     private BlockingDeque<Connection> connectionDeque = new LinkedBlockingDeque<>();
+    private static String url;
+    private static String user;
+    private static String password;
+    private static String driver;
+    private static int poolCapacity;
 
-    private ConnectionPool(String driverClass, String jdbcUrl, String user, String
-            password, int poolCapacity) throws SQLException, ClassNotFoundException {
-        Class.forName(driverClass);
+
+    private ConnectionPool() throws SQLException, ClassNotFoundException {
+        Class.forName(driver);
         for (int i = 0; i < poolCapacity; i++) {
-            Connection connection = DriverManager.getConnection(jdbcUrl, user, password);
+            Connection connection = DriverManager.getConnection(url, user, password);
             connectionDeque.push(connection);
             availableConnectionAmount.release();
         }
@@ -43,12 +48,12 @@ public class ConnectionPool {
                     InputStream inputStream = ConnectionPool.class.getResourceAsStream("/db.properties");
                     Properties properties = new Properties();
                     properties.load(inputStream);
-                    String url = properties.getProperty("url");
-                    String driver = properties.getProperty("driver");
-                    String user = properties.getProperty("user");
-                    String password = properties.getProperty("password");
-                    int poolCapacity = Integer.parseInt(properties.getProperty("poolCapacity"));
-                    instance = new ConnectionPool(driver, url, user, password, poolCapacity);
+                    url = properties.getProperty("url");
+                    driver = properties.getProperty("driver");
+                    user = properties.getProperty("user");
+                    password = properties.getProperty("password");
+                    poolCapacity = Integer.parseInt(properties.getProperty("poolCapacity"));
+                    instance = new ConnectionPool();
                 } catch (SQLException e) {
                     throw new ConnectionPoolException("Driver manager failed to connect to DataBase", e);
                 } catch (ClassNotFoundException e) {
@@ -87,14 +92,20 @@ public class ConnectionPool {
         }
     }
 
-    public Connection getConnection() throws InterruptedException {
+    public Connection getConnection() throws ConnectionPoolException {
         try {
             lock.lock();
             availableConnectionAmount.acquire();
             Connection connection = connectionDeque.poll();
+            if(connection.isClosed()){
+                connection = DriverManager.getConnection(url, user, password);
+            }
             InvocationHandler handler = new Handler(connection);
             return (Connection) Proxy.newProxyInstance(connection.getClass().getClassLoader(), connection.getClass().getInterfaces(), handler);
-        } finally {
+        } catch (SQLException|InterruptedException e){
+            throw new ConnectionPoolException(e);
+        }
+        finally {
             lock.unlock();
         }
     }
