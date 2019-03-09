@@ -1,22 +1,20 @@
 package by.panasyuk.repository.specification.drug;
 
-import by.panasyuk.repository.specification.Specification;
 import by.panasyuk.domain.Drug;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 
-public class GetAllDrugs implements GetDrugSpecification {
+public class GetDrugsByName implements GetDrugSpecification {
     @Override
     public List<Drug> get(Drug drug, Connection connection) throws SQLException {
+        String name = drug.getName();
         String query = "select drug.id, drug.name, drug.is_prescription_required, drug.price, drug.manufacturer_id, manufacturer.name,  release_form.id, release_form.description from drug\n" +
                 "join manufacturer on drug.manufacturer_id = manufacturer.id\n" +
-                "join release_form on drug.release_form_id = release_form.id";
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet =  statement.executeQuery(query);
+                "join release_form on drug.release_form_id = release_form.id where drug.name = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1,name);
+            ResultSet resultSet =  statement.executeQuery();
             return parseResultSet(resultSet);
         }
     }

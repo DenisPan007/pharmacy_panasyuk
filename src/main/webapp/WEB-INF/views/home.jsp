@@ -38,6 +38,16 @@
             /* prevent horizontal scrollbar */
             overflow-x: hidden;
         }
+        .modal-dialog {
+            position: relative;
+            display: table; /* This is important */
+            overflow-y: auto;
+            overflow-x: auto;
+            width: auto;
+            min-width: 300px;
+            max-width : 80% ;
+
+        }
 
         @media (min-width: 768px) {
             .bd-placeholder-img-lg {

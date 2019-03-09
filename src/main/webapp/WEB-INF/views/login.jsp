@@ -7,6 +7,7 @@
 <html>
 <head>
     <title>login</title>
+    <link href="${pageContext.request.contextPath}/css/starter-template.css" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
     <link href="${pageContext.request.contextPath}/css/starter-template.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -21,33 +22,30 @@
 </head>
 <body>
 <c:import url="header.jsp"/>
-<main role="main" class="container">
+<main role="main">
     <form method="POST" action="${pageContext.request.contextPath}/">
         <input type="hidden" name="initialCommand" value=${initialCommand}>
         <input type="hidden" name="command" value="login">
         <fmt:message key="placeholder.login" bundle="${ rb }" var="loginPlaceholder"/>
         <div class="form-group col-md-6 ">
-            <input type="text" name="login" class="form-control" id="inputLogin" placeholder=${loginPlaceholder} required/>
+            <input type="text" name="login" class="form-control" id="inputLogin"
+                   placeholder=${loginPlaceholder} required/>
         </div>
         <fmt:message key="placeholder.password" bundle="${ rb }" var="passwordPlaceholder"/>
         <div class="form-group col-md-6">
-            <input type="password" name="password" class="form-control" id="inputPassword" placeholder=${passwordPlaceholder} required/>
+            <input type="password" name="password" class="form-control" id="inputPassword"
+                   placeholder=${passwordPlaceholder} required/>
         </div>
         <c:if test="${error=='incorrectAuthentication'}">
             <div class="alert alert-danger" role="alert">
                 <fmt:message key="alert.incorrect-authentication" bundle="${ messageRb }"/>
             </div>
         </c:if>
-        <ul class="list-inline">
-            <li class="list-inline">
-                <button type="submit" class="btn btn-primary"><fmt:message key="button.login"
-                                                                           bundle="${ rb }"/></button>
-            <li class="list-inline">
-            <li><a class="underlineHover"
-                   href="${pageContext.request.contextPath}/?command=toForgotPassword"><fmt:message
-                    key="link.forgot-password" bundle="${ rb }"/></a>
-            </li>
-        </ul>
+        <button type="submit" class="btn btn-primary"><fmt:message key="button.login"
+                                                                   bundle="${ rb }"/></button>
+        <a class="underlineHover"
+           href="${pageContext.request.contextPath}/?command=toForgotPassword"><fmt:message
+                key="link.forgot-password" bundle="${ rb }"/></a>
     </form>
     <h1>Login: admin</h1>
     <h1>Password: admin</h1>
