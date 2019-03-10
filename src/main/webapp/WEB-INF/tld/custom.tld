@@ -1,0 +1,34 @@
+<taglib>
+    <tlib-version>1.0</tlib-version>
+    <jsp-version>2.0</jsp-version>
+    <short-name>Example TLD</short-name>
+
+    <tag>
+        <name>json</name>
+        <tag-class>by.panasyuk.util.JsonTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+        <name>jsonString</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>var</name>
+            <required>true</required>
+        </attribute>
+    </tag>
+    <tag>
+        <name>cookie</name>
+        <tag-class>by.panasyuk.util.CookieTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>name</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>var</name>
+            <required>true</required>
+        </attribute>
+    </tag>
+</taglib>

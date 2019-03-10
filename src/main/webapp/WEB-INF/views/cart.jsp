@@ -1,9 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="ctl" uri="/WEB-INF/tld/custom.tld" %>
 <html>
 <fmt:setLocale value="${cookie['lang'].value}"/>
 <fmt:setBundle basename="pagecontent" var="rb" scope="request"/>
+<ctl:cookie name="cart" var="cart"/>
+<ctl:json jsonString="${cart}" var="drugList"/>
 <head>
     <title><fmt:message key="home.title" bundle="${ rb }"/></title>
     <!-- css for cart img -->
@@ -90,38 +93,20 @@
                     </tr>
                     </thead>
                     <tbody id = "tbodyTeg">
+                    <c:forEach var="elem" items="${drugList}" varStatus="status">
                     <tr>
-                        <td>Product Name Dada</td>
-                        <td>tablet </td>
-                        <td>Den </td>
-                        <td><input class="form-control" type="text" value="1" /></td>
-                        <td class="text-right">124,90 €</td>
-                        <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
+
+                        <td><c:out value="${elem.name}"></c:out></td>
+                        <td><c:out value="${elem.releaseForm.description}"></c:out></td>
+                        <td><c:out value="${elem.manufacturer.name}"></c:out></td>
+                        <td><c:out value="6"></c:out></td>
+                        <td><c:out value="${elem.price}"></c:out></td>
+                        <td>
+                            <button class="btn btn-primary" onclick="deleteDrug(${elem.id},this)">Delete</button>
+                        </td>
+
                     </tr>
-                    <tr>
-                        <td>Product Name Toto</td>
-                        <td>tablet </td>
-                        <td>Den </td>
-                        <td><input class="form-control" type="text" value="1" /></td>
-                        <td class="text-right">33,90 €</td>
-                        <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
-                    </tr>
-                    <tr>
-                        <td>Product Name Titi</td>
-                        <td>tablet </td>
-                        <td>Den </td>
-                        <td><input class="form-control" type="text" value="1" /></td>
-                        <td class="text-right">70,00 €</td>
-                        <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><strong>Total</strong></td>
-                        <td class="text-right"><strong>346,90 €</strong></td>
-                        <td></td>
-                    </tr>
+                    </c:forEach>
                     </tbody>
                 </table>
             </div>

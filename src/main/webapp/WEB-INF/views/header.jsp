@@ -1,6 +1,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
       integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <a class="navbar-brand" href="${pageContext.request.contextPath}/?command=toStartPage"><fmt:message
             key="link.home" bundle="${rb}"/></a>
@@ -96,24 +97,52 @@
     function showSelectedDrug(drugList) {
 
         var trHTML = '';
+        $('#records_table').empty();
         $.each(drugList, function (i, item) {
-            trHTML += '<tr><td>' + item.name +'</td><td>'
+            trHTML = '<tr><td>' + item.name +'</td><td>'
                 + item.releaseForm.description + '</td><td>'
                 + item.manufacturer.name + '</td><td>'
                 + 5 + '</td><td>'
                 + item.price + '</td><td>'
-                + '<button class="btn btn-primary" onclick="addDrugToCart('+'\''+item.id+'\''+')">Add to cart</button>' + '</td></tr>';
+                + '<button class="btn btn-primary" >Add to cart</button>' + '</td></tr>';
+            $('#records_table').append(trHTML);
+            var trTag = document.getElementById('records_table');
+            var buttonTag = trTag.lastChild;
+            var newCookieJson;
+            buttonTag.onclick = function() {
+                var cookieCartString = $.cookie('cart');
+                if (cookieCartString != null) {
+                    var cookieCartJson = JSON.parse(decodeURIComponent(cookieCartString));
+                    var trigger = true;
+                    //alert('old cookies   :' + cookieCartString);
+                    for (var i = 0; i < cookieCartJson.length; ++i) {
+                        if (cookieCartJson[i].id === item.id) {
+                           trigger = false;
+                        }
+                    }
+                    if(trigger){
+                    cookieCartJson.push(item);
+                    }
+                    newCookieJson = cookieCartJson;
+                }
+            else{
+                newCookieJson = [];
+                    newCookieJson.push(item);
+                }
+            var newCookieString = JSON.stringify(newCookieJson);
+              // alert(decodeURIComponent('to cookies   :' + newCookieString));
+               $.cookie('cart',newCookieString);
+            }
+
         });
-        $('#records_table').empty();
-        $('#records_table').append(trHTML);
+
+
         $("#myModal").modal();
     }
 </script>
+
 <script>
-    function addDrugToCart(id) {
-        alert(id);
-        alert("asdasd");
-    }
+
 </script>
 <script>
     function getDrugsByName(drugName) {

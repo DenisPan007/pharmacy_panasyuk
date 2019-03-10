@@ -38,7 +38,7 @@
 </head>
 <body>
 <c:import url="header.jsp"/>
-<main role="main" class="container">
+<main role="main">
     <form method="POST" action="${pageContext.request.contextPath}/?command=signUp">
         <div class="form-group col-md-6 ">
             <fmt:message key="placeholder.login" bundle="${ rb }" var="loginPlaceholder"/>
