@@ -12,22 +12,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class PresentChecker extends UserService {
-    private static PresentChecker instance;
-    private static Lock lockForSingleTone = new ReentrantLock();
 
-    public static PresentChecker getInstance() {
-        lockForSingleTone.lock();
-        try {
-            if (instance == null) {
-                instance = new PresentChecker();
-            }
-
-        } finally {
-            lockForSingleTone.unlock();
-        }
-
-        return instance;
-    }
     public boolean isReservedLogin(String login) throws ServiceException {
         User user = new User();
         user.setLogin(login);
@@ -36,7 +21,7 @@ public class PresentChecker extends UserService {
             List list = userRepository.getQuery(user, spec);
             return !list.isEmpty();
         } catch (RepositoryException e) {
-            throw new ServiceException("Failed to get user DAO. ", e);
+            throw new ServiceException("Failed to check present of user in base ", e);
         }
     }
 
@@ -48,7 +33,7 @@ public class PresentChecker extends UserService {
             List list = userRepository.getQuery(user, spec);
             return !list.isEmpty();
         } catch (RepositoryException e) {
-            throw new ServiceException("Failed to get user DAO. ", e);
+            throw new ServiceException("Failed to check present of user in base ", e);
         }
     }
 }

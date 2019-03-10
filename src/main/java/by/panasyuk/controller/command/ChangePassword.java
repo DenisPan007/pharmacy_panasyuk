@@ -13,7 +13,7 @@ public class ChangePassword implements Command {
     public String execute(HttpServletRequest request) throws CommandException {
         String email = request.getParameter("email");
         String login = request.getParameter("login");
-        PasswordService passwordService = PasswordService.getInstance();
+        PasswordService passwordService = new PasswordService();
         try {
             String newPassword = passwordService.changePassword(login,email);
             EmailService sender = new EmailService();

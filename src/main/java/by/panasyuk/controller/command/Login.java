@@ -1,5 +1,6 @@
 package by.panasyuk.controller.command;
 
+import by.panasyuk.domain.User;
 import by.panasyuk.service.user.LoginService;
 import by.panasyuk.service.user.PasswordService;
 import by.panasyuk.service.exception.ServiceException;
@@ -15,29 +16,23 @@ public class Login implements Command {
     @Override
     public String execute(HttpServletRequest req) throws CommandException {
         HttpSession session = req.getSession();
-        LoginService loginService = LoginService.getInstance();
-        PasswordService passwordService = PasswordService.getInstance();
+        LoginService loginService = new LoginService();
+        PasswordService passwordService = new PasswordService();
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         try {
             password = passwordService.passwordHash(password);
-            if (!loginService.login(login,password)){
+            User loginedUser = loginService.login(login, password);
+            if (loginedUser == null) {
                 req.setAttribute("route", Router.Type.REDIRECT);
-                return PathManager.getProperty("redirect.login") +"&error=incorrectAuthentication";
+                return PathManager.getProperty("redirect.login") + "&error=incorrectAuthentication";
             }
-            else{
+            session.setAttribute("role", RoleEnum.valueOf(loginedUser.getRole()));
 
-                if (login.equals("admin")) {
-                    session.setAttribute("role", RoleEnum.ADMIN);
-                }
-                else{
-                    session.setAttribute("role",RoleEnum.CLIENT);
-                }
-                session.setAttribute("login",login);
-                req.setAttribute("route", Router.Type.REDIRECT);
-                return PathManager.getProperty("redirect.initial");
-            }
-        }catch (ServiceException | NoSuchAlgorithmException e){
+            session.setAttribute("user", loginedUser);
+            req.setAttribute("route", Router.Type.REDIRECT);
+            return PathManager.getProperty("redirect.initial");
+        } catch (ServiceException | NoSuchAlgorithmException e) {
             throw new CommandException(e);
         }
 

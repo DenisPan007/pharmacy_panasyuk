@@ -17,7 +17,7 @@
 <c:import url="header.jsp"/>
 <main role="main" class="container">
     <div class="starter-template">
-        <h1><fmt:message key="welcome" bundle="${ rb }" />, ${login}</h1>
+        <h1><fmt:message key="welcome" bundle="${ rb }" />, ${user.login}</h1>
     </div>
 
 </main><!-- /.container -->

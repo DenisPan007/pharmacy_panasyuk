@@ -41,9 +41,9 @@ public class SignUp implements Command {
             req.setAttribute("route", Router.Type.REDIRECT);
             return PathManager.getProperty("redirect.sign.up")+"&error=invalidEmail";
         }
-        PresentChecker presentChecker = PresentChecker.getInstance();
-        SignUpService signUpService = SignUpService.getInstance();
-        PasswordService passwordService = PasswordService.getInstance();
+        PresentChecker presentChecker = new PresentChecker();
+        SignUpService signUpService = new SignUpService();
+        PasswordService passwordService = new PasswordService();
         try {
             password = passwordService.passwordHash(password);
             if (presentChecker.isReservedLogin(login)) {

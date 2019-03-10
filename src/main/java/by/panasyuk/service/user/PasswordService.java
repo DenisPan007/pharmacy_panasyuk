@@ -14,25 +14,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class PasswordService extends UserService {
-    private static PasswordService instance;
-    private static Lock lockForSingleTone = new ReentrantLock();
-
-    public static PasswordService getInstance() {
-        lockForSingleTone.lock();
-        try {
-            if (instance == null) {
-                instance = new PasswordService();
-            }
-
-        } finally {
-            lockForSingleTone.unlock();
-        }
-
-        return instance;
-    }
 
     public String changePassword(String login, String email) throws ServiceException, ArgumentCorrectException {
-        PresentChecker presentChecker = PresentChecker.getInstance();
+        PresentChecker presentChecker = new PresentChecker();
         if (!presentChecker.isReservedLogin(login)) {
             throw new ArgumentCorrectException();
         }
@@ -49,10 +33,8 @@ public class PasswordService extends UserService {
             user.setPassword(passwordHash(newPassword));
             userRepository.update(user);
             return newPassword;
-        } catch (RepositoryException e) {
-            throw new ServiceException("Failed to get user Repository. ", e);
-        } catch (NoSuchAlgorithmException e) {
-            throw new ServiceException("Failed to get hash Algorithm. ", e);
+        } catch (RepositoryException |NoSuchAlgorithmException e) {
+            throw new ServiceException("Failed to change user password. ", e);
         }
     }
     public  String passwordHash(String password) throws NoSuchAlgorithmException{

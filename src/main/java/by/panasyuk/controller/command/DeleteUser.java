@@ -1,15 +1,14 @@
 package by.panasyuk.controller.command;
 
 
-import by.panasyuk.service.user.CrudUserService;
 import by.panasyuk.service.exception.ServiceException;
+import by.panasyuk.service.user.CrudUserService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public class DeleteUser implements Command {
     public String execute(HttpServletRequest request) throws CommandException {
-        CrudUserService crudUserService = CrudUserService.getInstance();
+        CrudUserService crudUserService = new CrudUserService();
         int id = Integer.parseInt(request.getParameter("id"));
         try {
             crudUserService.delete(id);
