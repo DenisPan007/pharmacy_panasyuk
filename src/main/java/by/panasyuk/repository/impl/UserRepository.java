@@ -1,22 +1,23 @@
 package by.panasyuk.repository.impl;
 
+import by.panasyuk.domain.User;
 import by.panasyuk.repository.AbstractJdbcRepository;
+import by.panasyuk.repository.AutoConnection;
 import by.panasyuk.repository.Repository;
 import by.panasyuk.repository.exception.RepositoryException;
 import by.panasyuk.repository.specification.Specification;
-import by.panasyuk.domain.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * User Repository implementation
  */
 public class UserRepository extends AbstractJdbcRepository<User, Integer> implements Repository<User, Integer> {
+    @AutoConnection
     @Override
     public User add(User user) throws RepositoryException {
         String query = "INSERT INTO user (login,password,firstname,lastname,email,role) " +
@@ -38,7 +39,7 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
             throw new RepositoryException("prepared statement failed", e);
         }
     }
-
+    @AutoConnection
     @Override
     public void update(User user) throws RepositoryException {
 
@@ -60,7 +61,7 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
 
         }
     }
-
+    @AutoConnection
     @Override
     public void delete(User user) throws RepositoryException {
 
@@ -73,7 +74,7 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
 
         }
     }
-
+    @AutoConnection
         @Override
         public List<User> getQuery (User user, Specification < User > spec) throws RepositoryException {
             try {

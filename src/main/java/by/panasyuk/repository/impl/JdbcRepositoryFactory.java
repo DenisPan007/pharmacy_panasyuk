@@ -13,16 +13,16 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
 
 /**
- * Jdbc DAO Factory
+ * Jdbc Repository Factory
  */
 public class JdbcRepositoryFactory implements RepositoryFactory {
     private static JdbcRepositoryFactory instance;
     private static Lock lock = new ReentrantLock();
 
-    private class DaoInvocationHandler implements InvocationHandler {
+    private class RepositoryInvocationHandler implements InvocationHandler {
         private final Repository repository;
 
-        DaoInvocationHandler(Repository repository) {
+        RepositoryInvocationHandler(Repository repository) {
             this.repository = repository;
         }
 
@@ -31,15 +31,15 @@ public class JdbcRepositoryFactory implements RepositoryFactory {
             Object result;
 
             if (Arrays.stream(repository.getClass().getMethods())
-                    .filter(m -> !m.isAnnotationPresent(WithoutConnection.class))
+                    .filter(m -> m.isAnnotationPresent(AutoConnection.class))
                     .map(Method::getName)
                     .anyMatch(m -> m.equals(method.getName()))) {
                 ConnectionPool connectionPool = ConnectionPool.getInstance();
                 Connection connection = connectionPool.getConnection();
-                TransactionManager.setConnectionWithReflection(repository, connection);
+                TransactionManager.setConnection(repository, connection);
                 result = method.invoke(repository, args);
                 connection.close();
-                TransactionManager.setConnectionWithReflection(repository, null);
+                TransactionManager.setConnection(repository, null);
             } else {
                 result = method.invoke(repository, args);
             }
@@ -71,6 +71,6 @@ public class JdbcRepositoryFactory implements RepositoryFactory {
 
         return (Repository<T, PK>) Proxy.newProxyInstance(repository.getClass().getClassLoader(),
                 repository.getClass().getInterfaces(),
-                new DaoInvocationHandler(repository));
+                new RepositoryInvocationHandler(repository));
     }
 }

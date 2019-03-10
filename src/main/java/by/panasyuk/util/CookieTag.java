@@ -28,11 +28,10 @@ public class CookieTag extends TagSupport {
         Cookie[] cookies = request.getCookies();
         String cookie = CookieFinder.getValueByName(name, cookies).orElse(null);
         try {
-            if(cookie!=null) {
+            if (cookie != null) {
                 String cookieDecoding = URLDecoder.decode(cookie, "UTF-8");
                 request.setAttribute(var, cookieDecoding);
-            }
-            else {
+            } else {
                 request.setAttribute(var, null);
             }
             return SKIP_BODY;

@@ -19,7 +19,7 @@ public final class TransactionManager {
 
 
             proxyConnection = connectionPool.getConnection();
-            setConnectionWithReflection(dao, proxyConnection);
+            setConnection(dao, proxyConnection);
 
         //} catch (ConnectionPoolException e) {
         //    throw new RepositoryException("Failed to get a connection from CP.", e);
@@ -52,9 +52,9 @@ public final class TransactionManager {
     }
 
 
-    static void setConnectionWithReflection(Object repository, Connection connection) throws RepositoryException {
+    static void setConnection(Object repository, Connection connection) throws RepositoryException {
         if (!(repository instanceof AbstractJdbcRepository)) {
-            throw new RepositoryException("DAO implementation does not extend AbstractJdbcRepository.");
+            throw new RepositoryException("Repository implementation does not extend AbstractJdbcRepository.");
         }
         AbstractJdbcRepository abstrRepo = (AbstractJdbcRepository) repository;
         abstrRepo.setConnection(connection);

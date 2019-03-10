@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Generic DAO
+ * Repository
  * @param <T> - Identified entity
  * @param <PK> - Entity primary key
  */

@@ -1,6 +1,7 @@
 package by.panasyuk.repository.impl;
 
 import by.panasyuk.repository.AbstractJdbcRepository;
+import by.panasyuk.repository.AutoConnection;
 import by.panasyuk.repository.Repository;
 import by.panasyuk.repository.exception.RepositoryException;
 import by.panasyuk.repository.specification.Specification;
@@ -13,26 +14,29 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DrugRepository extends AbstractJdbcRepository<Drug, Integer> implements Repository<Drug, Integer> {@Override
-public Drug add(Drug drug) throws RepositoryException {
-    String query = "INSERT INTO drug (name,isPrescriptionRequired,price) " +
-            "VALUES(?,?,?)";
-    try {
-        PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-        ps.setString(1, drug.getName());
-        ps.setBoolean(2, drug.getIsPrescriptionRequired());
-        ps.setInt(3, drug.getPrice());
-        ps.executeUpdate();
-        ResultSet keys = ps.getGeneratedKeys();
-        keys.next();
-        int id = (keys.getInt(1));
-        drug.setId(id);
-        return drug;
-    } catch (SQLException e) {
-        throw new RepositoryException("prepared statement failed", e);
+public class DrugRepository extends AbstractJdbcRepository<Drug, Integer> implements Repository<Drug, Integer> {
+    @AutoConnection
+    @Override
+    public Drug add(Drug drug) throws RepositoryException {
+        String query = "INSERT INTO drug (name,isPrescriptionRequired,price) " +
+                "VALUES(?,?,?)";
+        try {
+            PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, drug.getName());
+            ps.setBoolean(2, drug.getIsPrescriptionRequired());
+            ps.setInt(3, drug.getPrice());
+            ps.executeUpdate();
+            ResultSet keys = ps.getGeneratedKeys();
+            keys.next();
+            int id = (keys.getInt(1));
+            drug.setId(id);
+            return drug;
+        } catch (SQLException e) {
+            throw new RepositoryException("prepared statement failed", e);
+        }
     }
-}
 
+    @AutoConnection
     @Override
     public void update(Drug drug) throws RepositoryException {
 
@@ -53,6 +57,7 @@ public Drug add(Drug drug) throws RepositoryException {
         }
     }
 
+    @AutoConnection
     @Override
     public void delete(Drug drug) throws RepositoryException {
 
@@ -67,8 +72,9 @@ public Drug add(Drug drug) throws RepositoryException {
         }
     }
 
+    @AutoConnection
     @Override
-    public List<Drug> getQuery (Drug drug, Specification< Drug > spec) throws RepositoryException {
+    public List<Drug> getQuery(Drug drug, Specification<Drug> spec) throws RepositoryException {
         try {
             return spec.get(drug, connection);
         } catch (SQLException e) {
