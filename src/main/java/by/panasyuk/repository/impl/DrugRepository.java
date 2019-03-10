@@ -1,17 +1,16 @@
 package by.panasyuk.repository.impl;
 
+import by.panasyuk.domain.Drug;
 import by.panasyuk.repository.AbstractJdbcRepository;
 import by.panasyuk.repository.AutoConnection;
 import by.panasyuk.repository.Repository;
 import by.panasyuk.repository.exception.RepositoryException;
 import by.panasyuk.repository.specification.Specification;
-import by.panasyuk.domain.Drug;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DrugRepository extends AbstractJdbcRepository<Drug, Integer> implements Repository<Drug, Integer> {

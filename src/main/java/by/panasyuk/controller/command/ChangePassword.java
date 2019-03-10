@@ -16,7 +16,7 @@ public class ChangePassword implements Command {
         PasswordService passwordService = PasswordService.getInstance();
         try {
             String newPassword = passwordService.changePassword(login,email);
-            EmailService sender = EmailService.getInstance();
+            EmailService sender = new EmailService();
             sender.send("your new password", "there is your new password: " + newPassword, email);
             request.setAttribute("route", Router.Type.REDIRECT);
         return PathManager.getProperty("redirect.login");

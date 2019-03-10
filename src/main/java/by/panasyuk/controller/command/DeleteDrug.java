@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 public class DeleteDrug implements Command {
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
-        CrudDrugService crudService = CrudDrugService.getInstance();
+        CrudDrugService crudService = new CrudDrugService();
         int id = Integer.parseInt(request.getParameter("id"));
         try {
             crudService.delete(id);

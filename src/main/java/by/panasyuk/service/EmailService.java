@@ -5,40 +5,25 @@ import by.panasyuk.service.exception.ServiceException;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class EmailService {
-    private final String username = "pharma.task007@gmail.com";
-    private final String password = "27.02.pharma.Task007";
+    private final String username;
+    private final String password;
     private Properties props;
-    private static EmailService instance;
-    private static Lock lockForSingleTone = new ReentrantLock();
 
-    public static EmailService getInstance() {
-        lockForSingleTone.lock();
-        try {
-            if (instance == null) {
-                instance = new EmailService();
-            }
-
-        } finally {
-            lockForSingleTone.unlock();
-        }
-
-        return instance;
-    }
-
-
-    private EmailService() {
+    public EmailService() throws ServiceException{
+        InputStream inputStream = EmailService.class.getResourceAsStream("/email_server.properties");
         props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class",
-                "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
+        try {
+            props.load(inputStream);
+            username = props.getProperty("username");
+            password = props.getProperty("password");
+        } catch (IOException e) {
+            throw new ServiceException(e);
+        }
     }
 
     public void send(String subject, String text, String toEmail) throws ServiceException {

@@ -50,8 +50,10 @@
         </div>
         <button type="submit" class="btn btn-primary"><fmt:message key="button.send-new-password" bundle="${ rb }" /></button>
     </form>
+    <c:if test="${error=='incorrectData'}">
     <div class="alert alert-danger" role="alert">
         <fmt:message key="alert.incorrect-login-or-email" bundle="${ messageRb }" />
     </div>
+    </c:if>
 </main>
 </body>
