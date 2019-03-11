@@ -22,7 +22,7 @@
 </head>
 <body>
 <c:import url="header.jsp"/>
-<main role="main">
+<main role="main" class="container">
     <form method="POST" action="${pageContext.request.contextPath}/">
         <input type="hidden" name="initialCommand" value=${initialCommand}>
         <input type="hidden" name="command" value="login">

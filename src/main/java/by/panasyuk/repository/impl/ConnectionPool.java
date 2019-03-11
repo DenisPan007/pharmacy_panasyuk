@@ -97,7 +97,7 @@ public class ConnectionPool {
             lock.lock();
             availableConnectionAmount.acquire();
             Connection connection = connectionDeque.poll();
-            if(connection.isValid(3)){
+            if(!connection.isValid(3)){
                 connection = DriverManager.getConnection(url, user, password);
             }
             InvocationHandler handler = new Handler(connection);
