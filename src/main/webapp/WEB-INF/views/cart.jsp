@@ -88,6 +88,31 @@
             trTag.parentElement.removeChild(trTag);
         }
     </script>
+    <script>
+        function checkout() {
+            var body = 'command=' + encodeURIComponent("isUserHavePrescription");
+            var req = getXMLHttpRequest();
+            req.onreadystatechange = function () {
+                if (req.readyState === 4) {
+                    if (req.status === 200) {
+                        if (req.responseText === "true"){
+                            document.location.href = 'pharmacy/?command=toOrder';
+                        }
+                        else{
+                            alert("you need prescriptions for all drugs required it");
+                        }
+                    }
+                    else {
+                        alert("can't get response ");
+                    }
+                }
+            };
+            req.open('POST', '/pharmacy/ajax', true);
+            req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            req.send(body);
+        }
+    </script>
+
 
 </head>
 <body>
@@ -146,7 +171,8 @@
                 <div class="col-sm-12 col-md-6 text-right">
                 </div>
                 <div class="col-sm-12 col-md-6 text-right">
-                    <button class="btn btn-lg btn-block btn-success text-uppercase">Checkout</button>
+                    <button class="btn btn-lg btn-block btn-success text-uppercase" onclick="checkout()">Checkout
+                    </button>
                 </div>
             </div>
         </div>

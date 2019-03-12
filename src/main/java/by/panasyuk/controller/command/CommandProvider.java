@@ -33,6 +33,8 @@ public class CommandProvider {
         commandMap.put("toForgotPassword", new ToForgotPassword());
         commandMap.put("toCart", new ToCart());
         commandMap.put("getDrugsByName", new GetDrugsByName());
+        commandMap.put("isUserHavePrescription", new IsUserHavePrescription());
+        commandMap.put("toOrder", new ToOrder());
     }
 
     /**
