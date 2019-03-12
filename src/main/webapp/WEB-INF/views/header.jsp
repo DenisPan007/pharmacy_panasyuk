@@ -78,7 +78,7 @@
                         <th></th>
                     </tr>
                     </thead>
-                    <tbody id="records_table">
+                    <tbody id="tbodyTagModal">
 
                     </tbody>
                 </table>
@@ -97,7 +97,7 @@
     function showSelectedDrug(drugList) {
 
         var trHTML = '';
-        $('#records_table').empty();
+        $('#tbodyTagModal').empty();
         $.each(drugList, function (i, item) {
             trHTML = '<tr><td>' + item.name +'</td><td>'
                 + item.releaseForm.description + '</td><td>'
@@ -105,8 +105,8 @@
                 + 5 + '</td><td>'
                 + item.price + '</td><td>'
                 + '<button class="btn btn-primary" >Add to cart</button>' + '</td></tr>';
-            $('#records_table').append(trHTML);
-            var trTag = document.getElementById('records_table');
+            $('#tbodyTagModal').append(trHTML);
+            var trTag = document.getElementById('tbodyTagModal');
             var buttonTag = trTag.lastChild;
             var newCookieJson;
             buttonTag.onclick = function() {
@@ -132,11 +132,27 @@
             var newCookieString = JSON.stringify(newCookieJson);
               // alert(decodeURIComponent('to cookies   :' + newCookieString));
                $.cookie('cart',newCookieString);
-            }
+                var tbodyTag = $('#tbodyTagCart');
+                if(tbodyTag !==null){
+                    trHTML = '<tr><td>' + item.name + '</td><td>'
+                        + item.releaseForm.description + '</td><td>'
+                        + item.manufacturer.name + '</td><td>'
+                        + 5 + '</td><td>'
+                        + item.price + '</td><td>'
+                        + '<button class="btn btn-primary" >Delete</button>' + '</td></tr>';
+                    tbodyTag.append(trHTML);
+                    tbodyTag = document.getElementById('tbodyTagCart');
+                    var tr1Tag = tbodyTag.lastChild;
+                    var buttonTdTag = tr1Tag.lastChild;
+                    var button1Tag = buttonTdTag.lastChild;
+                    alert(button1Tag);
+                    buttonTdTag.onclick = function () {
+                        deleteDrugFromCart(item.id, button1Tag);
+                    }
+                }
+            };
 
         });
-
-
         $("#myModal").modal();
     }
 </script>

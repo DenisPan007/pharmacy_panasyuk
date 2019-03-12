@@ -71,6 +71,23 @@
         return xmlHttpReq;
     }
     </script>
+    <script>
+        function deleteDrugFromCart(id, button) {
+            var cookieCartString = $.cookie('cart');
+            var cookieCartJson = JSON.parse(decodeURIComponent(cookieCartString));
+            for (var i = 0; i < cookieCartJson.length; ++i) {
+                if (cookieCartJson[i].id === id) {
+                    cookieCartJson.splice(i, 1);
+                }
+            }
+
+            var newCookieString = JSON.stringify(cookieCartJson);
+            $.cookie('cart', newCookieString);
+            var tdTag = button.parentElement;
+            var trTag = tdTag.parentElement;
+            trTag.parentElement.removeChild(trTag);
+        }
+    </script>
 
 </head>
 <body>
@@ -81,40 +98,52 @@
     <div class="row">
         <div class="col-12">
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table">
                     <thead>
                     <tr>
                         <th scope="col">Item</th>
                         <th scope="col">Release form</th>
-                        <th scope="col">Manufacturer </th>
+                        <th scope="col">Manufacturer</th>
                         <th scope="col" class="text-center">Quantity</th>
                         <th scope="col" class="text-right">Price</th>
-                        <th> </th>
+                        <th></th>
                     </tr>
                     </thead>
-                    <tbody id = "tbodyTeg">
+                    <tbody id="tbodyTagCart">
                     <c:forEach var="elem" items="${drugList}" varStatus="status">
-                    <tr>
+                        <tr>
 
-                        <td><c:out value="${elem.name}"></c:out></td>
-                        <td><c:out value="${elem.releaseForm.description}"></c:out></td>
-                        <td><c:out value="${elem.manufacturer.name}"></c:out></td>
-                        <td><c:out value="6"></c:out></td>
-                        <td><c:out value="${elem.price}"></c:out></td>
-                        <td>
-                            <button class="btn btn-primary" onclick="deleteDrug(${elem.id},this)">Delete</button>
-                        </td>
+                            <td><c:out value="${elem.name}"></c:out></td>
+                            <td><c:out value="${elem.releaseForm.description}"></c:out></td>
+                            <td><c:out value="${elem.manufacturer.name}"></c:out></td>
+                            <td><c:out value="6"></c:out></td>
+                            <td><c:out value="${elem.price}"></c:out></td>
+                            <td>
+                                <button class="btn btn-primary" onclick="deleteDrugFromCart(${elem.id},this)">Delete
+                                </button>
+                            </td>
 
-                    </tr>
+                        </tr>
                     </c:forEach>
                     </tbody>
                 </table>
             </div>
+            <div class="row">
+                <div class="col-4 ml-auto">
+                    <div class="row">
+                        <div class="col-6">
+                            Total
+                        </div>
+                        <div class="col-6">
+                            346,90 €
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col mb-2">
             <div class="row">
-                <div class="col-sm-12  col-md-6">
-                    <button class="btn btn-block btn-light">Continue Shopping</button>
+                <div class="col-sm-12 col-md-6 text-right">
                 </div>
                 <div class="col-sm-12 col-md-6 text-right">
                     <button class="btn btn-lg btn-block btn-success text-uppercase">Checkout</button>

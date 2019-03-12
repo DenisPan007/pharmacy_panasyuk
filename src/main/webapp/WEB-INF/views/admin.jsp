@@ -61,7 +61,7 @@
                         alert(req.responseText);
                         var tdTag = button.parentElement;
                         var trTag = tdTag.parentElement;
-                      trTag.parentElement.removeChild(trTag);
+                        trTag.parentElement.removeChild(trTag);
                     }
                     else {
                         alert("can'not delete user");
