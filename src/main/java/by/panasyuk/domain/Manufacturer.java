@@ -4,13 +4,16 @@ import by.panasyuk.repository.Identified;
 
 import java.util.Objects;
 
-public class Manufacturer implements Identified<Integer> {
+public class Manufacturer implements Identified<Integer>  {
     private int id;
     private String name;
 
     public Manufacturer(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Manufacturer() {
     }
 
     @Override

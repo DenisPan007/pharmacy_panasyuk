@@ -73,4 +73,9 @@ public class JdbcRepositoryFactory implements RepositoryFactory {
                 repository.getClass().getInterfaces(),
                 new RepositoryInvocationHandler(repository));
     }
+
+    @Override
+    public <T extends Identified<PK>, PK extends Serializable> Repository<T, PK> getTransactionalRepository(Supplier<Repository<T, PK>> supplier) {
+        return supplier.get();
+    }
 }

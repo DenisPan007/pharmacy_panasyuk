@@ -1,4 +1,4 @@
-<%@ page  contentType="text/html;charset=UTF-8" %>
+<%@ page  contentType="text/html;charset=UTF-8"  %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -38,11 +38,11 @@
 </head>
 <body>
 <c:import url="header.jsp"/>
-<main role="main" class="container">6
-    <form method="POST" action="${pageContext.request.contextPath}/?command=signUp">
+<main role="main" class="container">
+    <form method="POST" action="${pageContext.request.contextPath}/?command=signUp" >
         <div class="form-group col-md-6 ">
-            <fmt:message key="placeholder.login" bundle="${ rb }" var="loginPlaceholder"/>
-            <input type="text" name="login" class="form-control" id="inputLogin" placeholder="${loginPlaceholder}" required/>
+            <label for="inputLogin"><fmt:message key="label.login" bundle="${ rb }" /></label>
+            <input type="text" name="login" class="form-control" id="inputLogin" placeholder=<fmt:message key="placeholder.login" bundle="${ rb }"/> required/>
             <c:choose>
                 <c:when test="${error!=null && error=='invalidLogin'}">
                     <div class="alert alert-danger" role="alert">
@@ -57,6 +57,7 @@
             </c:choose>
         </div>
         <div class="form-group col-md-6">
+            <label for="inputPassword"><fmt:message key="label.password" bundle="${ rb }" /></label>
             <fmt:message key="placeholder.password" bundle="${ rb }" var="passwordPlaceholder"/>
             <input type="password" name="password" class="form-control" id="inputPassword" placeholder=${passwordPlaceholder} required/>
             <c:if test="${error!=null && error=='invalidPassword'}">
@@ -64,6 +65,21 @@
                 <fmt:message key="alert.invalid-password" bundle="${ messageRb }" />
             </div>
             </c:if>
+        </div>
+        <div class="form-group col-md-6" >
+            <label for="inputName"><fmt:message key="label.name" bundle="${ rb }" /></label>
+            <input type="text" name="name" class="form-control" id="inputName"
+                   placeholder=<fmt:message key="placeholder.name" bundle="${ rb }" /> required/>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="inputLastName"><fmt:message key="label.lastname" bundle="${ rb }" /></label>
+            <input type="text" name="lastName" class="form-control" id="inputLastName"
+                   placeholder=<fmt:message key="placeholder.lastname" bundle="${ rb }" /> required/>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="inputAddress"><fmt:message key="label.address" bundle="${ rb }" /></label>
+            <input type="text" name="address" class="form-control" id="inputAddress"
+                   placeholder=<fmt:message key="placeholder.address" bundle="${ rb }" /> required/>
         </div>
         <div class="form-group col-md-6">
             <label for="inputEmail"><fmt:message key="placeholder.email" bundle="${ rb }" /></label>

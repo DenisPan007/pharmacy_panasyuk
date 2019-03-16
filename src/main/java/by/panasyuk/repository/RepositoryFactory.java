@@ -15,4 +15,5 @@ public interface RepositoryFactory {
      * @throws RepositoryException - should be clarify
      */
     <T extends Identified<PK>, PK extends Serializable> Repository<T, PK> getRepository(Supplier<Repository<T,PK>> supplier);
+    <T extends Identified<PK>, PK extends Serializable> Repository<T, PK> getTransactionalRepository(Supplier<Repository<T,PK>> supplier);
 }

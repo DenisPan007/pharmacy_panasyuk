@@ -9,8 +9,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class SignUpService extends UserService {
 
-    public User signUp(String login, String password, String email) throws ServiceException {
-        User user = new User(login, password, email);
+    public User signUp(String login, String password,String name, String lastName, String email) throws ServiceException {
+        User user = new User(login, password,name,lastName, email);
 
         try {
             return userRepository.add(user);

@@ -1,11 +1,9 @@
 package by.panasyuk.domain;
 
 import by.panasyuk.repository.Identified;
-import lombok.Data;
 
 import java.util.Objects;
 
-@Data
 public class User implements Identified<Integer> {
     private int id;
     private String login;
@@ -26,10 +24,12 @@ public class User implements Identified<Integer> {
         setRole(role);
     }
 
-    public User(String login, String password, String email) {
+    public User(String login, String password, String firstName, String lastName, String email) {
         this.login = login;
         this.password = password;
         this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
         setRole("client");
     }
     public User() {

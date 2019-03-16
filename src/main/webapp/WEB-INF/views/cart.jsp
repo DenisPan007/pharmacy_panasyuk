@@ -8,6 +8,7 @@
 <ctl:cookie name="cart" var="cart"/>
 <ctl:json jsonString="${cart}" var="drugList"/>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><fmt:message key="home.title" bundle="${ rb }"/></title>
     <!-- css for cart img -->
     <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
@@ -41,7 +42,16 @@
             /* prevent horizontal scrollbar */
             overflow-x: hidden;
         }
+        .modal-dialog {
+            position: relative;
+            display: table; /* This is important */
+            overflow-y: auto;
+            overflow-x: auto;
+            width: auto;
+            min-width: 300px;
+            max-width : 80% ;
 
+        }
         @media (min-width: 768px) {
             .bd-placeholder-img-lg {
                 font-size: 3.5rem;
@@ -76,7 +86,7 @@
             var cookieCartString = $.cookie('cart');
             var cookieCartJson = JSON.parse(decodeURIComponent(cookieCartString));
             for (var i = 0; i < cookieCartJson.length; ++i) {
-                if (cookieCartJson[i].id === id) {
+                if (cookieCartJson[i].drug.id === id) {
                     cookieCartJson.splice(i, 1);
                 }
             }
@@ -96,7 +106,7 @@
                 if (req.readyState === 4) {
                     if (req.status === 200) {
                         if (req.responseText === "true"){
-                            document.location.href = 'pharmacy/?command=toOrder';
+                            document.location.href = 'pharmacy/?command=makeOrder';
                         }
                         else{
                             alert("you need prescriptions for all drugs required it");
@@ -110,6 +120,11 @@
             req.open('POST', '/pharmacy/ajax', true);
             req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             req.send(body);
+        }
+    </script>
+    <script>
+        function getPrescription(id,button) {
+            alert("prescription test");
         }
     </script>
 
@@ -129,6 +144,7 @@
                         <th scope="col">Item</th>
                         <th scope="col">Release form</th>
                         <th scope="col">Manufacturer</th>
+                        <th scope="col">Prescription</th>
                         <th scope="col" class="text-center">Quantity</th>
                         <th scope="col" class="text-right">Price</th>
                         <th></th>
@@ -138,13 +154,25 @@
                     <c:forEach var="elem" items="${drugList}" varStatus="status">
                         <tr>
 
-                            <td><c:out value="${elem.name}"></c:out></td>
-                            <td><c:out value="${elem.releaseForm.description}"></c:out></td>
-                            <td><c:out value="${elem.manufacturer.name}"></c:out></td>
-                            <td><c:out value="6"></c:out></td>
-                            <td><c:out value="${elem.price}"></c:out></td>
+                            <td><c:out value="${elem.drug.name}"></c:out></td>
+                            <td><c:out value="${elem.drug.releaseForm.description}"></c:out></td>
+                            <td><c:out value="${elem.drug.manufacturer.name}"></c:out></td>
                             <td>
-                                <button class="btn btn-primary" onclick="deleteDrugFromCart(${elem.id},this)">Delete
+                                <c:choose>
+                                   <c:when test="${!elem.drug.isPrescriptionRequired}">
+                                       <fmt:message key="info.non-prescription" bundle="${ rb }" var="nonPrescription"/>
+                                    <c:out value="${nonPrescription}"></c:out>
+                                   </c:when>
+                                    <c:when test="${elem.drug.isPrescriptionRequired}">
+                                    <button class="btn btn-primary" onclick="getPrescription(${elem.drug.id},this)">Get
+                                    </c:when>
+                                </c:choose>
+
+                            </td>
+                            <td><c:out value="${elem.amount}"></c:out></td>
+                            <td><c:out value="${elem.drug.price}"></c:out></td>
+                            <td>
+                                <button class="btn btn-primary" onclick="deleteDrugFromCart(${elem.drug.id},this)">Delete
                                 </button>
                             </td>
 

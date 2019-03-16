@@ -15,16 +15,19 @@ import by.panasyuk.util.RoleEnum;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
 public class SignUp implements Command {
     @Override
     public String execute(HttpServletRequest req) throws CommandException {
         HttpSession session = req.getSession();
-
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         String email = req.getParameter("email");
+        String name = req.getParameter("name");
+        String lastName = req.getParameter("lastName");
+        String address = req.getParameter("address");
 
         ValidationService loginValidator = new LoginValidator();
         ValidationService passwordValidator = new PasswordValidator();
@@ -54,8 +57,8 @@ public class SignUp implements Command {
                 req.setAttribute("route", Router.Type.REDIRECT);
                 return PathManager.getProperty("redirect.sign.up")+"&error=reservedEmail";
             }
-                User user = signUpService.signUp(login, password, email);
-                session.setAttribute("login", login);
+                User user = signUpService.signUp(login, password, name,lastName,email);
+                session.setAttribute("user", user);
                 session.setAttribute("role", RoleEnum.valueOf(user.getRole()));
                 req.setAttribute("route", Router.Type.REDIRECT);
                 return PathManager.getProperty("redirect.account");

@@ -24,7 +24,6 @@ public class LocaleFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse)servletResponse;
         HttpSession session = request.getSession();
         String lang = request.getParameter("lang");
-        ServletRequestWrapper wrapper = new ServletRequestWrapper(request);
         if (lang!=null) {
             Cookie langCookie = new Cookie("lang",lang);
             response.addCookie(langCookie);

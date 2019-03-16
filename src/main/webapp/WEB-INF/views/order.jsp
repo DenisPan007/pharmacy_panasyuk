@@ -8,8 +8,11 @@
     <title><fmt:message key="home.title" bundle="${ rb }"/></title>
     <!-- css for cart img -->
     <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
-    <link href="/pharmacy/css/bootstrap.min.css" rel="stylesheet">
+    
+	<link href="/pharmacy/css/bootstrap.min.css" rel="stylesheet">
     <link href="/pharmacy/css/starter-template.css" rel="stylesheet">
+	<!--for checkout form -->
+	<link href="/pharmacy/css/checkout_form.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
@@ -78,6 +81,12 @@
         return xmlHttpReq;
     }
     </script>
+    <script>
+        function pay() {
+            alert("stop");
+
+        }
+    </script>
 
 </head>
 <body>
@@ -85,11 +94,64 @@
 <c:import url="header.jsp"/>
 
 <main role="main" class="container">
-    <div class="starter-template">
-        <p class="lead">
-           ORDER
-        </p>
+    <div class="row">
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Item</th>
+                <th scope="col">Release form</th>
+                <th scope="col">Manufacturer</th>
+                <th scope="col" class="text-center">Quantity</th>
+                <th scope="col" class="text-right">Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="elem" items="${order.itemList}" varStatus="status">
+                <tr>
+
+                    <td><c:out value="${elem.drug.name}"></c:out></td>
+                    <td><c:out value="${elem.drug.releaseForm.description}"></c:out></td>
+                    <td><c:out value="${elem.drug.manufacturer.name}"></c:out></td>
+                    <td><c:out value="${elem.amount}"></c:out></td>
+                    <td><c:out value="${elem.drug.price}"></c:out></td>
+
+                </tr>
+            </c:forEach>
+            total : ${order.price}
+            </tbody>
+        </table>
     </div>
+    <div class="row" >
+        <div class="col-6">
+            <form class="row form-check" action="${pageContext.request.contextPath}/">
+                <input type="hidden" name="command" value="pay">
+                <div class="form-group col-sm-7">
+                    <label for="card-holder">Card Holder</label>
+                    <input id="card-holder" type="text" class="form-control" placeholder="Card Holder" aria-label="Card Holder" aria-describedby="basic-addon1">
+                </div>
+                <div class="form-group col-sm-5">
+                    <label >Expiration Date</label>
+                    <div class="input-group expiration-date">
+                        <input type="text" class="form-control" placeholder="MM" aria-label="MM" aria-describedby="basic-addon1">
+                        <span class="date-separator">/</span>
+                        <input type="text" class="form-control" placeholder="YY" aria-label="YY" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div class="form-group col-sm-8">
+                    <label for="card-number">Card Number</label>
+                    <input id="card-number" type="text" class="form-control" placeholder="Card Number" aria-label="Card Holder" aria-describedby="basic-addon1">
+                </div>
+                <div class="form-group col-sm-4">
+                    <label for="cvc">CVC</label>
+                    <input id="cvc" type="text" class="form-control" placeholder="CVC" aria-label="Card Holder" aria-describedby="basic-addon1">
+                </div>
+
+                    <button type="submit" class="btn btn-primary btn-block" onclick="pay()">Proceed</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
 </main>
 </body>

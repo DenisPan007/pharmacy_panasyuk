@@ -2,27 +2,39 @@ package by.panasyuk.controller.command.redirect;
 
 import by.panasyuk.controller.command.Command;
 import by.panasyuk.controller.command.CommandException;
+import by.panasyuk.domain.Order;
+import by.panasyuk.domain.User;
+import by.panasyuk.service.OrderService;
 import by.panasyuk.util.RoleEnum;
 import by.panasyuk.controller.command.Router;
 import by.panasyuk.util.PathManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 public class ToAccount implements Command,RedirectCommand{
+    private HttpSession session;
+    private void userDataPrepare(HttpServletRequest request) throws CommandException {
+        OrderService service = new OrderService();
+        User user = (User)session.getAttribute("user");
+        List<Order> orderList = service.getAllUserOrders(user.getId());
+        request.setAttribute("orderList",orderList);
+    }
     @Override
-    public String execute(HttpServletRequest req) throws CommandException {
-        HttpSession session = req.getSession();
+    public String execute(HttpServletRequest request) throws CommandException {
+        session = request.getSession();
         RoleEnum role = (RoleEnum)session.getAttribute("role");
         switch (role) {
             case ADMIN:
-                req.setAttribute("route", Router.Type.REDIRECT);
+                request.setAttribute("route", Router.Type.REDIRECT);
                 return PathManager.getProperty("redirect.admin");
             case CLIENT:
-                req.setAttribute("route", Router.Type.FORWARD);
+                userDataPrepare(request);
+                request.setAttribute("route", Router.Type.FORWARD);
                 return PathManager.getProperty("forward.account");
             case GUEST:
-                req.setAttribute("route", Router.Type.FORWARD);
+                request.setAttribute("route", Router.Type.FORWARD);
                 return PathManager.getProperty("forward.login");
             default:
                 throw new CommandException();

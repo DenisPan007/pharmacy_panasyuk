@@ -6,28 +6,27 @@ import by.panasyuk.repository.exception.ConnectionPoolException;
 import by.panasyuk.repository.exception.RepositoryException;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
- * Implementation of transaction with DAO
+ * Implementation of transaction with Repository
  */
 public final class TransactionManager {
-    private Connection proxyConnection;
+    private Connection connection;
 
-    public void begin(Repository dao, Repository... daos) throws RepositoryException, InterruptedException, ConnectionPoolException {
-
+    public void begin( Repository... repositories) throws RepositoryException{
+        try{
         ConnectionPool connectionPool = ConnectionPool.getInstance();
 
+        connection = connectionPool.getConnection();
+            connection.setAutoCommit(false);
+        for(int i = 0;i<repositories.length;i++) {
+            setConnection(repositories[i], connection);
+        }
 
-            proxyConnection = connectionPool.getConnection();
-            setConnection(dao, proxyConnection);
-
-        //} catch (ConnectionPoolException e) {
-        //    throw new RepositoryException("Failed to get a connection from CP.", e);
-        //}
-
-        //provide your code here
-
-        throw new UnsupportedOperationException();
+        } catch (ConnectionPoolException |SQLException e) {
+            throw new RepositoryException("Failed to get a connection from CP.", e);
+        }
     }
 
     public void end() {
@@ -37,18 +36,23 @@ public final class TransactionManager {
         throw new UnsupportedOperationException();
     }
 
-    public void commit() {
+    public void commit()  throws RepositoryException {
 
-        //provide your code here
-
-        throw new UnsupportedOperationException();
+        try {
+            connection.commit();
+        } catch (SQLException e) {
+            throw new RepositoryException("Failed to commit.", e);
+        }
     }
 
-    public void rollback() {
+    public void rollback() throws RepositoryException {
 
-        //provide your code here
+        try {
+            connection.rollback();
+        } catch (SQLException e) {
+            throw new RepositoryException("Failed to rollBack.", e);
+        }
 
-        throw new UnsupportedOperationException();
     }
 
 

@@ -73,6 +73,7 @@
                         <th scope="col">Item</th>
                         <th scope="col">Release form</th>
                         <th scope="col">Manufacturer</th>
+                        <th scope="col">Prescription</th>
                         <th scope="col" class="text-center">Quantity</th>
                         <th scope="col" class="text-right">Price</th>
                         <th></th>
@@ -99,24 +100,40 @@
         var trHTML = '';
         $('#tbodyTagModal').empty();
         $.each(drugList, function (i, item) {
-            trHTML = '<tr><td>' + item.name +'</td><td>'
-                + item.releaseForm.description + '</td><td>'
-                + item.manufacturer.name + '</td><td>'
-                + 5 + '</td><td>'
-                + item.price + '</td><td>'
-                + '<button class="btn btn-primary" >Add to cart</button>' + '</td></tr>';
+            trHTML = '<tr><td>' + item.drug.name +'</td><td>'
+                + item.drug.releaseForm.description + '</td><td>'
+                + item.drug.manufacturer.name + '</td><td>'
+                +item.drug.isPrescriptionRequired + '</td><td>'
+                + '<div class="col-12 m-0">'
+                + '<input type="number" class="count form-control"  value="1" max="100" min="1" >'
+                + '</div>' + '</td><td>'
+                + item.drug.price + '</td><td>'
+                + '<button class="btn btn-primary ">Add to cart</button>' + '</td></tr>';
             $('#tbodyTagModal').append(trHTML);
-            var trTag = document.getElementById('tbodyTagModal');
-            var buttonTag = trTag.lastChild;
+            var tbodyTagModal = document.getElementById('tbodyTagModal');
+
+            var trButtonTag = tbodyTagModal.lastChild;
+            var thButtonTag = trButtonTag.lastChild;
+            var buttonTag = thButtonTag.lastChild;
             var newCookieJson;
             buttonTag.onclick = function() {
+                var inputTag = thButtonTag.previousSibling.previousSibling.lastChild.lastChild;
+                var amount = inputTag.value;
+                if(amount <= 0){
+                    $(inputTag).addClass( "border-danger" );
+                    $(inputTag).focus((function() {
+                        $(inputTag).removeClass( "border-danger" );
+                    }));
+                    return;
+                }
+                    item.amount=amount;
                 var cookieCartString = $.cookie('cart');
+                var trigger = true;
                 if (cookieCartString != null) {
                     var cookieCartJson = JSON.parse(decodeURIComponent(cookieCartString));
-                    var trigger = true;
-                    //alert('old cookies   :' + cookieCartString);
+                   // alert('old cookies   :' + cookieCartString);
                     for (var i = 0; i < cookieCartJson.length; ++i) {
-                        if (cookieCartJson[i].id === item.id) {
+                        if (cookieCartJson[i].drug.id === item.drug.id) {
                            trigger = false;
                         }
                     }
@@ -130,36 +147,43 @@
                     newCookieJson.push(item);
                 }
             var newCookieString = JSON.stringify(newCookieJson);
-              // alert(decodeURIComponent('to cookies   :' + newCookieString));
                $.cookie('cart',newCookieString);
                 var tbodyTag = $('#tbodyTagCart');
-                if(tbodyTag !==null){
-                    trHTML = '<tr><td>' + item.name + '</td><td>'
-                        + item.releaseForm.description + '</td><td>'
-                        + item.manufacturer.name + '</td><td>'
-                        + 5 + '</td><td>'
-                        + item.price + '</td><td>'
+                if(tbodyTag !==null && trigger){
+                    buttonGetPrescription = '<button class="btn btn-primary" >Get</button>' + '</td><td>';
+                    notRequired = 'Not required' + '</td><td>';
+                    trHTML = '<tr><td>' + item.drug.name + '</td><td>'
+                        + item.drug.releaseForm.description + '</td><td>'
+                        + item.drug.manufacturer.name + '</td><td>'
+                        + (item.drug.isPrescriptionRequired ? buttonGetPrescription :notRequired )
+                        + item.amount + '</td><td>'
+                        + item.drug.price + '</td><td>'
                         + '<button class="btn btn-primary" >Delete</button>' + '</td></tr>';
                     tbodyTag.append(trHTML);
                     tbodyTag = document.getElementById('tbodyTagCart');
-                    var tr1Tag = tbodyTag.lastChild;
-                    var buttonTdTag = tr1Tag.lastChild;
-                    var button1Tag = buttonTdTag.lastChild;
-                    alert(button1Tag);
-                    buttonTdTag.onclick = function () {
-                        deleteDrugFromCart(item.id, button1Tag);
+                    var trJustAdd = tbodyTag.lastChild;
+                    var tdButtonDeleteTag = trJustAdd.lastChild;
+                    var buttonDeleteTag = tdButtonDeleteTag.lastChild;
+                    buttonDeleteTag.onclick = function () {
+                        deleteDrugFromCart(item.drug.id, buttonDeleteTag);
+                    }
+                    if(item.drug.isPrescriptionRequired){
+                        var tdButtonGetTag = trJustAdd.lastChild.previousSibling.previousSibling.previousSibling;
+                        var buttonGetTag = tdButtonGetTag.lastChild;
+                        buttonGetTag.onclick = function () {
+                            getPrescription(item.drug.id, buttonGetTag);
+                        }
                     }
                 }
+                $("#myModal").modal('hide');
             };
 
         });
         $("#myModal").modal();
     }
-</script>
-
-<script>
 
 </script>
+
 <script>
     function getDrugsByName(drugName) {
         var body = 'command=' + encodeURIComponent("getDrugsByName") + '&name=' + encodeURIComponent(drugName);
