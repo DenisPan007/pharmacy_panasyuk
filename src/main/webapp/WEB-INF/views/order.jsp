@@ -125,6 +125,7 @@
         <div class="col-6">
             <form class="row form-check" action="${pageContext.request.contextPath}/">
                 <input type="hidden" name="command" value="pay">
+                <input type="hidden" name="orderId" value="${order.id}">
                 <div class="form-group col-sm-7">
                     <label for="card-holder">Card Holder</label>
                     <input id="card-holder" type="text" class="form-control" placeholder="Card Holder" aria-label="Card Holder" aria-describedby="basic-addon1">

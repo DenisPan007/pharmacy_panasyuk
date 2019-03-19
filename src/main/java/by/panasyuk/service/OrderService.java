@@ -12,6 +12,7 @@ import by.panasyuk.repository.impl.OrderRepository;
 import by.panasyuk.repository.impl.TransactionManager;
 import by.panasyuk.repository.specification.Specification;
 import by.panasyuk.repository.specification.order.GetAllOrders;
+import by.panasyuk.repository.specification.order.GetOrderById;
 import by.panasyuk.repository.specification.order.GetOrdersByUserId;
 import by.panasyuk.service.exception.ServiceException;
 
@@ -23,6 +24,20 @@ public class OrderService {
     private Repository<Order, Integer> orderTransactionalRepository = repositoryFactory.getTransactionalRepository(OrderRepository::new);
     private Repository<Item, Integer> itemTransactionalRepository = repositoryFactory.getTransactionalRepository(ItemRepository::new);
 
+    public Order getOrderById(int id) throws ServiceException {
+        Order order = new Order();
+        order.setId(id);
+        List<Order> orderList = null;
+        try {
+            orderList = orderRepository.getQuery(order,new GetOrderById());
+            if(orderList.isEmpty()){
+                return null;
+            }
+            return orderList.get(0);
+        } catch (RepositoryException e) {
+            throw  new ServiceException(e);
+        }
+    }
     public Order addOrder(Order order) throws ServiceException {
         TransactionManager manager = new TransactionManager();
         List<Item> itemList = order.getItemList();
