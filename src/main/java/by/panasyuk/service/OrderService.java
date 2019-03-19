@@ -19,9 +19,9 @@ import java.util.List;
 
 public class OrderService {
     private RepositoryFactory repositoryFactory = JdbcRepositoryFactory.getInstance();
+    private Repository<Order, Integer> orderRepository = repositoryFactory.getRepository(OrderRepository::new);
     private Repository<Order, Integer> orderTransactionalRepository = repositoryFactory.getTransactionalRepository(OrderRepository::new);
     private Repository<Item, Integer> itemTransactionalRepository = repositoryFactory.getTransactionalRepository(ItemRepository::new);
-    Repository<Order, Integer> orderRepository = repositoryFactory.getRepository(OrderRepository::new);
 
     public Order addOrder(Order order) throws ServiceException {
         TransactionManager manager = new TransactionManager();
@@ -50,14 +50,14 @@ public class OrderService {
             throw new ServiceException(e);
         }
     }
-    public List<Order> getAllUserOrders(int userId) throws CommandException {
+    public List<Order> getAllUserOrders(int userId) throws ServiceException {
         Specification<Order> spec = new GetOrdersByUserId();
         try {
             Order order = new Order();
             order.setUserId(userId);
            return orderRepository.getQuery(order,spec);
         } catch (RepositoryException e) {
-            throw new CommandException(e);
+            throw new ServiceException(e);
         }
     }
 }

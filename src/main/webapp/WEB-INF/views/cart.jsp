@@ -8,7 +8,6 @@
 <ctl:cookie name="cart" var="cart"/>
 <ctl:json jsonString="${cart}" var="drugList"/>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><fmt:message key="home.title" bundle="${ rb }"/></title>
     <!-- css for cart img -->
     <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
@@ -32,9 +31,6 @@
             user-select: none;
         }
 
-        .navbar {
-            z-index: inherit;
-        }
 
         .ui-autocomplete {
             max-height: 200px;
@@ -124,7 +120,22 @@
     </script>
     <script>
         function getPrescription(id,button) {
-            alert("prescription test");
+            var body = 'command=' + encodeURIComponent("getPrescription") + '&drugId=' + encodeURIComponent(id);
+            var req = getXMLHttpRequest();
+            req.onreadystatechange = function () {
+                if (req.readyState === 4) {
+                    if (req.status === 200) {
+                        alert('your query has been made' + req.responseText);
+                        $(button).removeAttr("onclick");
+                    }
+                    else {
+                        alert("can't get prescription ");
+                    }
+                }
+            };
+            req.open('POST', '/pharmacy/ajax', true);
+            req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            req.send(body);
         }
     </script>
 

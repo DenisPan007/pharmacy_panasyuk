@@ -5,7 +5,7 @@ import by.panasyuk.repository.Identified;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class ReleaseForm implements Identified {
+public class ReleaseForm implements Identified<Integer> {
     private int id;
     private String description;
 
@@ -18,7 +18,7 @@ public class ReleaseForm implements Identified {
     }
 
     @Override
-    public Serializable getId() {
+    public Integer getId() {
         return id;
     }
 

@@ -37,6 +37,9 @@ public class CommandProvider {
         commandMap.put("toOrder", new ToOrder());
         commandMap.put("makeOrder", new MakeOrder());
         commandMap.put("pay", new Pay());
+        commandMap.put("getPrescription", new RequestPrescription());
+        commandMap.put("getDrugsInfo", new GetDrugsInfo());
+        commandMap.put("addDrug", new AddDrug());
     }
 
     /**

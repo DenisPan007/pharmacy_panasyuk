@@ -17,13 +17,15 @@ public class DrugRepository extends AbstractJdbcRepository<Drug, Integer> implem
     @AutoConnection
     @Override
     public Drug add(Drug drug) throws RepositoryException {
-        String query = "INSERT INTO drug (name,isPrescriptionRequired,price) " +
-                "VALUES(?,?,?)";
+        String query = "INSERT INTO drug (name,is_prescription_required,price,release_form_id,manufacturer_id) " +
+                "VALUES(?,?,?,?,?)";
         try {
             PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, drug.getName());
             ps.setBoolean(2, drug.getIsPrescriptionRequired());
             ps.setInt(3, drug.getPrice());
+            ps.setInt(4, drug.getReleaseForm().getId());
+            ps.setInt(5, drug.getManufacturer().getId());
             ps.executeUpdate();
             ResultSet keys = ps.getGeneratedKeys();
             keys.next();

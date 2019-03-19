@@ -13,11 +13,11 @@ import java.sql.SQLException;
  */
 public final class TransactionManager {
     private Connection connection;
+    private ConnectionPool connectionPool;
 
     public void begin( Repository... repositories) throws RepositoryException{
         try{
-        ConnectionPool connectionPool = ConnectionPool.getInstance();
-
+        connectionPool = ConnectionPool.getInstance();
         connection = connectionPool.getConnection();
             connection.setAutoCommit(false);
         for(int i = 0;i<repositories.length;i++) {
@@ -30,10 +30,7 @@ public final class TransactionManager {
     }
 
     public void end() {
-
-        //provide your code here
-
-        throw new UnsupportedOperationException();
+        connectionPool.releaseConnection(connection);
     }
 
     public void commit()  throws RepositoryException {

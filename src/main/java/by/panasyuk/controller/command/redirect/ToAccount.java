@@ -3,8 +3,11 @@ package by.panasyuk.controller.command.redirect;
 import by.panasyuk.controller.command.Command;
 import by.panasyuk.controller.command.CommandException;
 import by.panasyuk.domain.Order;
+import by.panasyuk.domain.Prescription;
 import by.panasyuk.domain.User;
 import by.panasyuk.service.OrderService;
+import by.panasyuk.service.exception.ServiceException;
+import by.panasyuk.service.prescription.PrescriptionService;
 import by.panasyuk.util.RoleEnum;
 import by.panasyuk.controller.command.Router;
 import by.panasyuk.util.PathManager;
@@ -18,8 +21,24 @@ public class ToAccount implements Command,RedirectCommand{
     private void userDataPrepare(HttpServletRequest request) throws CommandException {
         OrderService service = new OrderService();
         User user = (User)session.getAttribute("user");
-        List<Order> orderList = service.getAllUserOrders(user.getId());
-        request.setAttribute("orderList",orderList);
+        List<Order> orderList = null;
+        try {
+            orderList = service.getAllUserOrders(user.getId());
+            request.setAttribute("orderList",orderList);
+        } catch (ServiceException e) {
+            throw new CommandException(e);
+        }
+    }
+    private void doctorDataPrepare(HttpServletRequest request) throws CommandException {
+        PrescriptionService service = new PrescriptionService();
+        User user = (User)session.getAttribute("user");
+        List<Prescription> prescriptionList = null;
+        try {
+            prescriptionList = service.getAllDoctorPrescriptions(user.getId());
+            request.setAttribute("prescriptionList",prescriptionList);
+        } catch (ServiceException e) {
+            throw new CommandException(e);
+        }
     }
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
@@ -29,6 +48,10 @@ public class ToAccount implements Command,RedirectCommand{
             case ADMIN:
                 request.setAttribute("route", Router.Type.REDIRECT);
                 return PathManager.getProperty("redirect.admin");
+            case DOCTOR:
+               doctorDataPrepare(request);
+                request.setAttribute("route", Router.Type.FORWARD);
+                return PathManager.getProperty("forward.doctor");
             case CLIENT:
                 userDataPrepare(request);
                 request.setAttribute("route", Router.Type.FORWARD);

@@ -21,6 +21,14 @@ public class Drug implements Identified<Integer> {
         this.releaseForm = releaseForm;
     }
 
+    public Drug(String name, boolean isPrescriptionRequired, int price, Manufacturer manufacturer, ReleaseForm releaseForm) {
+        this.name = name;
+        this.isPrescriptionRequired = isPrescriptionRequired;
+        this.price = price;
+        this.manufacturer = manufacturer;
+        this.releaseForm = releaseForm;
+    }
+
     public Drug() {
     }
 
