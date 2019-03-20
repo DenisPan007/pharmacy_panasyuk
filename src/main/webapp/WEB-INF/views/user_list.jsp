@@ -12,39 +12,41 @@
 
             <!-- Modal body -->
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <label>Login</label>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Login</label>
+                        </div>
+                        <div class="col-md-6" id="inputLogin">
+                        </div>
                     </div>
-                    <div class="col-md-6" id="inputLogin">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Name</label>
+                        </div>
+                        <div class="col-md-6" id="inputUserName">
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label>Name</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>lastname</label>
+                        </div>
+                        <div class="col-md-6" id="inputLastName">
+                        </div>
                     </div>
-                    <div class="col-md-6" id="inputUserName">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Email</label>
+                        </div>
+                        <div id="inputEmail" class="col-md-6">
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label>lastname</label>
-                    </div>
-                    <div class="col-md-6" id="inputLastName">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label>Email</label>
-                    </div>
-                    <div id="inputEmail" class="col-md-6">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label>Role</label>
-                    </div>
-                    <div id="inputRole" class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Role</label>
+                        </div>
+                        <div id="inputRole" class="col-md-6">
+                        </div>
                     </div>
                 </div>
             </div>

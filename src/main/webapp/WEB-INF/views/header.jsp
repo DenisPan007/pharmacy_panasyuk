@@ -56,7 +56,7 @@
 
 </nav>
 <div class="modal fade " id="myModal" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog search-result-in-table">
         <div class="modal-content">
 
             <!-- Modal Header -->

@@ -416,7 +416,7 @@ function showUserDetails(id, button) {
                 $("#inputLogin").empty().append(document.createTextNode(userJson.login));
                 $("#inputUserName").empty().append(document.createTextNode(userJson.firstName));
                 $("#inputLastName").empty().append(document.createTextNode(userJson.lastName));
-                $("#inputEmail").empty().append(document.createTextNode(userJson.name));
+                $("#inputEmail").empty().append(document.createTextNode(userJson.email));
                 $("#inputRole").empty().append(document.createTextNode(userJson.role));
                 var deleteButton = document.getElementById('deleteButton');
                 deleteButton.onclick = function () {

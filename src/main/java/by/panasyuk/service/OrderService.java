@@ -1,18 +1,16 @@
 package by.panasyuk.service;
 
-import by.panasyuk.controller.command.CommandException;
 import by.panasyuk.domain.Item;
 import by.panasyuk.domain.Order;
 import by.panasyuk.repository.Repository;
 import by.panasyuk.repository.RepositoryFactory;
 import by.panasyuk.repository.exception.RepositoryException;
-import by.panasyuk.repository.impl.JdbcRepositoryFactory;
 import by.panasyuk.repository.impl.ItemRepository;
+import by.panasyuk.repository.impl.JdbcRepositoryFactory;
 import by.panasyuk.repository.impl.OrderRepository;
 import by.panasyuk.repository.impl.TransactionManager;
 import by.panasyuk.repository.specification.Specification;
 import by.panasyuk.repository.specification.item.GetItemsByOrderId;
-import by.panasyuk.repository.specification.order.GetAllOrders;
 import by.panasyuk.repository.specification.order.GetOrderById;
 import by.panasyuk.repository.specification.order.GetOrdersByUserId;
 import by.panasyuk.service.exception.ServiceException;
@@ -33,27 +31,37 @@ public class OrderService {
             throw new ServiceException(e);
         }
     }
+
     public Order getOrderById(int id) throws ServiceException {
         Order order = new Order();
         order.setId(id);
         List<Order> orderList = null;
         TransactionManager manager = new TransactionManager();
         try {
-            manager.begin(orderTransactionalRepository,itemTransactionalRepository);
-            orderList = orderRepository.getQuery(order,new GetOrderById());
-            if(orderList.isEmpty()){
+            manager.begin(orderTransactionalRepository, itemTransactionalRepository);
+            orderList = orderRepository.getQuery(order, new GetOrderById());
+            if (orderList.isEmpty()) {
                 return null;
             }
-            Order resultOrder =  orderList.get(0);
+            Order resultOrder = orderList.get(0);
             Item item = new Item();
             item.setOrderId(resultOrder.getId());
-            List<Item> itemList = itemTransactionalRepository.getQuery(item,new GetItemsByOrderId());
+            List<Item> itemList = itemTransactionalRepository.getQuery(item, new GetItemsByOrderId());
             resultOrder.setItemList(itemList);
+            manager.end();
             return resultOrder;
         } catch (RepositoryException e) {
-            throw  new ServiceException(e);
+            try {
+                manager.rollback();
+            } catch (RepositoryException e1) {
+                throw new ServiceException(e1);
+            }
+            throw new ServiceException(e);
+        } finally {
+            manager.end();
         }
     }
+
     public Order addOrder(Order order) throws ServiceException {
         TransactionManager manager = new TransactionManager();
         List<Item> itemList = order.getItemList();
@@ -66,12 +74,18 @@ public class OrderService {
             }
             manager.commit();
             return order;
-
-
         } catch (RepositoryException e) {
+            try {
+                manager.rollback();
+            } catch (RepositoryException e1) {
+                throw new ServiceException(e1);
+            }
             throw new ServiceException(e);
+        } finally {
+            manager.end();
         }
     }
+
     public void pay(Order order) throws ServiceException {
 
         try {
@@ -81,12 +95,13 @@ public class OrderService {
             throw new ServiceException(e);
         }
     }
+
     public List<Order> getAllUserOrders(int userId) throws ServiceException {
         Specification<Order> spec = new GetOrdersByUserId();
         try {
             Order order = new Order();
             order.setUserId(userId);
-           return orderRepository.getQuery(order,spec);
+            return orderRepository.getQuery(order, spec);
         } catch (RepositoryException e) {
             throw new ServiceException(e);
         }
