@@ -50,6 +50,10 @@ public class ItemRepository extends AbstractJdbcRepository<Item, Integer> implem
     @AutoConnection
     @Override
     public List<Item> getQuery(Item obj, Specification<Item> spec) throws RepositoryException {
-        return null;
+        try {
+            return spec.get(obj, connection);
+        } catch (SQLException e) {
+            throw new RepositoryException("prepared statement failed", e);
+        }
     }
 }

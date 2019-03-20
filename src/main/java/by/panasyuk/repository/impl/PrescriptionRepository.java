@@ -21,8 +21,8 @@ public class PrescriptionRepository extends AbstractJdbcRepository<Prescription,
                 "VALUES(?,?,?,?,?,?)";
         try (PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
             ps.setString(1, prescription.getDescription());
-            ps.setLong(2, prescription.getIssueDate());
-            ps.setLong(3, prescription.getValidityDate());
+            ps.setDate(2, prescription.getIssueDate());
+            ps.setDate(3, prescription.getValidityDate());
             ps.setInt(4, prescription.getDrugId());
             ps.setInt(5, prescription.getDoctorId());
             ps.setInt(6, prescription.getUserId());
@@ -39,8 +39,22 @@ public class PrescriptionRepository extends AbstractJdbcRepository<Prescription,
     }
     @AutoConnection
     @Override
-    public void update(Prescription object) throws RepositoryException {
-
+    public void update(Prescription prescription) throws RepositoryException {
+        String query = "UPDATE  prescription " +
+                "SET description=?,issue_date=?,validity_date=?,drug_id=?,doctor_id=?,user_id=? " +
+                "where id =? ";
+        try (PreparedStatement ps = connection.prepareStatement(query)){
+            ps.setString(1, prescription.getDescription());
+            ps.setDate(2, prescription.getIssueDate());
+            ps.setDate(3, prescription.getValidityDate());
+            ps.setInt(4, prescription.getDrugId());
+            ps.setInt(5, prescription.getDoctorId());
+            ps.setInt(6, prescription.getUserId());
+            ps.setInt(7, prescription.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RepositoryException("prepared statement failed", e);
+        }
     }
     @AutoConnection
     @Override

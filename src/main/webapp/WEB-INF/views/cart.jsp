@@ -38,6 +38,7 @@
             /* prevent horizontal scrollbar */
             overflow-x: hidden;
         }
+
         .modal-dialog {
             position: relative;
             display: table; /* This is important */
@@ -45,9 +46,10 @@
             overflow-x: auto;
             width: auto;
             min-width: 300px;
-            max-width : 80% ;
+            max-width: 80%;
 
         }
+
         @media (min-width: 768px) {
             .bd-placeholder-img-lg {
                 font-size: 3.5rem;
@@ -96,19 +98,17 @@
     </script>
     <script>
         function checkout() {
-            var body = 'command=' + encodeURIComponent("isUserHavePrescription");
+            var body = 'command=' + encodeURIComponent("isUserLogin");
             var req = getXMLHttpRequest();
             req.onreadystatechange = function () {
                 if (req.readyState === 4) {
                     if (req.status === 200) {
-                        if (req.responseText === "true"){
+                        if (req.responseText === "true") {
                             document.location.href = 'pharmacy/?command=makeOrder';
+                        } else {
+                                document.location.href = 'pharmacy/?command=toLogin';
                         }
-                        else{
-                            alert("you need prescriptions for all drugs required it");
-                        }
-                    }
-                    else {
+                    } else {
                         alert("can't get response ");
                     }
                 }
@@ -119,7 +119,7 @@
         }
     </script>
     <script>
-        function getPrescription(id,button) {
+        function getPrescription(id, button) {
             var body = 'command=' + encodeURIComponent("getPrescription") + '&drugId=' + encodeURIComponent(id);
             var req = getXMLHttpRequest();
             req.onreadystatechange = function () {
@@ -127,8 +127,7 @@
                     if (req.status === 200) {
                         alert('your query has been made' + req.responseText);
                         $(button).removeAttr("onclick");
-                    }
-                    else {
+                    } else {
                         alert("can't get prescription ");
                     }
                 }
@@ -170,20 +169,21 @@
                             <td><c:out value="${elem.drug.manufacturer.name}"></c:out></td>
                             <td>
                                 <c:choose>
-                                   <c:when test="${!elem.drug.isPrescriptionRequired}">
-                                       <fmt:message key="info.non-prescription" bundle="${ rb }" var="nonPrescription"/>
+                                <c:when test="${!elem.drug.isPrescriptionRequired}">
+                                    <fmt:message key="info.non-prescription" bundle="${ rb }" var="nonPrescription"/>
                                     <c:out value="${nonPrescription}"></c:out>
-                                   </c:when>
-                                    <c:when test="${elem.drug.isPrescriptionRequired}">
-                                    <button class="btn btn-primary" onclick="getPrescription(${elem.drug.id},this)">Get
+                                </c:when>
+                                <c:when test="${elem.drug.isPrescriptionRequired}">
+                                <button class="btn btn-primary" onclick="getPrescription(${elem.drug.id},this)">Get
                                     </c:when>
-                                </c:choose>
+                                    </c:choose>
 
                             </td>
                             <td><c:out value="${elem.amount}"></c:out></td>
                             <td><c:out value="${elem.drug.price}"></c:out></td>
                             <td>
-                                <button class="btn btn-primary" onclick="deleteDrugFromCart(${elem.drug.id},this)">Delete
+                                <button class="btn btn-primary" onclick="deleteDrugFromCart(${elem.drug.id},this)">
+                                    Delete
                                 </button>
                             </td>
 

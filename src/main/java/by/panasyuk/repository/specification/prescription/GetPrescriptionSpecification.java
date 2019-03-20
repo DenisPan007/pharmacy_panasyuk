@@ -15,8 +15,8 @@ public interface GetPrescriptionSpecification extends Specification<Prescription
             Prescription resultPrescription = new Prescription();
             resultPrescription.setId(resultSet.getInt(1));
             resultPrescription.setDescription(resultSet.getString(2));
-            resultPrescription.setIssueDate(resultSet.getLong(3));
-            resultPrescription.setValidityDate(resultSet.getLong(4));
+            resultPrescription.setIssueDate(resultSet.getDate(3));
+            resultPrescription.setValidityDate(resultSet.getDate(4));
             resultPrescription.setDrugId(resultSet.getInt(5));
             resultPrescription.setDoctorId(resultSet.getInt(6));
             resultPrescription.setUserId(resultSet.getInt(7));

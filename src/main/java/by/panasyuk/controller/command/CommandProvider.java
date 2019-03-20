@@ -33,13 +33,16 @@ public class CommandProvider {
         commandMap.put("toForgotPassword", new ToForgotPassword());
         commandMap.put("toCart", new ToCart());
         commandMap.put("getDrugsByName", new GetDrugsByName());
-        commandMap.put("isUserHavePrescription", new IsUserHavePrescription());
+        commandMap.put("isUserLogin", new IsUserLogin());
         commandMap.put("toOrder", new ToOrder());
         commandMap.put("makeOrder", new MakeOrder());
         commandMap.put("pay", new Pay());
         commandMap.put("getPrescription", new RequestPrescription());
         commandMap.put("getDrugsInfo", new GetDrugsInfo());
         commandMap.put("addDrug", new AddDrug());
+        commandMap.put("confirmReceipt", new ConfirmReceipt());
+        commandMap.put("givePrescription", new GivePrescription());
+        commandMap.put("getUserById", new GetUserById());
     }
 
     /**

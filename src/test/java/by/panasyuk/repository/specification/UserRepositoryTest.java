@@ -6,7 +6,7 @@ import by.panasyuk.repository.exception.RepositoryException;
 import by.panasyuk.repository.impl.JdbcRepositoryFactory;
 import by.panasyuk.repository.impl.UserRepository;
 import by.panasyuk.repository.specification.user.GetByEmail;
-import by.panasyuk.repository.specification.user.GetById;
+import by.panasyuk.repository.specification.user.GetUserById;
 import by.panasyuk.repository.specification.user.GetByLogin;
 import by.panasyuk.domain.User;
 import org.junit.*;
@@ -92,7 +92,7 @@ public class UserRepositoryTest {
     @Test
     public void getById() throws RepositoryException, SQLException {
         User user = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client");
-        Specification<User> spec = new GetById();
+        Specification<User> spec = new GetUserById();
         User expectedUser1 = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client");
         List<User> expectedList = new ArrayList<>(Arrays.asList(expectedUser1));
         List<User> actualList = getBySpecification(user, spec);

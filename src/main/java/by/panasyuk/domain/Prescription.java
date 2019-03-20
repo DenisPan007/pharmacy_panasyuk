@@ -2,16 +2,24 @@ package by.panasyuk.domain;
 
 import by.panasyuk.repository.Identified;
 
+import java.sql.Date;
 import java.util.Objects;
 
 public class Prescription implements Identified<Integer> {
-    int id;
-    String description;
-    long issueDate;
-    long validityDate;
-    int drugId;
-    int doctorId;
-    int userId;
+    private int id;
+    private String description;
+    private Date issueDate;
+    private Date validityDate;
+    private int drugId;
+    private int doctorId;
+    private int userId;
+
+    public Prescription(int id, String description, Date issueDate, Date validityDate) {
+        this.id = id;
+        this.description = description;
+        this.issueDate = issueDate;
+        this.validityDate = validityDate;
+    }
 
     public Prescription() {
     }
@@ -33,19 +41,19 @@ public class Prescription implements Identified<Integer> {
         this.description = description;
     }
 
-    public long getIssueDate() {
+    public Date getIssueDate() {
         return issueDate;
     }
 
-    public void setIssueDate(long issueDate) {
+    public void setIssueDate(Date issueDate) {
         this.issueDate = issueDate;
     }
 
-    public long getValidityDate() {
+    public Date getValidityDate() {
         return validityDate;
     }
 
-    public void setValidityDate(long validityDate) {
+    public void setValidityDate(Date validityDate) {
         this.validityDate = validityDate;
     }
 
@@ -79,12 +87,12 @@ public class Prescription implements Identified<Integer> {
         if (o == null || getClass() != o.getClass()) return false;
         Prescription that = (Prescription) o;
         return id == that.id &&
-                issueDate == that.issueDate &&
-                validityDate == that.validityDate &&
                 drugId == that.drugId &&
                 doctorId == that.doctorId &&
                 userId == that.userId &&
-                Objects.equals(description, that.description);
+                Objects.equals(description, that.description) &&
+                Objects.equals(issueDate, that.issueDate) &&
+                Objects.equals(validityDate, that.validityDate);
     }
 
     @Override

@@ -66,6 +66,7 @@
 
     <script>
         function deleteUser(id, button) {
+            alert(id);
             var body = 'command=' + encodeURIComponent("deleteUser") + '&id=' + encodeURIComponent(id);
             var req = getXMLHttpRequest();
             req.onreadystatechange = function () {
@@ -251,7 +252,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#example').DataTable({
-            "order": [[3, "desc"]]
+            "order": [[2, "desc"]]
         });
     });
 </script>
@@ -261,7 +262,7 @@
             language: {
                 search: "Локализации быть!"
             },
-            "order": [[3, "desc"]]
+            "order": [[2, "desc"]]
         });
     });
 </script>

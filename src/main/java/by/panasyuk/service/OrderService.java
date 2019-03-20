@@ -11,6 +11,7 @@ import by.panasyuk.repository.impl.ItemRepository;
 import by.panasyuk.repository.impl.OrderRepository;
 import by.panasyuk.repository.impl.TransactionManager;
 import by.panasyuk.repository.specification.Specification;
+import by.panasyuk.repository.specification.item.GetItemsByOrderId;
 import by.panasyuk.repository.specification.order.GetAllOrders;
 import by.panasyuk.repository.specification.order.GetOrderById;
 import by.panasyuk.repository.specification.order.GetOrdersByUserId;
@@ -24,16 +25,31 @@ public class OrderService {
     private Repository<Order, Integer> orderTransactionalRepository = repositoryFactory.getTransactionalRepository(OrderRepository::new);
     private Repository<Item, Integer> itemTransactionalRepository = repositoryFactory.getTransactionalRepository(ItemRepository::new);
 
+    public void confirm(Order order) throws ServiceException {
+        try {
+            order.setStatus(Order.Status.COMPLETED.name());
+            orderRepository.update(order);
+        } catch (RepositoryException e) {
+            throw new ServiceException(e);
+        }
+    }
     public Order getOrderById(int id) throws ServiceException {
         Order order = new Order();
         order.setId(id);
         List<Order> orderList = null;
+        TransactionManager manager = new TransactionManager();
         try {
+            manager.begin(orderTransactionalRepository,itemTransactionalRepository);
             orderList = orderRepository.getQuery(order,new GetOrderById());
             if(orderList.isEmpty()){
                 return null;
             }
-            return orderList.get(0);
+            Order resultOrder =  orderList.get(0);
+            Item item = new Item();
+            item.setOrderId(resultOrder.getId());
+            List<Item> itemList = itemTransactionalRepository.getQuery(item,new GetItemsByOrderId());
+            resultOrder.setItemList(itemList);
+            return resultOrder;
         } catch (RepositoryException e) {
             throw  new ServiceException(e);
         }
