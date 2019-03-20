@@ -1,59 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <body>
-<script>function getXMLHttpRequest() {
-    var xmlHttpReq;
-    // to create XMLHttpRequest object in non-Microsoft browsers
-    if (window.XMLHttpRequest) {
-        xmlHttpReq = new XMLHttpRequest();
-    } else if (window.ActiveXObject) {
-        try {
-            //to create XMLHttpRequest object in later versions of Internet Explorer
-            xmlHttpReq = new ActiveXObject("Msxml2.XMLHTTP");
-        } catch (exp1) {
-            try {
-                //to create XMLHttpRequest object in later versions of Internet Explorer
-                xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
-            } catch (exp2) {
-                //xmlHttpReq = false;
-                alert("Exception in getXMLHttpRequest()!");
-            }
-        }
-    }
-    return xmlHttpReq;
-}
-</script>
-<script>
-    function givePrescription(id,button) {
-        var description = document.getElementById('inputDescription').value;
-        var date = document.getElementById('inputDate').value;
-        alert(date);
-        alert(description);
-        var body = 'command=' + encodeURIComponent("givePrescription") + '&id=' + encodeURIComponent(id)
-        + '&description=' + encodeURIComponent(description) + '&date=' + encodeURIComponent(date);
-        var req = getXMLHttpRequest();
-        req.onreadystatechange = function () {
-            if (req.readyState === 4) {
-                if (req.status === 200) {
-                    alert(req.responseText);
-
-                    var parent = button.parentElement;
-                    parent.removeChild(button);
-                } else {
-                    alert("can't give prescription");
-                }
-            }
-        };
-        req.open('POST', '/pharmacy/ajax', true);
-        req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        req.send(body);
-    }
-</script>
-<script>
-    function showPrescriptionDetails(id,button) {
-        document.getElementById('buttonGive').onclick=function(){givePrescription(id,button)};
-        $('#prescriptionDetails').modal();
-    }
-</script>
 <div class="modal fade " id="prescriptionDetails" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">

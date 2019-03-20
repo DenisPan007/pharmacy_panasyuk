@@ -1,33 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <body>
-<script>
-    function showUserDetails(id, button) {
-        var body = 'command=' + encodeURIComponent("getUserById") + '&id=' + encodeURIComponent(id);
-        var req = getXMLHttpRequest();
-        req.onreadystatechange = function () {
-            if (req.readyState === 4) {
-                if (req.status === 200) {
-                    var userJson = JSON.parse(req.responseText);
-                    $("#inputLogin").empty().append(document.createTextNode(userJson.login));
-                    $("#inputUserName").empty().append(document.createTextNode(userJson.firstName));
-                    $("#inputLastName").empty().append(document.createTextNode(userJson.lastName));
-                    $("#inputEmail").empty().append(document.createTextNode(userJson.name));
-                    $("#inputRole").empty().append(document.createTextNode(userJson.role));
-                    var deleteButton = document.getElementById('deleteButton');
-                    deleteButton.onclick = function () {
-                        deleteUser(id, button);
-                    };
-                    $("#userDetailsModal").modal();
-                } else {
-                    alert("can't show details");
-                }
-            }
-        };
-        req.open('POST', '/pharmacy/ajax', true);
-        req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        req.send(body);
-    }
-</script>
 <div class="modal fade " id="userDetailsModal" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
