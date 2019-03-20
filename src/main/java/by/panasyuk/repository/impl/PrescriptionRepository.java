@@ -58,7 +58,13 @@ public class PrescriptionRepository extends AbstractJdbcRepository<Prescription,
     }
     @AutoConnection
     @Override
-    public void delete(Prescription object) throws RepositoryException {
-
+    public void delete(Prescription prescription) throws RepositoryException {
+        String query = "DELETE from prescription where id =? ";
+        try (PreparedStatement ps = connection.prepareStatement(query)){
+            ps.setInt(1, prescription.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RepositoryException("prepared statement failed", e);
+        }
     }
 }
