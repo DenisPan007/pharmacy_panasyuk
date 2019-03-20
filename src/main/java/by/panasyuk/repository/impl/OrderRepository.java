@@ -56,14 +56,4 @@ public class OrderRepository extends AbstractJdbcRepository<Order,Integer> imple
     public void delete(Order object) throws RepositoryException {
 
     }
-    @AutoConnection
-    @Override
-    public List<Order> getQuery(Order order, Specification<Order> spec) throws RepositoryException {
-        try {
-            return spec.get(order, connection);
-
-        } catch (SQLException e) {
-            throw new RepositoryException("prepared statement failed", e);
-        }
-    }
 }

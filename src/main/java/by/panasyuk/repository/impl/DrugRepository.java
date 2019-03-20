@@ -73,13 +73,4 @@ public class DrugRepository extends AbstractJdbcRepository<Drug, Integer> implem
         }
     }
 
-    @AutoConnection
-    @Override
-    public List<Drug> getQuery(Drug drug, Specification<Drug> spec) throws RepositoryException {
-        try {
-            return spec.get(drug, connection);
-        } catch (SQLException e) {
-            throw new RepositoryException("prepared statement failed", e);
-        }
-    }
 }

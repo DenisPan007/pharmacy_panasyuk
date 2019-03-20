@@ -61,14 +61,4 @@ public class PrescriptionRepository extends AbstractJdbcRepository<Prescription,
     public void delete(Prescription object) throws RepositoryException {
 
     }
-    @AutoConnection
-    @Override
-    public List<Prescription> getQuery(Prescription obj, Specification<Prescription> spec) throws RepositoryException {
-        try {
-            return spec.get(obj, connection);
-
-        } catch (SQLException e) {
-            throw new RepositoryException("prepared statement failed", e);
-        }
-    }
 }

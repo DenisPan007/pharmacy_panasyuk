@@ -26,14 +26,4 @@ public class ManufacturerRepository extends AbstractJdbcRepository<Manufacturer,
     public void delete(Manufacturer object) throws RepositoryException {
 
     }
-    @AutoConnection
-    @Override
-    public List<Manufacturer> getQuery(Manufacturer manufacturer, Specification<Manufacturer> spec) throws RepositoryException {
-        try {
-            return spec.get(manufacturer, connection);
-
-        } catch (SQLException e) {
-            throw new RepositoryException("prepared statement failed", e);
-        }
-    }
 }

@@ -5,13 +5,11 @@ import by.panasyuk.repository.AbstractJdbcRepository;
 import by.panasyuk.repository.AutoConnection;
 import by.panasyuk.repository.Repository;
 import by.panasyuk.repository.exception.RepositoryException;
-import by.panasyuk.repository.specification.Specification;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 
 /**
  * User Repository implementation
@@ -22,7 +20,7 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
     public User add(User user) throws RepositoryException {
         String query = "INSERT INTO user (login,password,firstname,lastname,email,role) " +
                 "VALUES(?,?,?,?,?,?)";
-        try (PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
+        try (PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, user.getLogin());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getFirstName());
@@ -39,6 +37,7 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
             throw new RepositoryException("prepared statement failed", e);
         }
     }
+
     @AutoConnection
     @Override
     public void update(User user) throws RepositoryException {
@@ -47,7 +46,7 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
                 "SET login=?, password=?, firstname=?, lastname=?, email=?, role=?" +
                 "WHERE id = ?";
 
-        try (PreparedStatement statement = connection.prepareStatement(query)){
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getFirstName());
@@ -61,12 +60,13 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
 
         }
     }
+
     @AutoConnection
     @Override
     public void delete(User user) throws RepositoryException {
 
         String query = "DELETE FROM user WHERE id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(query)){
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, user.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -74,14 +74,4 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
 
         }
     }
-    @AutoConnection
-        @Override
-        public List<User> getQuery (User user, Specification < User > spec) throws RepositoryException {
-            try {
-                return spec.get(user, connection);
-
-            } catch (SQLException e) {
-                throw new RepositoryException("prepared statement failed", e);
-            }
-        }
-    }
+}

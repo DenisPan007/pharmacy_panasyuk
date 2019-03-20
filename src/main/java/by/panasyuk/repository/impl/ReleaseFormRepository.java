@@ -26,14 +26,5 @@ public class ReleaseFormRepository extends AbstractJdbcRepository<ReleaseForm,In
     public void delete(ReleaseForm object) throws RepositoryException {
 
     }
-    @AutoConnection
-    @Override
-    public List<ReleaseForm> getQuery(ReleaseForm obj, Specification<ReleaseForm> spec) throws RepositoryException {
-        try {
-            return spec.get(obj, connection);
 
-        } catch (SQLException e) {
-            throw new RepositoryException("prepared statement failed", e);
-        }
-    }
 }

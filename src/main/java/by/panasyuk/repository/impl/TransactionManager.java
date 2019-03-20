@@ -15,16 +15,16 @@ public final class TransactionManager {
     private Connection connection;
     private ConnectionPool connectionPool;
 
-    public void begin( Repository... repositories) throws RepositoryException{
-        try{
-        connectionPool = ConnectionPool.getInstance();
-        connection = connectionPool.getConnection();
+    public void begin(Repository... repositories) throws RepositoryException {
+        try {
+            connectionPool = ConnectionPool.getInstance();
+            connection = connectionPool.getConnection();
             connection.setAutoCommit(false);
-        for(int i = 0;i<repositories.length;i++) {
-            setConnection(repositories[i], connection);
-        }
+            for (int i = 0; i < repositories.length; i++) {
+                setConnection(repositories[i], connection);
+            }
 
-        } catch (ConnectionPoolException |SQLException e) {
+        } catch (ConnectionPoolException | SQLException e) {
             throw new RepositoryException("Failed to get a connection from CP.", e);
         }
     }
@@ -33,7 +33,7 @@ public final class TransactionManager {
         connectionPool.releaseConnection(connection);
     }
 
-    public void commit()  throws RepositoryException {
+    public void commit() throws RepositoryException {
 
         try {
             connection.commit();

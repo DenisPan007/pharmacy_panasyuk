@@ -1,6 +1,11 @@
 package by.panasyuk.repository;
 
+import by.panasyuk.repository.exception.RepositoryException;
+import by.panasyuk.repository.specification.Specification;
+
 import java.sql.*;
+import java.util.List;
+
 /**
  * Abstract JDBC DAO
  *
@@ -11,5 +16,15 @@ public abstract class AbstractJdbcRepository<T extends Identified<PK>, PK extend
     protected Connection connection;
     public void setConnection(Connection connection) {
         this.connection = connection;
+    }
+
+    @AutoConnection
+    @Override
+    public List<T> getQuery(T obj, Specification<T> spec) throws RepositoryException {
+        try {
+            return spec.get(obj, connection);
+        } catch (SQLException e) {
+            throw new RepositoryException("prepared statement failed", e);
+        }
     }
 }
