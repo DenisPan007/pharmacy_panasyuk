@@ -65,10 +65,12 @@ public class UserServiceTest {
         String login = "login";
         String password = "password";
         String email = "@mail";
-        User expectedUser = new User(login,password,email);
+        String firstName = "name";
+        String lastName = "lastName";
+        User expectedUser = new User(login,password,email,firstName,lastName);
         expectedUser.setId(2);
         SignUpService signUpService = new SignUpService();
-            User actualUser = signUpService.signUp(login,password,email);
+            User actualUser = signUpService.signUp(login,password,email,firstName,lastName);
             assertEquals(expectedUser,actualUser);
     }
 }
