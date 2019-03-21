@@ -17,15 +17,21 @@ public class GivePrescription implements Command {
         String description = request.getParameter("description");
         String dateString = request.getParameter("date");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        if(description==null){
+            description = "";
+        }
         try {
             Date validityDateParsed = format.parse(dateString);
             java.sql.Date validityDate = new java.sql.Date(validityDateParsed.getTime());
             java.sql.Date issueDate = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
             PrescriptionService prescriptionService = new PrescriptionService();
             prescriptionService.givePrescription(id, description, issueDate, validityDate);
-            return "good";
-        } catch (ServiceException | ParseException e) {
+            return "true";
+        } catch (ServiceException e) {
             throw new CommandException(e);
+        }
+        catch (ParseException e) {
+            return "false";
         }
     }
 }

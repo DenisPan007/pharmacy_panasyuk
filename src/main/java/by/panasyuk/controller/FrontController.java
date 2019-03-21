@@ -27,8 +27,7 @@ public class FrontController extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             Command command = (Command) request.getAttribute("command");
-            String path = null;
-            path = command.execute(request);
+            String path = command.execute(request);
             Router.Type type = (Router.Type) request.getAttribute("route");
             if (type.equals(Router.Type.FORWARD)) {
                 request.getRequestDispatcher(path).forward(request, response);

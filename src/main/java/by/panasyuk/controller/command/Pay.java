@@ -11,17 +11,18 @@ import javax.servlet.http.HttpSession;
 public class Pay implements Command{
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
-        String attribute = request.getParameter("orderId");
+        HttpSession session = request.getSession();
+        Object attribute = session.getAttribute("order");
         if(attribute==null){
-            return "error";
+            request.setAttribute("route", Router.Type.REDIRECT);
+            return PathManager.getProperty("redirect.order")+"&message=error";
         }
-        int orderId = Integer.parseInt(attribute);
+        Order order = (Order)attribute;
         OrderService service = new OrderService();
         try {
-            Order order = service.getOrderById(orderId);
             service.pay(order);
             request.setAttribute("route", Router.Type.REDIRECT);
-            return PathManager.getProperty("redirect.account");
+            return PathManager.getProperty("redirect.account")+"&message=success";
         } catch (ServiceException e) {
             throw new CommandException(e);
         }

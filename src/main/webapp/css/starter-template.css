@@ -13,7 +13,7 @@ body {
   /* prevent horizontal scrollbar */
   overflow-x: hidden;
 }
-.search-result-in-table {
+.modal-result-in-table {
   position: relative;
   display: table; /* This is important */
   overflow-y: auto;

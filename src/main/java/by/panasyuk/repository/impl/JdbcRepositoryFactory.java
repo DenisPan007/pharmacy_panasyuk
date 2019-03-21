@@ -35,11 +35,12 @@ public class JdbcRepositoryFactory implements RepositoryFactory {
                     .map(Method::getName)
                     .anyMatch(m -> m.equals(method.getName()))) {
                 ConnectionPool connectionPool = ConnectionPool.getInstance();
-                Connection connection = connectionPool.getConnection();
-                TransactionManager.setConnection(repository, connection);
-                result = method.invoke(repository, args);
-                connection.close();
-                TransactionManager.setConnection(repository, null);
+                try(Connection connection = connectionPool.getConnection()) {
+                    TransactionManager.setConnection(repository, connection);
+                    result = method.invoke(repository, args);
+                    connection.close();
+                    TransactionManager.setConnection(repository, null);
+                }
             } else {
                 result = method.invoke(repository, args);
             }

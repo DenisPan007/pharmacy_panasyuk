@@ -15,7 +15,7 @@
     <c:forEach var="elem" items="${drugList}" varStatus="status">
         <tr>
             <td>
-                <button class="btn btn-primary" onclick="deleteDrug(${elem.id},this)">Delete</button>
+                <button class="btn btn-dark" onclick="deleteDrug(${elem.id},this)">Delete</button>
             </td>
             <td><c:out value="${elem.id}"></c:out></td>
             <td><c:out value="${elem.name}"></c:out></td>

@@ -22,9 +22,18 @@ public class AddDrug implements Command {
         CrudDrugService drugService = new CrudDrugService();
         ManufacturerService manufacturerService = new ManufacturerService();
         ReleaseFromService releaseFromService = new ReleaseFromService();
-        ReleaseForm releaseForm = null;
+        if (name.equals("")){
+            return "emptyName";
+        }
         try {
-            releaseForm = releaseFromService.getByDescription(description);
+            if (Integer.parseInt(price)<=0) {
+                return "invalidPrice";
+            }
+        }catch (NumberFormatException e){
+            return "invalidPrice";
+        }
+        try {
+            ReleaseForm releaseForm = releaseFromService.getByDescription(description);
             Manufacturer manufacturer = manufacturerService.getByName(manufacturerName);
             Drug drug = drugService.add(name, Boolean.valueOf(isPrescriptionRequired), Integer.parseInt(price), manufacturer, releaseForm);
             Gson gson = new Gson();

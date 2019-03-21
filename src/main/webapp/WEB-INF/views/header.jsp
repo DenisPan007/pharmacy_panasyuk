@@ -50,13 +50,14 @@
             </li>
         </ul>
         <ul class="navbar-nav mr-auto col-9">
-            <input class="form-control  " id="search" onclick="getDrugsFromBase()" type="text" placeholder="Search" aria-label="Search">
+            <input class="form-control  " id="search" onclick="getDrugsFromBase()" type="text" placeholder=<fmt:message
+                    key="placeholder.search" bundle="${rb}"/> aria-label="Search">
         </ul>
     </div>
 
 </nav>
 <div class="modal fade " id="myModal" role="dialog">
-    <div class="modal-dialog search-result-in-table">
+    <div class="modal-dialog modal-result-in-table">
         <div class="modal-content">
 
             <!-- Modal Header -->

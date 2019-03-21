@@ -26,7 +26,7 @@
 <body>
 <c:import url="header.jsp"/>
 <div class="modal fade " id="addDrugMenu" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-result-in-table">
         <div class="modal-content">
 
             <!-- Modal Header -->

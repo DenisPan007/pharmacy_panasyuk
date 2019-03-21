@@ -19,15 +19,16 @@ function getXMLHttpRequest() {
     }
     return xmlHttpReq;
 }
+
 function showSelectedDrug(drugList) {
 
     var trHTML = '';
     $('#tbodyTagModal').empty();
     $.each(drugList, function (i, item) {
-        trHTML = '<tr><td>' + item.drug.name +'</td><td>'
+        trHTML = '<tr><td>' + item.drug.name + '</td><td>'
             + item.drug.releaseForm.description + '</td><td>'
             + item.drug.manufacturer.name + '</td><td>'
-            +item.drug.isPrescriptionRequired + '</td><td>'
+            + item.drug.isPrescriptionRequired + '</td><td>'
             + '<div class="col-12 m-0">'
             + '<input type="number" class="count form-control"  value="1" max="100" min="1" >'
             + '</div>' + '</td><td>'
@@ -40,17 +41,17 @@ function showSelectedDrug(drugList) {
         var thButtonTag = trButtonTag.lastChild;
         var buttonTag = thButtonTag.lastChild;
         var newCookieJson;
-        buttonTag.onclick = function() {
+        buttonTag.onclick = function () {
             var inputTag = thButtonTag.previousSibling.previousSibling.lastChild.lastChild;
             var amount = inputTag.value;
-            if(amount <= 0){
-                $(inputTag).addClass( "border-danger" );
-                $(inputTag).focus((function() {
-                    $(inputTag).removeClass( "border-danger" );
+            if (amount <= 0) {
+                $(inputTag).addClass("border-danger");
+                $(inputTag).focus((function () {
+                    $(inputTag).removeClass("border-danger");
                 }));
                 return;
             }
-            item.amount=amount;
+            item.amount = amount;
             var cookieCartString = $.cookie('cart');
             var trigger = true;
             if (cookieCartString != null) {
@@ -61,25 +62,24 @@ function showSelectedDrug(drugList) {
                         trigger = false;
                     }
                 }
-                if(trigger){
+                if (trigger) {
                     cookieCartJson.push(item);
                 }
                 newCookieJson = cookieCartJson;
-            }
-            else{
+            } else {
                 newCookieJson = [];
                 newCookieJson.push(item);
             }
             var newCookieString = JSON.stringify(newCookieJson);
-            $.cookie('cart',newCookieString);
+            $.cookie('cart', newCookieString);
             var tbodyTag = $('#tbodyTagCart');
-            if(tbodyTag !==null && trigger){
+            if (tbodyTag !== null && trigger) {
                 buttonGetPrescription = '<button class="btn btn-primary" >Get</button>' + '</td><td>';
                 notRequired = 'Not required' + '</td><td>';
                 trHTML = '<tr><td>' + item.drug.name + '</td><td>'
                     + item.drug.releaseForm.description + '</td><td>'
                     + item.drug.manufacturer.name + '</td><td>'
-                    + (item.drug.isPrescriptionRequired ? buttonGetPrescription :notRequired )
+                    + (item.drug.isPrescriptionRequired ? buttonGetPrescription : notRequired)
                     + item.amount + '</td><td>'
                     + item.drug.price + '</td><td>'
                     + '<button class="btn btn-primary" >Delete</button>' + '</td></tr>';
@@ -91,7 +91,7 @@ function showSelectedDrug(drugList) {
                 buttonDeleteTag.onclick = function () {
                     deleteDrugFromCart(item.drug.id, buttonDeleteTag);
                 };
-                if(item.drug.isPrescriptionRequired){
+                if (item.drug.isPrescriptionRequired) {
                     var tdButtonGetTag = trJustAdd.lastChild.previousSibling.previousSibling.previousSibling;
                     var buttonGetTag = tdButtonGetTag.lastChild;
                     buttonGetTag.onclick = function () {
@@ -105,6 +105,7 @@ function showSelectedDrug(drugList) {
     });
     $("#myModal").modal();
 }
+
 function getDrugsByName(drugName) {
     var body = 'command=' + encodeURIComponent("getDrugsByName") + '&name=' + encodeURIComponent(drugName);
     var req = getXMLHttpRequest();
@@ -123,7 +124,8 @@ function getDrugsByName(drugName) {
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     req.send(body);
 }
-function getDrugsFromBase () {
+
+function getDrugsFromBase() {
     var body = 'command=' + encodeURIComponent("getDrugList");
     var req = getXMLHttpRequest();
     req.onreadystatechange = function () {
@@ -141,6 +143,7 @@ function getDrugsFromBase () {
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     req.send(body);
 }
+
 function mySearch(drugList) {
     $("#search").autocomplete({
         source: drugList,
@@ -151,6 +154,7 @@ function mySearch(drugList) {
 
     });
 }
+
 function deleteDrugFromCart(id, button) {
     var cookieCartString = $.cookie('cart');
     var cookieCartJson = JSON.parse(decodeURIComponent(cookieCartString));
@@ -166,6 +170,7 @@ function deleteDrugFromCart(id, button) {
     var trTag = tdTag.parentElement;
     trTag.parentElement.removeChild(trTag);
 }
+
 function checkout() {
     var body = 'command=' + encodeURIComponent("isUserLogin");
     var req = getXMLHttpRequest();
@@ -186,13 +191,14 @@ function checkout() {
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     req.send(body);
 }
+
 function getPrescription(id, button) {
     var body = 'command=' + encodeURIComponent("getPrescription") + '&drugId=' + encodeURIComponent(id);
     var req = getXMLHttpRequest();
     req.onreadystatechange = function () {
         if (req.readyState === 4) {
             if (req.status === 200) {
-                alert('your query has been made' + req.responseText);
+                alert('your query has been made ' + req.responseText);
                 $(button).removeAttr("onclick");
             } else {
                 alert("can't get prescription ");
@@ -203,35 +209,13 @@ function getPrescription(id, button) {
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     req.send(body);
 }
-function getXMLHttpRequest() {
-    var xmlHttpReq;
-    // to create XMLHttpRequest object in non-Microsoft browsers
-    if (window.XMLHttpRequest) {
-        xmlHttpReq = new XMLHttpRequest();
-    } else if (window.ActiveXObject) {
-        try {
-            //to create XMLHttpRequest object in later versions of Internet Explorer
-            xmlHttpReq = new ActiveXObject("Msxml2.XMLHTTP");
-        } catch (exp1) {
-            try {
-                //to create XMLHttpRequest object in later versions of Internet Explorer
-                xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
-            } catch (exp2) {
-                //xmlHttpReq = false;
-                alert("Exception in getXMLHttpRequest()!");
-            }
-        }
-    }
-    return xmlHttpReq;
-}
-function confirmReceipt(id,button) {
+
+function confirmReceipt(id, button) {
     var body = 'command=' + encodeURIComponent("confirmReceipt") + '&id=' + encodeURIComponent(id);
     var req = getXMLHttpRequest();
     req.onreadystatechange = function () {
         if (req.readyState === 4) {
             if (req.status === 200) {
-                alert(req.responseText);
-
                 var parent = button.parentElement;
                 parent.removeChild(button);
                 parent.append('Confirmed');
@@ -244,6 +228,7 @@ function confirmReceipt(id,button) {
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     req.send(body);
 }
+
 function addDrugToBase() {
     var name = document.getElementById('inputName').value;
     var releaseForm = document.getElementById('releaseForm').value;
@@ -252,12 +237,21 @@ function addDrugToBase() {
     var price = document.getElementById('inputPrice').value;
     var body = 'command=' + encodeURIComponent("addDrug")
         + '&name=' + encodeURIComponent(name) + '&releaseForm=' + encodeURIComponent(releaseForm)
-        +'&manufacturer=' + encodeURIComponent(manufacturer)
+        + '&manufacturer=' + encodeURIComponent(manufacturer)
         + '&prescription=' + encodeURIComponent(prescription) + '&price=' + encodeURIComponent(price);
     var req = getXMLHttpRequest();
     req.onreadystatechange = function () {
         if (req.readyState === 4) {
             if (req.status === 200) {
+                if (req.responseText === "emptyName") {
+                    alert("name can't be empty");
+                }
+                else if(req.responseText === "invalidPrice"){
+                    alert('incorrect price');
+                }
+                else {
+                    alert('drug added to base');
+                }
             } else {
                 alert("can'not add drug");
             }
@@ -268,6 +262,7 @@ function addDrugToBase() {
     req.send(body);
 
 }
+
 function addDrugMenu() {
     var body = 'command=' + encodeURIComponent("getDrugsInfo");
     var req = getXMLHttpRequest();
@@ -291,8 +286,8 @@ function addDrugMenu() {
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     req.send(body);
 }
+
 function deleteUser(id, button) {
-    alert(id);
     var body = 'command=' + encodeURIComponent("deleteUser") + '&id=' + encodeURIComponent(id);
     var req = getXMLHttpRequest();
     req.onreadystatechange = function () {
@@ -314,6 +309,7 @@ function deleteUser(id, button) {
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     req.send(body);
 }
+
 function deleteDrug(id, button) {
     var body = 'command=' + encodeURIComponent("deleteDrug") + '&id=' + encodeURIComponent(id);
     var req = getXMLHttpRequest();
@@ -336,42 +332,23 @@ function deleteDrug(id, button) {
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     req.send(body);
 }
-function getXMLHttpRequest() {
-    var xmlHttpReq;
-    // to create XMLHttpRequest object in non-Microsoft browsers
-    if (window.XMLHttpRequest) {
-        xmlHttpReq = new XMLHttpRequest();
-    } else if (window.ActiveXObject) {
-        try {
-            //to create XMLHttpRequest object in later versions of Internet Explorer
-            xmlHttpReq = new ActiveXObject("Msxml2.XMLHTTP");
-        } catch (exp1) {
-            try {
-                //to create XMLHttpRequest object in later versions of Internet Explorer
-                xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
-            } catch (exp2) {
-                //xmlHttpReq = false;
-                alert("Exception in getXMLHttpRequest()!");
-            }
-        }
-    }
-    return xmlHttpReq;
-}
-function givePrescription(id,button) {
+
+function givePrescription(id, button) {
     var description = document.getElementById('inputDescription').value;
     var date = document.getElementById('inputDate').value;
-    alert(date);
-    alert(description);
     var body = 'command=' + encodeURIComponent("givePrescription") + '&id=' + encodeURIComponent(id)
         + '&description=' + encodeURIComponent(description) + '&date=' + encodeURIComponent(date);
     var req = getXMLHttpRequest();
     req.onreadystatechange = function () {
         if (req.readyState === 4) {
             if (req.status === 200) {
-                alert(req.responseText);
-
-                var parent = button.parentElement;
-                parent.removeChild(button);
+                if (req.responseText === "true") {
+                    alert('prescription was given');
+                    var parent = button.parentElement;
+                    parent.removeChild(button);
+                } else {
+                    alert('incorrect date');
+                }
             } else {
                 alert("can't give prescription");
             }
@@ -381,31 +358,14 @@ function givePrescription(id,button) {
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     req.send(body);
 }
-function showPrescriptionDetails(id,button) {
-    document.getElementById('buttonGive').onclick=function(){givePrescription(id,button)};
+
+function showPrescriptionDetails(id, button) {
+    document.getElementById('buttonGive').onclick = function () {
+        givePrescription(id, button)
+    };
     $('#prescriptionDetails').modal();
 }
-function getXMLHttpRequest() {
-    var xmlHttpReq;
-    // to create XMLHttpRequest object in non-Microsoft browsers
-    if (window.XMLHttpRequest) {
-        xmlHttpReq = new XMLHttpRequest();
-    } else if (window.ActiveXObject) {
-        try {
-            //to create XMLHttpRequest object in later versions of Internet Explorer
-            xmlHttpReq = new ActiveXObject("Msxml2.XMLHTTP");
-        } catch (exp1) {
-            try {
-                //to create XMLHttpRequest object in later versions of Internet Explorer
-                xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
-            } catch (exp2) {
-                //xmlHttpReq = false;
-                alert("Exception in getXMLHttpRequest()!");
-            }
-        }
-    }
-    return xmlHttpReq;
-}
+
 function showUserDetails(id, button) {
     var body = 'command=' + encodeURIComponent("getUserById") + '&id=' + encodeURIComponent(id);
     var req = getXMLHttpRequest();

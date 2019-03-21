@@ -25,15 +25,18 @@ public class AjaxController extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String commandString = request.getParameter("command");
-        Command command = CommandProvider.getInstance().takeCommand(commandString);
-        String text;
         try {
-            text = command.execute(request);
+            Command command = CommandProvider.getInstance().takeCommand(commandString);
+            String text = command.execute(request);
             response.setContentType("text/plain");
-            response.setCharacterEncoding("UTF-8");
             response.getWriter().write(text);
         } catch (CommandException e) {
-            e.printStackTrace();
+            response.getWriter().write(e.getMessage());
+            response.setStatus(406);
+        }
+        catch (Exception e) {
+            response.getWriter().write("something going wrong...sorry");
+            response.setStatus(500);
         }
 
     }

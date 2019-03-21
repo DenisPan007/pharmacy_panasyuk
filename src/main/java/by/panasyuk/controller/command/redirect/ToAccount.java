@@ -21,10 +21,11 @@ public class ToAccount implements Command,RedirectCommand{
     private void userDataPrepare(HttpServletRequest request) throws CommandException {
         OrderService service = new OrderService();
         User user = (User)session.getAttribute("user");
-        List<Order> orderList = null;
         try {
-            orderList = service.getAllUserOrders(user.getId());
+            List<Order> orderList = service.getAllUserOrders(user.getId());
             request.setAttribute("orderList",orderList);
+            String message = request.getParameter("message");
+            request.setAttribute("message",message);
         } catch (ServiceException e) {
             throw new CommandException(e);
         }

@@ -4,6 +4,7 @@
 <html>
 <fmt:setLocale value="${cookie['lang'].value}"/>
 <fmt:setBundle  basename="pagecontent" var="rb" scope="request" />
+<fmt:setBundle basename="messages" var="messageRb" scope="request"/>
 <head>
     <title>welcome</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
@@ -27,6 +28,11 @@
 <c:import url="header.jsp"/>
 <main role="main" class="container">
     <div class=container>
+        <c:if test="${message=='success'}">
+            <div class="alert alert-success" role="alert">
+                <fmt:message key="alert.successfully-pay" bundle="${ messageRb }"/>
+            </div>
+        </c:if>
         <div class="row">
             <div class="col-3">
                 <div class="nav flex-column nav-tabs" id="v-pills-tab" role="tablist" aria-orientation="vertical">
