@@ -316,13 +316,17 @@ function deleteDrug(id, button) {
     req.onreadystatechange = function () {
         if (req.readyState === 4) {
             if (req.status === 200) {
-                alert(req.responseText);
-                var table = $('#example1').DataTable();
-                table
-                    .row($(button).parents('tr'))
-                    .remove()
-                    .draw();
-
+                if(req.responseText==="error"){
+                    alert('something going wrong...sorry');
+                }
+                else {
+                    alert(req.responseText);
+                    var table = $('#example1').DataTable();
+                    table
+                        .row($(button).parents('tr'))
+                        .remove()
+                        .draw();
+                }
             } else {
                 alert("can'not delete drug");
             }

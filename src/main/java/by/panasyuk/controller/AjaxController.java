@@ -32,11 +32,9 @@ public class AjaxController extends HttpServlet {
             response.getWriter().write(text);
         } catch (CommandException e) {
             response.getWriter().write(e.getMessage());
-            response.setStatus(406);
         }
         catch (Exception e) {
-            response.getWriter().write("something going wrong...sorry");
-            response.setStatus(500);
+            response.getWriter().write("error");
         }
 
     }
