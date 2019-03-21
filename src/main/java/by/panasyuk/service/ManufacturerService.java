@@ -31,10 +31,11 @@ public class ManufacturerService {
             throw new ServiceException(e);
         }
     }
+
     public List<Manufacturer> getAllManufacturers() throws ServiceException {
         Specification<Manufacturer> specification = new GetAllManufacturers();
         try {
-            return manufacturerRepository.getQuery(new Manufacturer(),specification);
+            return manufacturerRepository.getQuery(new Manufacturer(), specification);
         } catch (RepositoryException e) {
             throw new ServiceException(e);
         }

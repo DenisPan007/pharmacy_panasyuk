@@ -17,13 +17,13 @@ public class ReleaseFromService {
     private RepositoryFactory repositoryFactory = JdbcRepositoryFactory.getInstance();
     private Repository<ReleaseForm, Integer> releaseFormRepository = repositoryFactory.getRepository(ReleaseFormRepository::new);
 
-    public ReleaseForm getByDescription(String description) throws ServiceException{
+    public ReleaseForm getByDescription(String description) throws ServiceException {
         Specification<ReleaseForm> specification = new GetByDescription();
         try {
-           ReleaseForm releaseForm =  new ReleaseForm();
-           releaseForm.setDescription(description);
+            ReleaseForm releaseForm = new ReleaseForm();
+            releaseForm.setDescription(description);
             List<ReleaseForm> releaseFormList = releaseFormRepository.getQuery(releaseForm, specification);
-            if(releaseFormList.isEmpty()){
+            if (releaseFormList.isEmpty()) {
                 return null;
             }
             return releaseFormList.get(0);
@@ -31,6 +31,7 @@ public class ReleaseFromService {
             throw new ServiceException(e);
         }
     }
+
     public List<ReleaseForm> getAllReleaseForms() throws ServiceException {
         Specification<ReleaseForm> specification = new GetAllReleaseForms();
         try {

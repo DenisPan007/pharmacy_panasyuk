@@ -4,7 +4,7 @@ import by.panasyuk.repository.exception.RepositoryException;
 import by.panasyuk.repository.specification.UserRepositoryTest;
 import by.panasyuk.domain.User;
 import by.panasyuk.service.exception.ServiceException;
-import by.panasyuk.service.user.PresentChecker;
+import by.panasyuk.service.user.UserPresentChecker;
 import by.panasyuk.service.user.SignUpService;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -48,14 +48,14 @@ public class UserServiceTest {
     @Test
     public void isReservedByLogin()throws ServiceException {
         String login = "admin";
-        PresentChecker presentChecker = new PresentChecker();
+        UserPresentChecker presentChecker = new UserPresentChecker();
         Boolean result = presentChecker.isReservedLogin(login);
         assertTrue(result);
     }
     @Test
     public void isReservedByEmail()throws ServiceException {
         String email = "@mail";
-        PresentChecker presentChecker = new PresentChecker();
+        UserPresentChecker presentChecker = new UserPresentChecker();
         Boolean result = presentChecker.isReservedEmail(email);
         assertTrue(result);
     }

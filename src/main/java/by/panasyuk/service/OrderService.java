@@ -35,11 +35,10 @@ public class OrderService {
     public Order getOrderById(int id) throws ServiceException {
         Order order = new Order();
         order.setId(id);
-        List<Order> orderList = null;
         TransactionManager manager = new TransactionManager();
         try {
             manager.begin(orderTransactionalRepository, itemTransactionalRepository);
-            orderList = orderRepository.getQuery(order, new GetOrderById());
+            List<Order> orderList = orderRepository.getQuery(order, new GetOrderById());
             if (orderList.isEmpty()) {
                 return null;
             }

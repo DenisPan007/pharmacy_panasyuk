@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebFilter("/*")
-public class CookieFilter implements Filter {
+public class CookieCartFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

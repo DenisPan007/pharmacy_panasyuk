@@ -2,7 +2,7 @@ package by.panasyuk.controller.command;
 
 import by.panasyuk.domain.User;
 import by.panasyuk.service.user.PasswordService;
-import by.panasyuk.service.user.PresentChecker;
+import by.panasyuk.service.user.UserPresentChecker;
 import by.panasyuk.service.user.SignUpService;
 import by.panasyuk.service.exception.ServiceException;
 import by.panasyuk.service.validation.EmailValidator;
@@ -15,7 +15,6 @@ import by.panasyuk.util.RoleEnum;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
 public class SignUp implements Command {
@@ -44,7 +43,7 @@ public class SignUp implements Command {
             req.setAttribute("route", Router.Type.REDIRECT);
             return PathManager.getProperty("redirect.sign.up")+"&error=invalidEmail";
         }
-        PresentChecker presentChecker = new PresentChecker();
+        UserPresentChecker presentChecker = new UserPresentChecker();
         SignUpService signUpService = new SignUpService();
         PasswordService passwordService = new PasswordService();
         try {

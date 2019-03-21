@@ -20,26 +20,28 @@ public class CrudUserService extends UserService {
             throw new ServiceException("Cant't delete user ", e);
         }
     }
-    public User getById(int id) throws ServiceException{
+
+    public User getById(int id) throws ServiceException {
         Specification<User> spec = new GetUserById();
         User user = new User();
         user.setId(id);
         try {
             List<User> userList = userRepository.getQuery(user, spec);
-            if(userList.isEmpty()) {
+            if (userList.isEmpty()) {
                 return null;
             }
             return userList.get(0);
         } catch (RepositoryException e) {
-            throw new ServiceException("Cant't get user ",e);
+            throw new ServiceException("Cant't get user ", e);
         }
     }
-    public List<User> getAll() throws  ServiceException{
+
+    public List<User> getAll() throws ServiceException {
         Specification<User> spec = new GetAllUsers();
         try {
             return userRepository.getQuery(new User(), spec);
         } catch (RepositoryException e) {
-            throw new ServiceException("Cant't get user ",e);
+            throw new ServiceException("Cant't get user ", e);
         }
     }
 }
