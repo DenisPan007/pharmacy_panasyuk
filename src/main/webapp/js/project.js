@@ -90,6 +90,7 @@ function showSelectedDrug(drugList) {
                 var buttonDeleteTag = tdButtonDeleteTag.lastChild;
                 buttonDeleteTag.onclick = function () {
                     deleteDrugFromCart(item.drug.id, buttonDeleteTag);
+                    itemAmountUpdate();
                 };
                 if (item.drug.isPrescriptionRequired) {
                     var tdButtonGetTag = trJustAdd.lastChild.previousSibling.previousSibling.previousSibling;
@@ -99,6 +100,7 @@ function showSelectedDrug(drugList) {
                     }
                 }
             }
+            itemAmountUpdate();
             $("#myModal").modal('hide');
         };
 
@@ -395,4 +397,15 @@ function showUserDetails(id, button) {
     req.open('POST', '/pharmacy/ajax', true);
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     req.send(body);
+}
+function itemAmountUpdate() {
+    var cookie = $.cookie('cart');
+    var cookieJson = JSON.parse(cookie);
+    var amount= cookieJson.length;
+    if(amount > 0) {
+        $('#itemAmount').empty().append(amount);
+    }
+    else{
+        $('#itemAmount').empty();
+    }
 }

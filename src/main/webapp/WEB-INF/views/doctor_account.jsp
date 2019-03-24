@@ -31,60 +31,16 @@
             <div class="col-3">
                 <div class="nav flex-column nav-tabs" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                     <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
-                       aria-controls="v-pills-home" aria-selected="true">Profile</a>
+                       aria-controls="v-pills-home" aria-selected="true"><fmt:message key="user-account.profile" bundle="${ rb }"/></a>
                     <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
-                       aria-controls="v-pills-profile" aria-selected="false">Prescriptions</a>
+                       aria-controls="v-pills-profile" aria-selected="false"><fmt:message key="doctor-account.prescriptions" bundle="${ rb }"/></a>
                     <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
-                       aria-controls="v-pills-messages" aria-selected="false">Settings</a>
-                    <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
-                       aria-controls="v-pills-settings" aria-selected="false">Settings</a>
+                       aria-controls="v-pills-messages" aria-selected="false"><fmt:message key="user-account.settings" bundle="${ rb }"/></a>
                 </div>
             </div>
             <div class="col-9">
                 <div class="tab-content" id="v-pills-tabContent">
-                    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
-                         aria-labelledby="v-pills-home-tab">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Login</label>
-                            </div>
-                            <div class="col-md-6">
-                                <c:out value="${user.login}"></c:out>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Name</label>
-                            </div>
-                            <div class="col-md-6">
-                                <c:out value="${user.firstName}"></c:out>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>lastname</label>
-                            </div>
-                            <div class="col-md-6">
-                                <c:out value="${user.lastName}"></c:out>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Email</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p><c:out value="${user.email}"></c:out> </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Address</label>
-                            </div>
-                            <div class="col-md-6">
-                                <%--  <p><c:out value="${user.address}"></c:out></p> --%>
-                            </div>
-                        </div>
-                    </div>
+                    <c:import url="user_profile.jsp"/>
                     <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                         <c:import url="prescription_list.jsp"/>
                     </div>

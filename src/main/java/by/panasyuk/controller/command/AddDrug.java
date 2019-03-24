@@ -17,7 +17,7 @@ public class AddDrug implements Command {
         String description = request.getParameter("releaseForm");
         String manufacturerName = request.getParameter("manufacturer");
         String name = request.getParameter("name");
-        String isPrescriptionRequired = request.getParameter("prescription");
+        String isPrescriptionRequired = request.getParameter("prescription.given");
         String price = request.getParameter("price");
         CrudDrugService drugService = new CrudDrugService();
         ManufacturerService manufacturerService = new ManufacturerService();

@@ -40,11 +40,11 @@
                 <table class="table ">
                     <thead>
                     <tr>
-                        <th> Name</th>
-                        <th>Release form</th>
-                        <th>Manufacturer</th>
-                        <th>Prescription</th>
-                        <th class="text-right">Price</th>
+                        <th scope="col"><fmt:message key="label.name" bundle="${ rb }"/></th>
+                        <th scope="col"><fmt:message key="label.release-form" bundle="${ rb }"/></th>
+                        <th scope="col"><fmt:message key="label.manufacturer" bundle="${ rb }"/></th>
+                        <th scope="col"><fmt:message key="label.prescription" bundle="${ rb }"/></th>
+                        <th scope="col"><fmt:message key="label.price" bundle="${ rb }"/></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -60,8 +60,8 @@
                         </td>
                         <td>
                             <select id="inputPrescription">
-                                <option>true</option>
-                                <option>false</option>
+                                <option><fmt:message key="option.required" bundle="${ rb }"/></option>
+                                <option><fmt:message key="option.not-required" bundle="${ rb }"/></option>
                             </select>
                         </td>
                         <td><input id="inputPrice" type="number" min="0"></td>
@@ -70,11 +70,11 @@
                 </table>
 
             </div>
-            <button type="button" class="btn btn-dark" onclick="addDrugToBase()" >Add</button>
+            <button type="button" class="btn btn-dark" onclick="addDrugToBase()" ><fmt:message key="button.add" bundle="${ rb }"/></button>
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><fmt:message key="button.close" bundle="${ rb }"/></button>
             </div>
 
         </div>
@@ -85,13 +85,11 @@
         <div class="col-3">
             <div class="nav flex-column nav-tabs" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
-                   aria-controls="v-pills-home" aria-selected="true">Users</a>
+                   aria-controls="v-pills-home" aria-selected="true"><fmt:message key="admin-account.users" bundle="${ rb }"/></a>
                 <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
-                   aria-controls="v-pills-profile" aria-selected="false">Drugs</a>
-                <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
-                   aria-controls="v-pills-messages" aria-selected="false">Messages</a>
+                   aria-controls="v-pills-profile" aria-selected="false"><fmt:message key="admin-account.drugs" bundle="${ rb }"/></a>
                 <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
-                   aria-controls="v-pills-settings" aria-selected="false">Settings</a>
+                   aria-controls="v-pills-settings" aria-selected="false"><fmt:message key="admin-account.settings" bundle="${ rb }"/></a>
             </div>
         </div>
         <div class="col-9">
@@ -102,7 +100,7 @@
                 </div>
                 <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                     <div class="row">
-                        <button class="btn-dark" onclick="addDrugMenu()">add Drug</button>
+                        <button class="btn-dark" onclick="addDrugMenu()"><fmt:message key="button.add" bundle="${ rb }"/></button>
                     </div>
                     <c:import url="drug_list.jsp"/>
                 </div>

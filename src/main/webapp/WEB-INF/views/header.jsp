@@ -14,8 +14,9 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="btn btn-success btn-sm " href="${pageContext.request.contextPath}/?command=toCart">
-                    <i class="fa fa-shopping-cart"></i> Cart
-                    <span class="badge badge-light">3</span>
+                    <i class="fa fa-shopping-cart"></i> <fmt:message
+                        key="link.cart" bundle="${rb}"/>
+                    <span class="badge badge-light" id="itemAmount"></span>
                 </a>
             </li>
             <li class="nav-item">
@@ -62,7 +63,6 @@
 
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Modal Heading</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
@@ -71,12 +71,12 @@
                 <table  class="table table-striped">
                     <thead>
                     <tr>
-                        <th scope="col">Item</th>
-                        <th scope="col">Release form</th>
-                        <th scope="col">Manufacturer</th>
-                        <th scope="col">Prescription</th>
-                        <th scope="col" class="text-center">Quantity</th>
-                        <th scope="col" class="text-right">Price</th>
+                        <th scope="col"><fmt:message key="label.item" bundle="${ rb }"/></th>
+                        <th scope="col"><fmt:message key="label.release-form" bundle="${ rb }"/></th>
+                        <th scope="col"><fmt:message key="label.manufacturer" bundle="${ rb }"/></th>
+                        <th scope="col"><fmt:message key="label.prescription" bundle="${ rb }"/></th>
+                        <th scope="col" class="text-center"><fmt:message key="label.quantity" bundle="${ rb }"/></th>
+                        <th scope="col" class="text-right"><fmt:message key="label.price" bundle="${ rb }"/></th>
                         <th></th>
                     </tr>
                     </thead>
@@ -89,7 +89,7 @@
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"> <th><fmt:message key="button.close" bundle="${ rb }"/></th></button>
             </div>
 
         </div>

@@ -32,11 +32,12 @@
         <table class="table">
             <thead class="thead-dark">
             <tr>
-                <th scope="col">Item</th>
-                <th scope="col">Release form</th>
-                <th scope="col">Manufacturer</th>
-                <th scope="col" class="text-center">Quantity</th>
-                <th scope="col" class="text-right">Price</th>
+                <th scope="col"><fmt:message key="label.item" bundle="${ rb }"/></th>
+                <th scope="col"><fmt:message key="label.release-form" bundle="${ rb }"/></th>
+                <th scope="col"><fmt:message key="label.manufacturer" bundle="${ rb }"/></th>
+                <th scope="col"><fmt:message key="label.prescription" bundle="${ rb }"/></th>
+                <th scope="col" class="text-center"><fmt:message key="label.quantity" bundle="${ rb }"/></th>
+                <th scope="col" class="text-right"><fmt:message key="label.price" bundle="${ rb }"/></th>
             </tr>
             </thead>
             <tbody>
@@ -51,7 +52,7 @@
 
                 </tr>
             </c:forEach>
-            total : ${order.price}
+            <fmt:message key="label.total" bundle="${ rb }"/>  ${order.price}
             </tbody>
         </table>
     </div>
@@ -60,11 +61,11 @@
             <form class="row form-check" action="${pageContext.request.contextPath}/">
                 <input type="hidden" name="command" value="pay">
                 <div class="form-group col-sm-7">
-                    <label for="card-holder">Card Holder</label>
+                    <label for="card-holder"><fmt:message key="pay.label.cart-holder" bundle="${ rb }"/></label>
                     <input id="card-holder" type="text" class="form-control" placeholder="Card Holder" aria-label="Card Holder" aria-describedby="basic-addon1">
                 </div>
                 <div class="form-group col-sm-5">
-                    <label >Expiration Date</label>
+                    <label ><fmt:message key="pay.label.expiration-date" bundle="${ rb }"/></label>
                     <div class="input-group expiration-date">
                         <input type="text" class="form-control" placeholder="MM" aria-label="MM" aria-describedby="basic-addon1">
                         <span class="date-separator">/</span>
@@ -72,7 +73,7 @@
                     </div>
                 </div>
                 <div class="form-group col-sm-8">
-                    <label for="card-number">Card Number</label>
+                    <label for="card-number"><fmt:message key="pay.label.cart-number" bundle="${ rb }"/></label>
                     <input id="card-number" type="text" class="form-control" placeholder="Card Number" aria-label="Card Holder" aria-describedby="basic-addon1">
                 </div>
                 <div class="form-group col-sm-4">

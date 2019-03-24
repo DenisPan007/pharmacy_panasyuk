@@ -37,12 +37,12 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">Item</th>
-                        <th scope="col">Release form</th>
-                        <th scope="col">Manufacturer</th>
-                        <th scope="col">Prescription</th>
-                        <th scope="col" class="text-center">Quantity</th>
-                        <th scope="col" class="text-right">Price</th>
+                        <th scope="col"><fmt:message key="label.item" bundle="${ rb }"/></th>
+                        <th scope="col"><fmt:message key="label.release-form" bundle="${ rb }"/></th>
+                        <th scope="col"><fmt:message key="label.manufacturer" bundle="${ rb }"/></th>
+                        <th scope="col"><fmt:message key="label.prescription" bundle="${ rb }"/></th>
+                        <th scope="col" class="text-center"><fmt:message key="label.quantity" bundle="${ rb }"/></th>
+                        <th scope="col" class="text-right"><fmt:message key="label.price" bundle="${ rb }"/></th>
                         <th></th>
                     </tr>
                     </thead>
@@ -60,7 +60,7 @@
                                     <c:out value="${nonPrescription}"></c:out>
                                 </c:when>
                                 <c:when test="${elem.drug.isPrescriptionRequired}">
-                                <button class="btn btn-primary" onclick="getPrescription(${elem.drug.id},this)">Get
+                                <button class="btn btn-primary" onclick="getPrescription(${elem.drug.id},this)"><fmt:message key="button.quire" bundle="${ rb }"/>
                                     </c:when>
                                     </c:choose>
 
@@ -69,7 +69,7 @@
                             <td><c:out value="${elem.drug.price}"></c:out></td>
                             <td>
                                 <button class="btn btn-primary" onclick="deleteDrugFromCart(${elem.drug.id},this)">
-                                    Delete
+                                    <fmt:message key="button.delete" bundle="${ rb }"/>
                                 </button>
                             </td>
 
@@ -82,7 +82,7 @@
                 <div class="col-4 ml-auto">
                     <div class="row">
                         <div class="col-6">
-                            Total
+                            <fmt:message key="label.total" bundle="${ rb }" var="nonPrescription"/>
                         </div>
                         <div class="col-6">
                             346,90 €
@@ -103,5 +103,10 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        itemAmountUpdate();
+    });
+</script>
 </body>
 </html>

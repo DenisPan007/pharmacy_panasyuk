@@ -1,12 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <body>
 <table id="orderList" class="display " style="width:100%">
     <thead class="thead-dark">
     <tr>
         <th></th>
-        <th>Number</th>
-        <th>Price</th>
-        <th>Status</th>
+        <th><fmt:message key="label.order-number" bundle="${ rb }"/></th>
+        <th><fmt:message key="label.price" bundle="${ rb }"/></th>
+        <th><fmt:message key="label.status" bundle="${ rb }"/></th>
     </tr>
     </thead>
     <tbody id="body">
@@ -17,17 +18,17 @@
             <td>
                 <c:choose>
                     <c:when test="${elem.status=='AT_WORK'}">
-                            <button type="button" class="btn btn-dark" onclick="confirmReceipt(${elem.id},this)">Confirm</button>
+                            <button type="button" class="btn btn-dark" onclick="confirmReceipt(${elem.id},this)"><fmt:message key="button.confirm" bundle="${ rb }"/></button>
                     </c:when>
 
                 <c:when test="${elem.status=='NEW'}">
                     <form method="POST" action="${pageContext.request.contextPath}/?command=toOrder">
                         <input type="hidden" name="orderId" value="${elem.id}">
-                        <button type="submit" class="btn btn-dark">Pay</button>
+                        <button type="submit" class="btn btn-dark"><fmt:message key="button.pay" bundle="${ rb }"/></button>
                     </form>
                 </c:when>
                     <c:when test="${elem.status=='COMPLETED'}">
-                        Confirmed
+                        <fmt:message key="button.confirm" bundle="${ rb }"/>
                     </c:when>
                 </c:choose>
             </td>

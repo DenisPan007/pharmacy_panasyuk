@@ -45,7 +45,7 @@ public class ConnectionPool {
         try {
             if (instance == null) {
                 try {
-                    InputStream inputStream = ConnectionPool.class.getResourceAsStream("/db.properties");
+                    InputStream inputStream = ConnectionPool.class.getResourceAsStream("/local_db.properties");
                     Properties properties = new Properties();
                     properties.load(inputStream);
                     url = properties.getProperty("url");
