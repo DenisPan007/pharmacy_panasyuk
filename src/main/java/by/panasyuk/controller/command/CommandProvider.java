@@ -43,6 +43,8 @@ public class CommandProvider {
         commandMap.put("confirmReceipt", new ConfirmReceipt());
         commandMap.put("givePrescription", new GivePrescription());
         commandMap.put("getUserById", new GetUserById());
+        commandMap.put("getItemsByName", new GetItemsByName());
+        commandMap.put("updateCart", new UpdateCart());
     }
 
     /**

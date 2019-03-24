@@ -5,10 +5,24 @@
 
     <tag>
         <name>json</name>
-        <tag-class>by.panasyuk.util.JsonTag</tag-class>
+        <tag-class>by.panasyuk.util.FromJsonToListTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
         <name>jsonString</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>var</name>
+            <required>true</required>
+        </attribute>
+    </tag>
+    <tag>
+        <name>toJson</name>
+        <tag-class>by.panasyuk.util.FromListToJsonTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>itemList</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

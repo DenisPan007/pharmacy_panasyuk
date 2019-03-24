@@ -20,109 +20,77 @@ function getXMLHttpRequest() {
     return xmlHttpReq;
 }
 
-function showSelectedDrug(drugList) {
-
-    var trHTML = '';
-    $('#tbodyTagModal').empty();
-    $.each(drugList, function (i, item) {
-        trHTML = '<tr><td>' + item.drug.name + '</td><td>'
-            + item.drug.releaseForm.description + '</td><td>'
-            + item.drug.manufacturer.name + '</td><td>'
-            + item.drug.isPrescriptionRequired + '</td><td>'
-            + '<div class="col-12 m-0">'
-            + '<input type="number" class="count form-control"  value="1" max="100" min="1" >'
-            + '</div>' + '</td><td>'
-            + item.drug.price + '</td><td>'
-            + '<button class="btn btn-primary ">Add to cart</button>' + '</td></tr>';
-        $('#tbodyTagModal').append(trHTML);
-        var tbodyTagModal = document.getElementById('tbodyTagModal');
-
-        var trButtonTag = tbodyTagModal.lastChild;
-        var thButtonTag = trButtonTag.lastChild;
-        var buttonTag = thButtonTag.lastChild;
-        var newCookieJson;
-        buttonTag.onclick = function () {
-            var inputTag = thButtonTag.previousSibling.previousSibling.lastChild.lastChild;
-            var amount = inputTag.value;
-            if (amount <= 0) {
-                $(inputTag).addClass("border-danger");
-                $(inputTag).focus((function () {
-                    $(inputTag).removeClass("border-danger");
-                }));
-                return;
+function addItemToCart(button,itemList,index){
+    var item  = JSON.parse(itemList)[index];
+    var id = item.drug.id;
+var inputTag = document.getElementById(id);
+    var amount = inputTag.value;
+    if (amount <= 0) {
+        $(inputTag).addClass("border-danger");
+        $(inputTag).focus((function () {
+            $(inputTag).removeClass("border-danger");
+        }));
+        return;
+    }
+    item.amount = amount;
+    var cookieCartString = $.cookie('cart');
+    var trigger = true;
+    if (cookieCartString != null) {
+        var cookieCartJson = JSON.parse(decodeURIComponent(cookieCartString));
+        // alert('old cookies   :' + cookieCartString);
+        for (var i = 0; i < cookieCartJson.length; ++i) {
+            if (cookieCartJson[i].drug.id === item.drug.id) {
+                trigger = false;
+                cookieCartJson[i]=item;
             }
-            item.amount = amount;
-            var cookieCartString = $.cookie('cart');
-            var trigger = true;
-            if (cookieCartString != null) {
-                var cookieCartJson = JSON.parse(decodeURIComponent(cookieCartString));
-                // alert('old cookies   :' + cookieCartString);
-                for (var i = 0; i < cookieCartJson.length; ++i) {
-                    if (cookieCartJson[i].drug.id === item.drug.id) {
-                        trigger = false;
-                    }
-                }
-                if (trigger) {
-                    cookieCartJson.push(item);
-                }
-                newCookieJson = cookieCartJson;
-            } else {
-                newCookieJson = [];
-                newCookieJson.push(item);
-            }
-            var newCookieString = JSON.stringify(newCookieJson);
-            $.cookie('cart', newCookieString);
-            var tbodyTag = $('#tbodyTagCart');
-            if (tbodyTag !== null && trigger) {
-                buttonGetPrescription = '<button class="btn btn-primary" >Get</button>' + '</td><td>';
-                notRequired = 'Not required' + '</td><td>';
-                trHTML = '<tr><td>' + item.drug.name + '</td><td>'
-                    + item.drug.releaseForm.description + '</td><td>'
-                    + item.drug.manufacturer.name + '</td><td>'
-                    + (item.drug.isPrescriptionRequired ? buttonGetPrescription : notRequired)
-                    + item.amount + '</td><td>'
-                    + item.drug.price + '</td><td>'
-                    + '<button class="btn btn-primary" >Delete</button>' + '</td></tr>';
-                tbodyTag.append(trHTML);
-                tbodyTag = document.getElementById('tbodyTagCart');
-                var trJustAdd = tbodyTag.lastChild;
-                var tdButtonDeleteTag = trJustAdd.lastChild;
-                var buttonDeleteTag = tdButtonDeleteTag.lastChild;
-                buttonDeleteTag.onclick = function () {
-                    deleteDrugFromCart(item.drug.id, buttonDeleteTag);
+        }
+        if (trigger) {
+            cookieCartJson.push(item);
+        }
+        newCookieJson = cookieCartJson;
+    } else {
+        newCookieJson = [];
+        newCookieJson.push(item);
+    }
+    var newCookieString = JSON.stringify(newCookieJson);
+    $.cookie('cart', newCookieString);
+    var tbodyCartTag = $('#tbodyTagCart');
+    if (tbodyCartTag !== null) {
+        var body = 'command=' + encodeURIComponent("updateCart");
+        var req = getXMLHttpRequest();
+        req.onreadystatechange = function () {
+            if (req.readyState === 4) {
+                if (req.status === 200) {
+                    var responseText = req.responseText;
+                    tbodyCartTag.empty().append(responseText);
                     itemAmountUpdate();
-                };
-                if (item.drug.isPrescriptionRequired) {
-                    var tdButtonGetTag = trJustAdd.lastChild.previousSibling.previousSibling.previousSibling;
-                    var buttonGetTag = tdButtonGetTag.lastChild;
-                    buttonGetTag.onclick = function () {
-                        getPrescription(item.drug.id, buttonGetTag);
-                    }
+                    $("#myModal").modal('hide');
+                } else {
+                    alert("can't update cart");
                 }
             }
-            itemAmountUpdate();
-            $("#myModal").modal('hide');
         };
-
-    });
-    $("#myModal").modal();
+        req.open('POST', '/pharmacy/', true);
+        req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        req.send(body);
+    }
 }
 
 function getDrugsByName(drugName) {
-    var body = 'command=' + encodeURIComponent("getDrugsByName") + '&name=' + encodeURIComponent(drugName);
+    var body = 'command=' + encodeURIComponent("getItemsByName") + '&name=' + encodeURIComponent(drugName);
     var req = getXMLHttpRequest();
     req.onreadystatechange = function () {
         if (req.readyState === 4) {
             if (req.status === 200) {
-                var jsonText = req.responseText;
-                var json = JSON.parse(jsonText);
-                showSelectedDrug(json);
+                var responseText = req.responseText;
+                $('#tbodyTagModal').empty().append(responseText);
+                $("#myModal").modal();
             } else {
                 alert("can't get drugs by name");
             }
         }
     };
-    req.open('POST', '/pharmacy/ajax', true);
+    req.open('POST', '/pharmacy/', true);
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     req.send(body);
 }
@@ -400,12 +368,17 @@ function showUserDetails(id, button) {
 }
 function itemAmountUpdate() {
     var cookie = $.cookie('cart');
-    var cookieJson = JSON.parse(cookie);
-    var amount= cookieJson.length;
-    if(amount > 0) {
-        $('#itemAmount').empty().append(amount);
+    if (cookie != null) {
+        var cookieJson = JSON.parse(cookie);
+        var amount = cookieJson.length;
+        if (amount > 0) {
+            $('#itemAmount').empty().append(amount);
+        } else {
+            $('#itemAmount').empty();
+        }
     }
-    else{
-        $('#itemAmount').empty();
+    else {
+        $.cookie('cart', JSON.stringify([]));
+        itemAmountUpdate();
     }
 }

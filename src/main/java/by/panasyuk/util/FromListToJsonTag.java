@@ -3,32 +3,29 @@ package by.panasyuk.util;
 import by.panasyuk.domain.Item;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
-import java.lang.reflect.Type;
 import java.util.List;
 
-public class JsonTag extends TagSupport {
-    private String jsonString;
+public class FromListToJsonTag extends TagSupport {
+    private List<Item> itemList;
     private String var;
 
     public void setVar(String var) {
         this.var = var;
     }
 
-    public void setJsonString(String jsonString) {
-        this.jsonString = jsonString;
+    public void setItemList(List<Item> itemList) {
+        this.itemList = itemList;
     }
 
     @Override
     public int doStartTag() throws JspException {
         Gson gson = new Gson();
-        Type listType = new TypeToken<List<Item>>(){}.getType();
         try {
-            List<Item> drugList = gson.fromJson(jsonString, listType);
-            pageContext.getRequest().setAttribute(var,drugList);
+            String itemListJson = gson.toJson(itemList);
+            pageContext.getRequest().setAttribute(var,itemListJson);
         }catch (JsonSyntaxException e){
             pageContext.getRequest().setAttribute(var,null);
         }
