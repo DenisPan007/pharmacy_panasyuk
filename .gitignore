@@ -28,7 +28,10 @@ hs_err_pid*
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
-.idea/
+.idea/resourceBundles.xml
+.idea/modules.xml
+.idea/dataSources.xml
+.idea/sqldialects.xml
 
 # Generated files
 .idea/**/contentModel.xml

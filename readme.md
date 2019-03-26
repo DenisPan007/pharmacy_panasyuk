@@ -4,9 +4,13 @@
 2. Maven - 3.x.x
 ## Installation
 **1. Clone the application**
+
 **2. Create db from script (resources/create_pharmacy_db.sql)**
+
 **2. Configure file db.properties (resources/db.properties)**
+
 **4. Build and run the app using maven**
+
 ## Demo
 You can also see the demo in 
 http://207.154.220.222:8181/pharmacy/
