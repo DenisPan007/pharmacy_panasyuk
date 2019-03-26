@@ -11,6 +11,7 @@ public class User implements Identified<Integer> {
     private String firstName;
     private String lastName;
     private String email;
+    private String address;
     public enum Role {CLIENT,DOCTOR,ADMIN}
     private Role role;
 
@@ -24,17 +25,28 @@ public class User implements Identified<Integer> {
         setRole(role);
     }
 
-    public User(String login, String password, String firstName, String lastName, String email) {
+    public User(String login, String password, String firstName, String lastName, String email,String address) {
         this.login = login;
         this.password = password;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.address = address;
         setRole("client");
     }
     public User() {
     }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     @Override
+
     public Integer getId() {
         return id;
     }
@@ -101,12 +113,14 @@ public class User implements Identified<Integer> {
                 Objects.equals(password, user.password) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
-                Objects.equals(email, user.email);
+                Objects.equals(email, user.email) &&
+                Objects.equals(address, user.address) &&
+                role == user.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, password, firstName, lastName, email);
+        return Objects.hash(id, login, password, firstName, lastName, email, address, role);
     }
 
     @Override
@@ -118,6 +132,8 @@ public class User implements Identified<Integer> {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", role=" + role +
                 '}';
     }
 }

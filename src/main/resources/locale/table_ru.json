@@ -1,0 +1,9 @@
+{
+  "search": "Поиск...",
+  "lengthMenu": "Показывать _MENU_ элементов",
+  "info": "Показаны c _START_  по  _END_ из _TOTAL_ элементов",
+  "paginate": {
+    "previous": "Предыдущий",
+    "next": "Следующий"
+  }
+}

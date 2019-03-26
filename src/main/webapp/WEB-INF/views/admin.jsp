@@ -31,7 +31,6 @@
 
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Modal Heading</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
@@ -44,6 +43,7 @@
                         <th scope="col"><fmt:message key="label.release-form" bundle="${ rb }"/></th>
                         <th scope="col"><fmt:message key="label.manufacturer" bundle="${ rb }"/></th>
                         <th scope="col"><fmt:message key="label.prescription" bundle="${ rb }"/></th>
+                        <th scope="col"><fmt:message key="label.available-amount" bundle="${ rb }"/></th>
                         <th scope="col"><fmt:message key="label.price" bundle="${ rb }"/></th>
                     </tr>
                     </thead>
@@ -64,6 +64,7 @@
                                 <option><fmt:message key="option.not-required" bundle="${ rb }"/></option>
                             </select>
                         </td>
+                        <td><input id="inputAvailableAmount" type="number" min="0"></td>
                         <td><input id="inputPrice" type="number" min="0"></td>
                     </tr>
                     </tbody>
@@ -116,19 +117,14 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#example').DataTable({
-            "order": [[2, "desc"]]
+        $(document).ready(function () {
+            startTableWithLocale('#example');
         });
     });
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#example1').DataTable({
-            language: {
-                search: "Локализации быть!"
-            },
-            "order": [[2, "desc"]]
-        });
+        startTableWithLocale('#example1');
     });
 </script>
 </body>

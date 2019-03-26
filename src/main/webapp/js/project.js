@@ -20,12 +20,12 @@ function getXMLHttpRequest() {
     return xmlHttpReq;
 }
 
-function addItemToCart(button,itemList,index){
-    var item  = JSON.parse(itemList)[index];
+function addItemToCart(button, itemList, index) {
+    var item = JSON.parse(itemList)[index];
     var id = item.drug.id;
-var inputTag = document.getElementById(id);
+    var inputTag = document.getElementById(id);
     var amount = inputTag.value;
-    if (amount <= 0) {
+    if (amount <= 0 ||amount > item.drug.availableAmount) {
         $(inputTag).addClass("border-danger");
         $(inputTag).focus((function () {
             $(inputTag).removeClass("border-danger");
@@ -41,7 +41,7 @@ var inputTag = document.getElementById(id);
         for (var i = 0; i < cookieCartJson.length; ++i) {
             if (cookieCartJson[i].drug.id === item.drug.id) {
                 trigger = false;
-                cookieCartJson[i]=item;
+                cookieCartJson[i] = item;
             }
         }
         if (trigger) {
@@ -52,6 +52,9 @@ var inputTag = document.getElementById(id);
         newCookieJson = [];
         newCookieJson.push(item);
     }
+    $('#cartBlock').show();
+    $('#emptyCartMessage').hide();
+    totalUpdate(item.drug.price);
     var newCookieString = JSON.stringify(newCookieJson);
     $.cookie('cart', newCookieString);
     var tbodyCartTag = $('#tbodyTagCart');
@@ -130,12 +133,18 @@ function deleteDrugFromCart(id, button) {
     var cookieCartJson = JSON.parse(decodeURIComponent(cookieCartString));
     for (var i = 0; i < cookieCartJson.length; ++i) {
         if (cookieCartJson[i].drug.id === id) {
+            totalUpdate((-1)*cookieCartJson[i].drug.price);
             cookieCartJson.splice(i, 1);
         }
     }
-
     var newCookieString = JSON.stringify(cookieCartJson);
     $.cookie('cart', newCookieString);
+    itemAmountUpdate();
+    if (cookieCartJson.length ==0){
+        $('#cartBlock').hide();
+        $('#emptyCartMessage').show();
+
+    }
     var tdTag = button.parentElement;
     var trTag = tdTag.parentElement;
     trTag.parentElement.removeChild(trTag);
@@ -168,8 +177,17 @@ function getPrescription(id, button) {
     req.onreadystatechange = function () {
         if (req.readyState === 4) {
             if (req.status === 200) {
-                alert('your query has been made ' + req.responseText);
-                $(button).removeAttr("onclick");
+                if (req.responseText === "notLogined") {
+                    document.location.href = 'pharmacy/?command=toLogin';
+                } else if (req.responseText === 'alreadyHave') {
+                    alert('you already quire this prescription');
+                    $(button).removeAttr("onclick");
+                } else if (req.responseText === 'ok') {
+                    alert('Ok! Your just quire the prescription')
+                    $(button).removeAttr("onclick");
+                } else {
+                    alert('something going wrong...')
+                }
             } else {
                 alert("can't get prescription ");
             }
@@ -186,15 +204,13 @@ function confirmReceipt(id, button) {
     req.onreadystatechange = function () {
         if (req.readyState === 4) {
             if (req.status === 200) {
-                var parent = button.parentElement;
-                parent.removeChild(button);
-                parent.append('Confirmed');
+                $('#orderBody').empty().append(req.responseText);
             } else {
                 alert("can't confirm");
             }
         }
     };
-    req.open('POST', '/pharmacy/ajax', true);
+    req.open('POST', '/pharmacy/', true);
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     req.send(body);
 }
@@ -205,25 +221,28 @@ function addDrugToBase() {
     var manufacturer = document.getElementById('manufacturer').value;
     var prescription = document.getElementById('inputPrescription').value;
     var price = document.getElementById('inputPrice').value;
+    var availableAmount = document.getElementById('inputAvailableAmount').value;
     var body = 'command=' + encodeURIComponent("addDrug")
         + '&name=' + encodeURIComponent(name) + '&releaseForm=' + encodeURIComponent(releaseForm)
         + '&manufacturer=' + encodeURIComponent(manufacturer)
-        + '&prescription=' + encodeURIComponent(prescription) + '&price=' + encodeURIComponent(price);
+        + '&prescription=' + encodeURIComponent(prescription) + '&price=' + encodeURIComponent(price)
+        + '&availableAmount=' + encodeURIComponent(availableAmount);
     var req = getXMLHttpRequest();
     req.onreadystatechange = function () {
         if (req.readyState === 4) {
             if (req.status === 200) {
                 if (req.responseText === "emptyName") {
                     alert("name can't be empty");
-                }
-                else if(req.responseText === "invalidPrice"){
+                } else if (req.responseText === "invalidPrice") {
                     alert('incorrect price');
-                }
-                else {
+                } else if (req.responseText === "invalidAvailableAmount") {
+                    alert('incorrect available amount');
+                } else {
                     alert('drug added to base');
+                    $("#addDrugMenu").modal('hide');
                 }
             } else {
-                alert("can'not add drug");
+                alert("can't add drug");
             }
         }
     };
@@ -241,14 +260,18 @@ function addDrugMenu() {
             if (req.status === 200) {
                 var drugsInfoJson = JSON.parse(req.responseText);
                 $.each(drugsInfoJson[0], function (i, releaseForm) {
-                    $("#releaseForm").append('<option>' + releaseForm.description + '</option>');
+                    var option = document.createElement("option");
+                    $("#releaseForm").append(option);
+                    option.append( document.createTextNode(releaseForm.description));
                 });
                 $.each(drugsInfoJson[1], function (i, manufacturer) {
-                    $("#manufacturer").append('<option>' + manufacturer.name + '</option>');
+                    var option = document.createElement("option");
+                    $("#manufacturer").append(option);
+                    option.append( document.createTextNode(manufacturer.name));
                 });
                 $("#addDrugMenu").modal();
             } else {
-                alert("can'not delete user");
+                alert("can't open drug menu");
             }
         }
     };
@@ -270,8 +293,9 @@ function deleteUser(id, button) {
                     .row($(button).parents('tr'))
                     .remove()
                     .draw();
+                $('#userDetailsModal').modal('hide');
             } else {
-                alert("can'not delete user");
+                alert("can't delete user");
             }
         }
     };
@@ -286,10 +310,9 @@ function deleteDrug(id, button) {
     req.onreadystatechange = function () {
         if (req.readyState === 4) {
             if (req.status === 200) {
-                if(req.responseText==="error"){
-                    alert('something going wrong...sorry');
-                }
-                else {
+                if (req.responseText === "error") {
+                    alert('something going wrong...');
+                } else {
                     alert(req.responseText);
                     var table = $('#example1').DataTable();
                     table
@@ -298,7 +321,7 @@ function deleteDrug(id, button) {
                         .draw();
                 }
             } else {
-                alert("can'not delete drug");
+                alert("can't delete drug");
             }
         }
     };
@@ -318,8 +341,8 @@ function givePrescription(id, button) {
             if (req.status === 200) {
                 if (req.responseText === "true") {
                     alert('prescription was given');
-                    var parent = button.parentElement;
-                    parent.removeChild(button);
+                    $(button).empty().append('Given').removeAttr("onclick");
+                    $('#prescriptionDetails').modal('hide');
                 } else {
                     alert('incorrect date');
                 }
@@ -350,6 +373,7 @@ function showUserDetails(id, button) {
                 $("#inputLogin").empty().append(document.createTextNode(userJson.login));
                 $("#inputUserName").empty().append(document.createTextNode(userJson.firstName));
                 $("#inputLastName").empty().append(document.createTextNode(userJson.lastName));
+                $("#inputAddress").empty().append(document.createTextNode(userJson.address));
                 $("#inputEmail").empty().append(document.createTextNode(userJson.email));
                 $("#inputRole").empty().append(document.createTextNode(userJson.role));
                 var deleteButton = document.getElementById('deleteButton');
@@ -366,6 +390,7 @@ function showUserDetails(id, button) {
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     req.send(body);
 }
+
 function itemAmountUpdate() {
     var cookie = $.cookie('cart');
     if (cookie != null) {
@@ -376,9 +401,40 @@ function itemAmountUpdate() {
         } else {
             $('#itemAmount').empty();
         }
-    }
-    else {
+    } else {
         $.cookie('cart', JSON.stringify([]));
         itemAmountUpdate();
     }
+}
+function startTableWithLocale (id) {
+    var lang = $.cookie('lang');
+    var locale;
+    var body = 'command=' + encodeURIComponent("getTableLocale") + '&lang=' + encodeURIComponent(lang);
+    var req = getXMLHttpRequest();
+    req.onreadystatechange = function () {
+        if (req.readyState === 4) {
+            if (req.status === 200) {
+                var localeString = req.responseText;
+                var locale = JSON.parse(localeString);
+                $(id).DataTable({
+                    language: locale,
+                    "order": [[2, "desc"]]
+                });
+            } else {
+                alert("can't get locale");
+            }
+        }
+    };
+    req.open('POST', '/pharmacy/ajax', true);
+    req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    req.send(body);
+}
+function totalUpdate(delta) {
+    var totalTag =$('#total');
+    if(totalTag ===null){
+        return;
+    }
+    var oldTotal = totalTag.text();
+var newTotal = delta + parseInt(oldTotal);
+   totalTag.empty().append(newTotal);
 }

@@ -14,16 +14,19 @@ public class RequestPrescription implements Command {
     public String execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
         User user =(User) session.getAttribute("user");
+        if(user == null){
+            return "notLogined";
+        }
         int drugId = Integer.parseInt(request.getParameter("drugId"));
         PrescriptionService prescriptionService = new PrescriptionService();
         DoctorSelectorForPrescriptionService selector = new RandomDoctorSelectorService();
         try {
             if (prescriptionService.isUserHasPrescription(user.getId(),drugId)){
-                return "bad";
+                return "alreadyHave";
             }
             User doctor = selector.select();
             prescriptionService.requestPrescription(user.getId(),drugId,doctor.getId());
-            return "good";
+            return "ok";
         } catch (ServiceException e) {
             throw new CommandException(e);
         }

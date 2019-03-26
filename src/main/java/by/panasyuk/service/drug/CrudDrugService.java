@@ -12,8 +12,8 @@ import by.panasyuk.service.exception.ServiceException;
 import java.util.List;
 
 public class CrudDrugService extends DrugService {
-    public Drug add(String name, boolean isPrescriptionRequired, int price, Manufacturer manufacturer, ReleaseForm releaseForm) throws ServiceException {
-        Drug drug = new Drug(name, isPrescriptionRequired, price, manufacturer, releaseForm);
+    public Drug add(String name, boolean isPrescriptionRequired, int price, Manufacturer manufacturer, ReleaseForm releaseForm,int availableAmount) throws ServiceException {
+        Drug drug = new Drug(name, isPrescriptionRequired, price, manufacturer, releaseForm,availableAmount);
         try {
             return drugRepository.add(drug);
         } catch (RepositoryException e) {

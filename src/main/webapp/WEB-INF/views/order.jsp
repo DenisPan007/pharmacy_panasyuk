@@ -35,7 +35,6 @@
                 <th scope="col"><fmt:message key="label.item" bundle="${ rb }"/></th>
                 <th scope="col"><fmt:message key="label.release-form" bundle="${ rb }"/></th>
                 <th scope="col"><fmt:message key="label.manufacturer" bundle="${ rb }"/></th>
-                <th scope="col"><fmt:message key="label.prescription" bundle="${ rb }"/></th>
                 <th scope="col" class="text-center"><fmt:message key="label.quantity" bundle="${ rb }"/></th>
                 <th scope="col" class="text-right"><fmt:message key="label.price" bundle="${ rb }"/></th>
             </tr>

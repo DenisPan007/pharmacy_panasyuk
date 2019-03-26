@@ -23,6 +23,7 @@ public interface GetDrugSpecification extends Specification<Drug> {
             String manufacturerName = resultSet.getString(6);
             int releaseFormId = resultSet.getInt(7);
             String releaseFormDescription = resultSet.getString(8);
+            resultDrug.setAvailableAmount(resultSet.getInt(9));
             resultDrug.setManufacturer(new Manufacturer(manufacturerId,manufacturerName));
             resultDrug.setReleaseForm(new ReleaseForm(releaseFormId,releaseFormDescription));
             drugList.add(resultDrug);

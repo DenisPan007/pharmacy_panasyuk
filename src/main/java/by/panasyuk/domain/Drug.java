@@ -11,6 +11,7 @@ public class Drug implements Identified<Integer> {
     private int price;
     private Manufacturer manufacturer;
     private ReleaseForm releaseForm;
+    private int availableAmount;
 
     public Drug(int id, String name, boolean isPrescriptionRequired, int price, Manufacturer manufacturer, ReleaseForm releaseForm) {
         this.id = id;
@@ -21,18 +22,28 @@ public class Drug implements Identified<Integer> {
         this.releaseForm = releaseForm;
     }
 
-    public Drug(String name, boolean isPrescriptionRequired, int price, Manufacturer manufacturer, ReleaseForm releaseForm) {
+    public Drug(String name, boolean isPrescriptionRequired, int price, Manufacturer manufacturer, ReleaseForm releaseForm,int availableAmount) {
         this.name = name;
         this.isPrescriptionRequired = isPrescriptionRequired;
         this.price = price;
         this.manufacturer = manufacturer;
         this.releaseForm = releaseForm;
+        this.availableAmount = availableAmount;
     }
 
     public Drug() {
     }
 
+    public int getAvailableAmount() {
+        return availableAmount;
+    }
+
+    public void setAvailableAmount(int availableAmount) {
+        this.availableAmount = availableAmount;
+    }
+
     @Override
+
     public Integer getId() {
         return id;
     }
@@ -89,6 +100,7 @@ public class Drug implements Identified<Integer> {
         return id == drug.id &&
                 isPrescriptionRequired == drug.isPrescriptionRequired &&
                 price == drug.price &&
+                availableAmount == drug.availableAmount &&
                 Objects.equals(name, drug.name) &&
                 Objects.equals(manufacturer, drug.manufacturer) &&
                 Objects.equals(releaseForm, drug.releaseForm);
@@ -96,7 +108,7 @@ public class Drug implements Identified<Integer> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, isPrescriptionRequired, price, manufacturer, releaseForm);
+        return Objects.hash(id, name, isPrescriptionRequired, price, manufacturer, releaseForm, availableAmount);
     }
 
     @Override
@@ -108,6 +120,7 @@ public class Drug implements Identified<Integer> {
                 ", price=" + price +
                 ", manufacturer=" + manufacturer +
                 ", releaseForm=" + releaseForm +
+                ", availableAmount=" + availableAmount +
                 '}';
     }
 }

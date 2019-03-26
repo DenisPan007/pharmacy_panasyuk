@@ -8,7 +8,7 @@
 
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Modal Heading</h4>
+                <h4 class="modal-title"><fmt:message key="user-details.title" bundle="${ rb }"/></h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
@@ -34,6 +34,13 @@
                             <label><fmt:message key="label.lastname" bundle="${ rb }"/></label>
                         </div>
                         <div class="col-md-6" id="inputLastName">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label><fmt:message key="label.address" bundle="${ rb }"/></label>
+                        </div>
+                        <div id="inputAddress" class="col-md-6">
                         </div>
                     </div>
                     <div class="row">

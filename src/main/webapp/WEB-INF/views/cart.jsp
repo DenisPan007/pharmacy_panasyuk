@@ -5,6 +5,7 @@
 <html>
 <fmt:setLocale value="${cookie['lang'].value}"/>
 <fmt:setBundle basename="pagecontent" var="rb" scope="request"/>
+<fmt:setBundle basename="messages" var="messageRb" scope="request"/>
 <head>
     <title><fmt:message key="home.title" bundle="${ rb }"/></title>
     <!-- css for cart img -->
@@ -29,7 +30,17 @@
 <c:import url="header.jsp"/>
 
 <div class="container mb-4 starter-template">
-    <div class="row">
+    <c:choose>
+        <c:when test="${error =='notEnoughItems'}">
+    <div class="alert alert-danger" role="alert">
+        <fmt:message key="alert.notEnoughItems" bundle="${ messageRb }"/> ${wrongAmountItemString}
+    </div>
+        </c:when>
+    </c:choose>
+    <div class="alert alert-info" role="alert" id="emptyCartMessage">
+        <fmt:message key="alert.emptyCart" bundle="${ messageRb }"/>
+    </div>
+    <div class="row" id="cartBlock">
         <div class="col-12">
             <div class="table-responsive">
                 <table class="table">
@@ -49,14 +60,14 @@
                     </tbody>
                 </table>
             </div>
-            <div class="row">
+            <div class="row" id="totalBlock">
                 <div class="col-4 ml-auto">
                     <div class="row">
                         <div class="col-6">
-                            <fmt:message key="label.total" bundle="${ rb }" var="nonPrescription"/>
+                            <fmt:message key="label.total" bundle="${ rb }"/>
                         </div>
-                        <div class="col-6">
-                            346,90 €
+                        <div class="col-6" id="total">
+                            ${total}
                         </div>
                     </div>
                 </div>
@@ -67,7 +78,8 @@
                 <div class="col-sm-12 col-md-6 text-right">
                 </div>
                 <div class="col-sm-12 col-md-6 text-right">
-                    <button class="btn btn-lg btn-block btn-success text-uppercase" onclick="checkout()">Checkout
+                    <button class="btn btn-lg btn-block btn-success text-uppercase" id="checkout" onclick="checkout()">
+                        <fmt:message key="button.checkout" bundle="${ rb }"/>
                     </button>
                 </div>
             </div>
@@ -77,6 +89,20 @@
 <script type="text/javascript">
     $(document).ready(function () {
         itemAmountUpdate();
+        var cookieCartString = $.cookie('cart');
+        if (cookieCartString == null) {
+            $('#cartBlock').hide();
+            $('#emptyCartMessage').show();
+        } else if (cookieCartString != null) {
+            var cookieCartJson = JSON.parse(decodeURIComponent(cookieCartString));
+            if (cookieCartJson.length > 0) {
+                $('#cartBlock').show();
+                $('#emptyCartMessage').hide();
+            } else {
+                $('#cartBlock').hide();
+                $('#emptyCartMessage').show();
+            }
+        }
     });
 </script>
 </body>

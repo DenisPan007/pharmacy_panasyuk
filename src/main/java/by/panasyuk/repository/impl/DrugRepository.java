@@ -17,8 +17,8 @@ public class DrugRepository extends AbstractJdbcRepository<Drug, Integer> implem
     @AutoConnection
     @Override
     public Drug add(Drug drug) throws RepositoryException {
-        String query = "INSERT INTO drug (name,is_prescription_required,price,release_form_id,manufacturer_id) " +
-                "VALUES(?,?,?,?,?)";
+        String query = "INSERT INTO drug (name,is_prescription_required,price,release_form_id,manufacturer_id,available_amount) " +
+                "VALUES(?,?,?,?,?,?)";
         try {
             PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, drug.getName());
@@ -26,6 +26,7 @@ public class DrugRepository extends AbstractJdbcRepository<Drug, Integer> implem
             ps.setInt(3, drug.getPrice());
             ps.setInt(4, drug.getReleaseForm().getId());
             ps.setInt(5, drug.getManufacturer().getId());
+            ps.setInt(6, drug.getAvailableAmount());
             ps.executeUpdate();
             ResultSet keys = ps.getGeneratedKeys();
             keys.next();
@@ -42,7 +43,7 @@ public class DrugRepository extends AbstractJdbcRepository<Drug, Integer> implem
     public void update(Drug drug) throws RepositoryException {
 
         String query = "UPDATE drug " +
-                "SET name=?, is_prescription_required=?, price=?" +
+                "SET name=?, is_prescription_required=?, price=?, available_amount=?" +
                 "WHERE id = ?";
 
         try {
@@ -50,7 +51,8 @@ public class DrugRepository extends AbstractJdbcRepository<Drug, Integer> implem
             ps.setString(1, drug.getName());
             ps.setBoolean(2, drug.getIsPrescriptionRequired());
             ps.setInt(3, drug.getPrice());
-            ps.setInt(4, drug.getId());
+            ps.setInt(4, drug.getAvailableAmount());
+            ps.setInt(5, drug.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RepositoryException("prepared statement failed", e);

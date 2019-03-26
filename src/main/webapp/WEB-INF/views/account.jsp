@@ -61,9 +61,7 @@
 </main><!-- /.container -->
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#orderList').DataTable({
-            "order": [[3, "desc"]]
-        });
+        startTableWithLocale('#orderList');
     });
 </script>
 </body>

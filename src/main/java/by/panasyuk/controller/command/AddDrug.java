@@ -19,6 +19,7 @@ public class AddDrug implements Command {
         String name = request.getParameter("name");
         String isPrescriptionRequired = request.getParameter("prescription.given");
         String price = request.getParameter("price");
+        String availableAmount = request.getParameter("availableAmount");
         CrudDrugService drugService = new CrudDrugService();
         ManufacturerService manufacturerService = new ManufacturerService();
         ReleaseFromService releaseFromService = new ReleaseFromService();
@@ -33,9 +34,16 @@ public class AddDrug implements Command {
             return "invalidPrice";
         }
         try {
+            if (Integer.parseInt(availableAmount)<=0) {
+                return "invalidPrice";
+            }
+        }catch (NumberFormatException e){
+            return "invalidPrice";
+        }
+        try {
             ReleaseForm releaseForm = releaseFromService.getByDescription(description);
             Manufacturer manufacturer = manufacturerService.getByName(manufacturerName);
-            Drug drug = drugService.add(name, Boolean.valueOf(isPrescriptionRequired), Integer.parseInt(price), manufacturer, releaseForm);
+            Drug drug = drugService.add(name, Boolean.valueOf(isPrescriptionRequired), Integer.parseInt(price), manufacturer, releaseForm, Integer.parseInt(availableAmount));
             Gson gson = new Gson();
             return gson.toJson(drug);
         } catch (ServiceException e) {

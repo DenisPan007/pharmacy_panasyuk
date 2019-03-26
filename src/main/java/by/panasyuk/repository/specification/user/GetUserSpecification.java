@@ -20,6 +20,7 @@ public interface  GetUserSpecification extends Specification<User> {
             resultUser.setLastName(resultSet.getString(5));
             resultUser.setEmail(resultSet.getString(6));
             resultUser.setRole(resultSet.getString(7));
+            resultUser.setAddress(resultSet.getString(8));
             userList.add(resultUser);
         }
         return userList;

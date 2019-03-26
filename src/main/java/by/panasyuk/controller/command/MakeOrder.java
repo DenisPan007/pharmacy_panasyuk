@@ -19,8 +19,15 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLDecoder;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MakeOrder implements Command {
+    private List<Item> withAmountLessThanAvailable(List<Item> itemList){
+        List<Item> resultItemList = itemList.stream().filter((item)-> item.getAmount()> item.getDrug()
+                .getAvailableAmount())
+                .collect(Collectors.toList());
+        return resultItemList;
+    }
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -41,13 +48,23 @@ public class MakeOrder implements Command {
             Gson gson = new Gson();
             Type listType = new TypeToken<List<Item>>(){}.getType();
             try {
-                List<Item> drugList = gson.fromJson(cookie, listType);
+                List<Item> itemList = gson.fromJson(cookie, listType);
+                List<Item> wrongAmountItemList = withAmountLessThanAvailable(itemList);
+                if(!wrongAmountItemList.isEmpty()){
+                    String wrongAmountItemString = wrongAmountItemList.stream()
+                            .map((item) -> item.getDrug().getName())
+                            .collect(Collectors.joining(","));
+                    session.setAttribute("wrongAmountItemString",wrongAmountItemString);
+                    request.setAttribute("route", Router.Type.REDIRECT);
+                    String error = "notEnoughItems";
+                    return PathManager.getProperty("redirect.initial")+ "&error=" + error;
+                }
                 OrderService service = new OrderService();
                 Order order = new Order();
-                order.setItemList(drugList);
+                order.setItemList(itemList);
                 order.setStatus(Order.Status.NEW.name());
                 order.setUserId(user.getId());
-                int price = drugList.stream().mapToInt((details -> {return details.getAmount()*details.getDrug().getPrice();})).sum();
+                int price = itemList.stream().mapToInt((details -> {return details.getAmount()*details.getDrug().getPrice();})).sum();
                 order.setPrice(price);
                 Order resultOrder = service.addOrder(order);
                 session.setAttribute("order",resultOrder);

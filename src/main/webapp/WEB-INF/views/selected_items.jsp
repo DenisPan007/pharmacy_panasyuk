@@ -22,6 +22,7 @@
                 </c:choose>
 
         </td>
+        <td><c:out value="${elem.drug.availableAmount}"></c:out></td>
         <td>
             <div class="col-12 m-0">
                 <input id="${elem.drug.id}" type="number" class="count form-control"  value="1" max="100" min="1" >

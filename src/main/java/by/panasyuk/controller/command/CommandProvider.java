@@ -45,6 +45,7 @@ public class CommandProvider {
         commandMap.put("getUserById", new GetUserById());
         commandMap.put("getItemsByName", new GetItemsByName());
         commandMap.put("updateCart", new UpdateCart());
+        commandMap.put("getTableLocale", new GetTableLocale());
     }
 
     /**

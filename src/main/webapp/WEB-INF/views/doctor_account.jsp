@@ -55,9 +55,7 @@
 </main><!-- /.container -->
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#prescriptionList').DataTable({
-            "order": [[2, "desc"]]
-        });
+        startTableWithLocale('#prescriptionList');
     });
 </script>
 </body>

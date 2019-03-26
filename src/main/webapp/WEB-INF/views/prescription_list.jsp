@@ -34,7 +34,7 @@
     <tr>
         <th></th>
         <th><fmt:message key="label.order-number" bundle="${ rb }"/></th>
-        <th> <th><fmt:message key="label.user" bundle="${ rb }"/></th></th>
+        <th><fmt:message key="label.user" bundle="${ rb }"/></th>
         <th><fmt:message key="label.drug" bundle="${ rb }"/></th>
         <th><fmt:message key="label.status" bundle="${ rb }"/></th>
     </tr>
@@ -44,7 +44,7 @@
         <tr>
             <c:choose>
                 <c:when test="${elem.issueDate == null}">
-            <td><button class="btn-dark btn" onclick="showPrescriptionDetails(${elem.id},this)"> <th><fmt:message key="button.details" bundle="${ rb }"/></th></button></td>
+            <td><button class="btn-dark btn" onclick="showPrescriptionDetails(${elem.id},this)"> <fmt:message key="button.details" bundle="${ rb }"/></button></td>
                 </c:when>
                 <c:when test="${elem.issueDate != null}">
                     <td></td>
@@ -55,10 +55,10 @@
             <td><c:out value="${elem.drugId}"></c:out></td>
             <c:choose>
                 <c:when test="${elem.issueDate == null}">
-                    <td> <th><fmt:message key="label.order-number" bundle="${ rb }"/></th></td>
+                    <td> <fmt:message key="prescription.requested" bundle="${ rb }"/></td>
                 </c:when>
                 <c:when test="${elem.issueDate != null}">
-                    <td> <th><fmt:message key="prescription.given" bundle="${ rb }"/></th></td>
+                    <td> <fmt:message key="prescription.given" bundle="${ rb }"/></td>
                 </c:when>
             </c:choose>
         </tr>

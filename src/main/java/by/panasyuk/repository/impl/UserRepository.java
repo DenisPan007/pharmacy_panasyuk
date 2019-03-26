@@ -18,8 +18,8 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
     @AutoConnection
     @Override
     public User add(User user) throws RepositoryException {
-        String query = "INSERT INTO user (login,password,firstname,lastname,email,role) " +
-                "VALUES(?,?,?,?,?,?)";
+        String query = "INSERT INTO user (login,password,firstname,lastname,email,role,address) " +
+                "VALUES(?,?,?,?,?,?,?)";
         try (PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, user.getLogin());
             ps.setString(2, user.getPassword());
@@ -27,6 +27,7 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
             ps.setString(4, user.getLastName());
             ps.setString(5, user.getEmail());
             ps.setString(6, user.getRole());
+            ps.setString(7, user.getAddress());
             ps.executeUpdate();
             ResultSet keys = ps.getGeneratedKeys();
             keys.next();
@@ -43,7 +44,7 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
     public void update(User user) throws RepositoryException {
 
         String query = "UPDATE user " +
-                "SET login=?, password=?, firstname=?, lastname=?, email=?, role=?" +
+                "SET login=?, password=?, firstname=?, lastname=?, email=?, role=?,address=?" +
                 "WHERE id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -53,7 +54,8 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
             statement.setString(4, user.getLastName());
             statement.setString(5, user.getEmail());
             statement.setString(6, user.getRole());
-            statement.setInt(7, user.getId());
+            statement.setString(7, user.getAddress());
+            statement.setInt(8, user.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RepositoryException("prepared statement failed", e);

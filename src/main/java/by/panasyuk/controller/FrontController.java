@@ -37,10 +37,12 @@ public class FrontController extends HttpServlet {
             }
         } catch (CommandException e) {
             request.setAttribute("error", e.getMessage());
+            response.setStatus(500);
             request.getRequestDispatcher(PathManager.getProperty("error-page")).forward(request, response);
         }
         catch (Exception e){
             request.setAttribute("error", "Something going wrong, go to start - page");
+            response.setStatus(500);
             request.getRequestDispatcher(PathManager.getProperty("error-page")).forward(request, response);
         }
     }

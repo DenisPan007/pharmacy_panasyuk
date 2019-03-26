@@ -56,7 +56,7 @@ public class SignUp implements Command {
                 req.setAttribute("route", Router.Type.REDIRECT);
                 return PathManager.getProperty("redirect.sign.up")+"&error=reservedEmail";
             }
-                User user = signUpService.signUp(login, password, name,lastName,email);
+                User user = signUpService.signUp(login, password, name,lastName,email,address);
                 session.setAttribute("user", user);
                 session.setAttribute("role", RoleEnum.valueOf(user.getRole()));
                 req.setAttribute("route", Router.Type.REDIRECT);

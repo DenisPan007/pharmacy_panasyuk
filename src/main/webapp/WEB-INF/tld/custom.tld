@@ -45,4 +45,18 @@
             <required>true</required>
         </attribute>
     </tag>
+    <tag>
+        <name>total</name>
+        <tag-class>by.panasyuk.util.TotalPriceTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>itemList</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>var</name>
+            <required>true</required>
+        </attribute>
+    </tag>
 </taglib>
