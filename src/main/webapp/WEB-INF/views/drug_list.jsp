@@ -6,6 +6,7 @@
     <thead>
     <tr>
         <th></th>
+        <th></th>
         <th>Id</th>
         <th><fmt:message key="label.name-drug" bundle="${ rb }"/></th>
         <th><fmt:message key="label.prescription" bundle="${ rb }"/></th>
@@ -16,6 +17,10 @@
     <tbody id="body">
     <c:forEach var="elem" items="${drugList}" varStatus="status">
         <tr>
+            <td>
+                <button class="btn btn-dark" onclick="changeDrugMenu(${elem.id})"><fmt:message key="button.edit"
+                                                                                                bundle="${ rb }"/></button>
+            </td>
             <td>
                 <button class="btn btn-dark" onclick="deleteDrug(${elem.id},this)"><fmt:message key="button.delete"
                                                                                                 bundle="${ rb }"/></button>

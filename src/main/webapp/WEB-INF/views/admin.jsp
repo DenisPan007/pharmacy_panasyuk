@@ -71,7 +71,8 @@
                 </table>
 
             </div>
-            <button type="button" class="btn btn-dark" onclick="addDrugToBase()" ><fmt:message key="button.add" bundle="${ rb }"/></button>
+            <button type="button" class="btn btn-dark" onclick="addDrugToBase()" id="addDrugButton" ><fmt:message key="button.add" bundle="${ rb }"/></button>
+            <button type="button" class="btn btn-dark" id="changeDrugButton" ><fmt:message key="button.apply" bundle="${ rb }"/></button>
 
             <!-- Modal footer -->
             <div class="modal-footer">

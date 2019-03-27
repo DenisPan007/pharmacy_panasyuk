@@ -13,6 +13,13 @@ import by.panasyuk.service.exception.ServiceException;
 import java.util.List;
 
 public class CrudDrugService extends DrugService {
+    public void update(Drug drug) throws ServiceException {
+        try {
+             drugRepository.update(drug);
+        } catch (RepositoryException e) {
+            throw new ServiceException("Can't add drug", e);
+        }
+    }
     public Drug getById(int id) throws ServiceException {
         Drug drug = new Drug();
         drug.setId(id);
@@ -26,8 +33,7 @@ public class CrudDrugService extends DrugService {
             throw new ServiceException("Cant't get drug ", e);
         }
     }
-    public Drug add(String name, boolean isPrescriptionRequired, int price, Manufacturer manufacturer, ReleaseForm releaseForm,int availableAmount) throws ServiceException {
-        Drug drug = new Drug(name, isPrescriptionRequired, price, manufacturer, releaseForm,availableAmount);
+    public Drug add(Drug drug) throws ServiceException {
         try {
             return drugRepository.add(drug);
         } catch (RepositoryException e) {

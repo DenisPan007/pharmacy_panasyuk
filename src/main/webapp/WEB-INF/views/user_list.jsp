@@ -2,7 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <style>
-    .modal-dialog {
+    .userlist {
         overflow-y: auto;
         width: auto;
         min-width: 200px;
@@ -11,7 +11,7 @@
 </style>
 <body>
 <div class="modal fade " id="userDetailsModal" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog userlist">
         <div class="modal-content">
 
             <!-- Modal Header -->

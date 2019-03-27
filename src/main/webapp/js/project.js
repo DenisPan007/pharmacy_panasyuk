@@ -255,7 +255,7 @@ function addDrugToBase() {
 
 }
 
-function addDrugMenu() {
+function drugMenu() {
     var body = 'command=' + encodeURIComponent("getDrugsInfo");
     var req = getXMLHttpRequest();
     req.onreadystatechange = function () {
@@ -264,12 +264,12 @@ function addDrugMenu() {
                 var drugsInfoJson = JSON.parse(req.responseText);
                 $.each(drugsInfoJson[0], function (i, releaseForm) {
                     var option = document.createElement("option");
-                    $("#releaseForm").append(option);
+                    $("#releaseForm").empty().append(option);
                     option.append(document.createTextNode(releaseForm.description));
                 });
                 $.each(drugsInfoJson[1], function (i, manufacturer) {
                     var option = document.createElement("option");
-                    $("#manufacturer").append(option);
+                    $("#manufacturer").empty().append(option);
                     option.append(document.createTextNode(manufacturer.name));
                 });
                 $("#addDrugMenu").modal();
@@ -464,4 +464,57 @@ function changeUser() {
     req.open('POST', '/pharmacy/ajax', true);
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     req.send(body);
+}
+function changeDrug(id){
+    var name = document.getElementById('inputName').value;
+    var releaseForm = document.getElementById('releaseForm').value;
+    var manufacturer = document.getElementById('manufacturer').value;
+    var prescription = document.getElementById('inputPrescription').value;
+    var price = document.getElementById('inputPrice').value;
+    var availableAmount = document.getElementById('inputAvailableAmount').value;
+    var body = 'command=' + encodeURIComponent("changeDrug")
+        + '&id=' + encodeURIComponent(id)
+        + '&name=' + encodeURIComponent(name) + '&releaseForm=' + encodeURIComponent(releaseForm)
+        + '&manufacturer=' + encodeURIComponent(manufacturer)
+        + '&prescription=' + encodeURIComponent(prescription) + '&price=' + encodeURIComponent(price)
+        + '&availableAmount=' + encodeURIComponent(availableAmount);
+    var req = getXMLHttpRequest();
+    req.onreadystatechange = function () {
+        if (req.readyState === 4) {
+            if (req.status === 200) {
+                if (req.responseText === "emptyName") {
+                    alert("name can't be empty");
+                } else if (req.responseText === "invalidPrice") {
+                    alert('incorrect price');
+                } else if (req.responseText === "invalidAvailableAmount") {
+                    alert('incorrect available amount');
+                } else {
+                    alert('drug had been changed');
+                    $("#addDrugMenu").modal('hide');
+                }
+            } else {
+                alert("can't add drug");
+            }
+        }
+    };
+    req.open('POST', '/pharmacy/ajax', true);
+    req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    req.send(body);
+}
+function changeDrugMenu(id) {
+    drugMenu();
+    buttonAdd = $('#addDrugButton');
+    buttonChange = document.getElementById('changeDrugButton');
+    $(buttonAdd).hide();
+    $(buttonChange).show();
+    buttonChange.onclick = function () {
+        changeDrug(id);
+    }
+}
+function addDrugMenu() {
+    drugMenu();
+    buttonAdd = $('#addDrugButton');
+    buttonChange = $('#changeDrugButton');
+    $(buttonAdd).show();
+    $(buttonChange).hide();
 }

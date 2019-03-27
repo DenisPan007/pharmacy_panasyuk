@@ -11,9 +11,10 @@ import com.google.gson.Gson;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class AddDrug implements Command {
+public class ChangeDrug implements Command {
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
+        int id = Integer.parseInt(request.getParameter("id"));
         String description = request.getParameter("releaseForm");
         String manufacturerName = request.getParameter("manufacturer");
         String name = request.getParameter("name");
@@ -43,8 +44,8 @@ public class AddDrug implements Command {
         try {
             ReleaseForm releaseForm = releaseFromService.getByDescription(description);
             Manufacturer manufacturer = manufacturerService.getByName(manufacturerName);
-            Drug drug = new Drug(name, Boolean.valueOf(isPrescriptionRequired), Integer.parseInt(price), manufacturer, releaseForm,Integer.parseInt(availableAmount));
-            drug = drugService.add(drug);
+            Drug drug = new Drug(id,name, Boolean.valueOf(isPrescriptionRequired), Integer.parseInt(price), manufacturer, releaseForm, Integer.parseInt(availableAmount));
+            drugService.update(drug);
             Gson gson = new Gson();
             return gson.toJson(drug);
         } catch (ServiceException e) {

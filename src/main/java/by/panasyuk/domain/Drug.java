@@ -13,13 +13,14 @@ public class Drug implements Identified<Integer> {
     private ReleaseForm releaseForm;
     private int availableAmount;
 
-    public Drug(int id, String name, boolean isPrescriptionRequired, int price, Manufacturer manufacturer, ReleaseForm releaseForm) {
+    public Drug(int id, String name, boolean isPrescriptionRequired, int price, Manufacturer manufacturer, ReleaseForm releaseForm,int availableAmount) {
         this.id = id;
         this.name = name;
         this.isPrescriptionRequired = isPrescriptionRequired;
         this.price = price;
         this.manufacturer = manufacturer;
         this.releaseForm = releaseForm;
+        this.availableAmount = availableAmount;
     }
 
     public Drug(String name, boolean isPrescriptionRequired, int price, Manufacturer manufacturer, ReleaseForm releaseForm,int availableAmount) {
