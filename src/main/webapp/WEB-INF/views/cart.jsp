@@ -32,10 +32,16 @@
 <div class="container mb-4 starter-template">
     <c:choose>
         <c:when test="${error =='notEnoughItems'}">
-    <div class="alert alert-danger" role="alert">
-        <fmt:message key="alert.notEnoughItems" bundle="${ messageRb }"/> ${wrongAmountItemString}
-    </div>
+            <div class="alert alert-danger" role="alert">
+                <fmt:message key="alert.notEnoughItems" bundle="${ messageRb }"/> ${wrongAmountItemString}
+            </div>
         </c:when>
+        <c:when test="${error =='notEnoughPrescriptions'}">
+            <div class="alert alert-danger" role="alert">
+                <fmt:message key="alert.notEnoughPrescriptions" bundle="${ messageRb }"/>
+            </div>
+        </c:when>
+
     </c:choose>
     <div class="alert alert-info" role="alert" id="emptyCartMessage">
         <fmt:message key="alert.emptyCart" bundle="${ messageRb }"/>

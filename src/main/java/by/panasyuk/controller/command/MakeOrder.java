@@ -7,6 +7,7 @@ import by.panasyuk.domain.User;
 import by.panasyuk.service.OrderService;
 import by.panasyuk.service.drug.CrudDrugService;
 import by.panasyuk.service.exception.ServiceException;
+import by.panasyuk.service.prescription.PrescriptionService;
 import by.panasyuk.util.CookieFinder;
 import by.panasyuk.util.PathManager;
 import by.panasyuk.util.RoleEnum;
@@ -27,10 +28,26 @@ import java.util.stream.Collectors;
 public class MakeOrder implements Command {
     CrudDrugService drugService = new CrudDrugService();
 
+    private boolean isUserHasRequiredPrescriptions(int userId, List<Item> itemList) throws CommandException {
+        PrescriptionService prescriptionService = new PrescriptionService();
+        for (Item item : itemList) {
+            int drugId = item.getDrug().getId();
+            boolean isPrescriptionRequired = item.getDrug().getIsPrescriptionRequired();
+            try {
+                if (isPrescriptionRequired && !prescriptionService.isUserHasValidPrescription(userId, drugId)) {
+                    return false;
+                }
+            } catch (ServiceException e) {
+                throw new CommandException(e);
+            }
+        }
+        return true;
+    }
+
     private boolean predicate(Item item) throws CommandException {
         try {
             Drug actualDrug = drugService.getById(item.getDrug().getId());
-            if (actualDrug == null){
+            if (actualDrug == null) {
                 throw new ServiceException("can't get by Id");
             }
             int availableAmount = actualDrug.getAvailableAmount();
@@ -40,7 +57,7 @@ public class MakeOrder implements Command {
         }
     }
 
-    private List<Item> withAmountLessThanAvailable(List<Item> itemList) throws CommandException {
+    private List<Item> getItemsWithAmountLessThanAvailable(List<Item> itemList) throws CommandException {
         List<Item> resultItemList = new ArrayList<>();
         for (Item item : itemList) {
             if (predicate(item)) {
@@ -72,7 +89,7 @@ public class MakeOrder implements Command {
             }.getType();
             try {
                 List<Item> itemList = gson.fromJson(cookie, listType);
-                List<Item> wrongAmountItemList = withAmountLessThanAvailable(itemList);
+                List<Item> wrongAmountItemList = getItemsWithAmountLessThanAvailable(itemList);
                 if (!wrongAmountItemList.isEmpty()) {
                     String wrongAmountItemString = wrongAmountItemList.stream()
                             .map((item) -> item.getDrug().getName())
@@ -80,7 +97,12 @@ public class MakeOrder implements Command {
                     session.setAttribute("wrongAmountItemString", wrongAmountItemString);
                     request.setAttribute("route", Router.Type.REDIRECT);
                     String error = "notEnoughItems";
-                    return PathManager.getProperty("redirect.initial") + "&error=" + error;
+                    return PathManager.getProperty("redirect.cart") + "&error=" + error;
+                }
+                if(!isUserHasRequiredPrescriptions(user.getId(),itemList)){
+                    request.setAttribute("route", Router.Type.REDIRECT);
+                    String error = "notEnoughPrescriptions";
+                    return PathManager.getProperty("redirect.cart") + "&error=" + error;
                 }
                 OrderService service = new OrderService();
                 Order order = new Order();

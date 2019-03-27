@@ -13,6 +13,7 @@ import by.panasyuk.repository.specification.prescription.GetPrescriptionById;
 import by.panasyuk.service.exception.ServiceException;
 
 import java.sql.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class PrescriptionService {
@@ -49,14 +50,35 @@ public class PrescriptionService {
         }
     }
 
-    public boolean isUserHasPrescription(int userId, int drugId) throws ServiceException {
+    public boolean isUserQuirePrescription(int userId, int drugId) throws ServiceException {
         Specification<Prescription> specification = new GetByUserAndDrugId();
         Prescription prescription = new Prescription();
         prescription.setUserId(userId);
         prescription.setDrugId(drugId);
         try {
             List<Prescription> prescriptionList = repository.getQuery(prescription, specification);
-            return prescriptionList.size() != 0;
+            return !prescriptionList.isEmpty();
+        } catch (RepositoryException e) {
+            throw new ServiceException(e);
+        }
+    }
+    public boolean isUserHasValidPrescription(int userId, int drugId) throws ServiceException {
+        Specification<Prescription> specification = new GetByUserAndDrugId();
+        Prescription prescription = new Prescription();
+        prescription.setUserId(userId);
+        prescription.setDrugId(drugId);
+        try {
+            List<Prescription> prescriptionList = repository.getQuery(prescription, specification);
+            if (prescriptionList.isEmpty()){
+                return false;
+            }
+            prescription = prescriptionList.get(0);
+            if (prescription.getValidityDate()==null){
+                return false;
+            }
+            long validTime =  prescription.getValidityDate().getTime();
+            long currentTime = GregorianCalendar.getInstance().getTimeInMillis();
+            return  validTime >= currentTime;
         } catch (RepositoryException e) {
             throw new ServiceException(e);
         }

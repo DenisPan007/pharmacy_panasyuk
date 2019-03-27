@@ -25,7 +25,7 @@ function addItemToCart(button, itemList, index) {
     var id = item.drug.id;
     var inputTag = document.getElementById(id);
     var amount = inputTag.value;
-    if (amount <= 0 ||amount > item.drug.availableAmount) {
+    if (amount <= 0 || amount > item.drug.availableAmount) {
         $(inputTag).addClass("border-danger");
         $(inputTag).focus((function () {
             $(inputTag).removeClass("border-danger");
@@ -39,22 +39,25 @@ function addItemToCart(button, itemList, index) {
         var cookieCartJson = JSON.parse(decodeURIComponent(cookieCartString));
         // alert('old cookies   :' + cookieCartString);
         for (var i = 0; i < cookieCartJson.length; ++i) {
-            if (cookieCartJson[i].drug.id === item.drug.id) {
+            var oldItem = cookieCartJson[i];
+            if (oldItem.drug.id === item.drug.id) {
                 trigger = false;
+                totalUpdate(item.drug.price * item.amount - oldItem.drug.price * oldItem.amount);
                 cookieCartJson[i] = item;
             }
         }
         if (trigger) {
             cookieCartJson.push(item);
+            totalUpdate(item.drug.price * item.amount);
         }
         newCookieJson = cookieCartJson;
     } else {
         newCookieJson = [];
         newCookieJson.push(item);
+        totalUpdate(item.drug.price * item.amount);
     }
     $('#cartBlock').show();
     $('#emptyCartMessage').hide();
-    totalUpdate(item.drug.price);
     var newCookieString = JSON.stringify(newCookieJson);
     $.cookie('cart', newCookieString);
     var tbodyCartTag = $('#tbodyTagCart');
@@ -133,14 +136,14 @@ function deleteDrugFromCart(id, button) {
     var cookieCartJson = JSON.parse(decodeURIComponent(cookieCartString));
     for (var i = 0; i < cookieCartJson.length; ++i) {
         if (cookieCartJson[i].drug.id === id) {
-            totalUpdate((-1)*cookieCartJson[i].drug.price);
+            totalUpdate((-1) * cookieCartJson[i].drug.price * cookieCartJson[i].amount);
             cookieCartJson.splice(i, 1);
         }
     }
     var newCookieString = JSON.stringify(cookieCartJson);
     $.cookie('cart', newCookieString);
     itemAmountUpdate();
-    if (cookieCartJson.length ==0){
+    if (cookieCartJson.length == 0) {
         $('#cartBlock').hide();
         $('#emptyCartMessage').show();
 
@@ -262,12 +265,12 @@ function addDrugMenu() {
                 $.each(drugsInfoJson[0], function (i, releaseForm) {
                     var option = document.createElement("option");
                     $("#releaseForm").append(option);
-                    option.append( document.createTextNode(releaseForm.description));
+                    option.append(document.createTextNode(releaseForm.description));
                 });
                 $.each(drugsInfoJson[1], function (i, manufacturer) {
                     var option = document.createElement("option");
                     $("#manufacturer").append(option);
-                    option.append( document.createTextNode(manufacturer.name));
+                    option.append(document.createTextNode(manufacturer.name));
                 });
                 $("#addDrugMenu").modal();
             } else {
@@ -406,7 +409,8 @@ function itemAmountUpdate() {
         itemAmountUpdate();
     }
 }
-function startTableWithLocale (id) {
+
+function startTableWithLocale(id) {
     var lang = $.cookie('lang');
     var locale;
     var body = 'command=' + encodeURIComponent("getTableLocale") + '&lang=' + encodeURIComponent(lang);
@@ -429,12 +433,35 @@ function startTableWithLocale (id) {
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     req.send(body);
 }
+
 function totalUpdate(delta) {
-    var totalTag =$('#total');
-    if(totalTag ===null){
+    var totalTag = $('#total');
+    if (totalTag === null) {
         return;
     }
     var oldTotal = totalTag.text();
-var newTotal = delta + parseInt(oldTotal);
-   totalTag.empty().append(newTotal);
+    var newTotal = delta + parseInt(oldTotal);
+    totalTag.empty().append(newTotal);
+}
+
+function changeUser() {
+    var login = $('#inputLogin').text();
+    var role = document.getElementById('changeRole').value;
+    var body = 'command=' + encodeURIComponent("changeUser")
+        + '&login=' + encodeURIComponent(login)
+        + '&role=' + encodeURIComponent(role);
+    var req = getXMLHttpRequest();
+    req.onreadystatechange = function () {
+        if (req.readyState === 4) {
+            if (req.status === 200) {
+                alert("user has been changed");
+                $('#userDetailsModal').modal('hide');
+            } else {
+                alert("can't change the user");
+            }
+        }
+    };
+    req.open('POST', '/pharmacy/ajax', true);
+    req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    req.send(body);
 }
