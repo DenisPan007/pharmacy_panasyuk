@@ -20,6 +20,22 @@ public class PrescriptionService {
     private RepositoryFactory repositoryFactory = JdbcRepositoryFactory.getInstance();
     private Repository<Prescription, Integer> repository = repositoryFactory.getRepository(PrescriptionRepository::new);
 
+    private Prescription getByUserAndDrugId(int userId, int drugId) throws ServiceException {
+        Specification<Prescription> specification = new GetByUserAndDrugId();
+        Prescription prescription = new Prescription();
+        prescription.setUserId(userId);
+        prescription.setDrugId(drugId);
+        try {
+            List<Prescription> prescriptionList = repository.getQuery(prescription, specification);
+            if (prescriptionList.isEmpty()){
+                return null;
+            }
+            return prescriptionList.get(0);
+        } catch (RepositoryException e) {
+            throw new ServiceException(e);
+        }
+    }
+
     public void givePrescription(int id, String description, Date issueDate, Date validityDate) throws ServiceException {
         Prescription prescription = new Prescription();
         prescription.setId(id);
@@ -39,49 +55,59 @@ public class PrescriptionService {
     }
 
     public Prescription requestPrescription(int userId, int drugId, int doctorId) throws ServiceException {
-        Prescription prescription = new Prescription();
-        prescription.setDrugId(drugId);
-        prescription.setUserId(userId);
-        prescription.setDoctorId(doctorId);
-        try {
-            return repository.add(prescription);
-        } catch (RepositoryException e) {
-            throw new ServiceException(e);
+        Prescription prescription = getByUserAndDrugId(userId,drugId);
+        if(prescription == null){
+            prescription = new Prescription();
+            prescription.setDrugId(drugId);
+            prescription.setUserId(userId);
+            prescription.setDoctorId(doctorId);
+            try {
+                return repository.add(prescription);
+            } catch (RepositoryException e) {
+                throw new ServiceException(e);
+            }
         }
+        else {
+            try {
+                prescription.setIssueDate(null);
+                repository.update(prescription);
+                return prescription;
+            } catch (RepositoryException e) {
+                throw new ServiceException(e);
+            }
+        }
+
     }
 
     public boolean isUserQuirePrescription(int userId, int drugId) throws ServiceException {
-        Specification<Prescription> specification = new GetByUserAndDrugId();
-        Prescription prescription = new Prescription();
-        prescription.setUserId(userId);
-        prescription.setDrugId(drugId);
-        try {
-            List<Prescription> prescriptionList = repository.getQuery(prescription, specification);
-            return !prescriptionList.isEmpty();
-        } catch (RepositoryException e) {
-            throw new ServiceException(e);
-        }
+        Prescription prescription = getByUserAndDrugId(userId,drugId);
+        return prescription!=null;
     }
+
+    public boolean isUserHasInvalidPrescription(int userId, int drugId) throws ServiceException {
+        Prescription prescription = getByUserAndDrugId(userId,drugId);
+        if (prescription==null){
+            return false;
+        }
+        if (prescription.getValidityDate()==null){
+            return false;
+        }
+        long validTime =  prescription.getValidityDate().getTime();
+        long currentTime = GregorianCalendar.getInstance().getTimeInMillis();
+        return  validTime < currentTime;
+    }
+
     public boolean isUserHasValidPrescription(int userId, int drugId) throws ServiceException {
-        Specification<Prescription> specification = new GetByUserAndDrugId();
-        Prescription prescription = new Prescription();
-        prescription.setUserId(userId);
-        prescription.setDrugId(drugId);
-        try {
-            List<Prescription> prescriptionList = repository.getQuery(prescription, specification);
-            if (prescriptionList.isEmpty()){
+           Prescription prescription = getByUserAndDrugId(userId,drugId);
+            if (prescription==null){
                 return false;
             }
-            prescription = prescriptionList.get(0);
             if (prescription.getValidityDate()==null){
                 return false;
             }
             long validTime =  prescription.getValidityDate().getTime();
             long currentTime = GregorianCalendar.getInstance().getTimeInMillis();
             return  validTime >= currentTime;
-        } catch (RepositoryException e) {
-            throw new ServiceException(e);
-        }
     }
 
     public List<Prescription> getAllDoctorPrescriptions(int doctorId) throws ServiceException {

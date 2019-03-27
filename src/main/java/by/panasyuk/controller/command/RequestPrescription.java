@@ -21,7 +21,11 @@ public class RequestPrescription implements Command {
         PrescriptionService prescriptionService = new PrescriptionService();
         DoctorSelectorForPrescriptionService selector = new RandomDoctorSelectorService();
         try {
-            if (prescriptionService.isUserQuirePrescription(user.getId(),drugId)){
+            if (prescriptionService.isUserHasValidPrescription(user.getId(),drugId)){
+                return "valid";
+            }
+            if (!prescriptionService.isUserHasInvalidPrescription(user.getId(),drugId)
+                    && prescriptionService.isUserQuirePrescription(user.getId(),drugId)){
                 return "alreadyHave";
             }
             User doctor = selector.select();

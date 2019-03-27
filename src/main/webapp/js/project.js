@@ -186,7 +186,10 @@ function getPrescription(id, button) {
                     alert('you already quire this prescription');
                     $(button).removeAttr("onclick");
                 } else if (req.responseText === 'ok') {
-                    alert('Ok! Your just quire the prescription')
+                    alert('Ok! You just quire the prescription');
+                    $(button).removeAttr("onclick");
+                } else if (req.responseText === 'valid') {
+                    alert('Your prescription is still valid');
                     $(button).removeAttr("onclick");
                 } else {
                     alert('something going wrong...')
