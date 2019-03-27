@@ -6,12 +6,26 @@ import by.panasyuk.domain.ReleaseForm;
 import by.panasyuk.repository.exception.RepositoryException;
 import by.panasyuk.repository.specification.Specification;
 import by.panasyuk.repository.specification.drug.GetAllDrugs;
+import by.panasyuk.repository.specification.drug.GetDrugById;
 import by.panasyuk.repository.specification.drug.GetDrugsByName;
 import by.panasyuk.service.exception.ServiceException;
 
 import java.util.List;
 
 public class CrudDrugService extends DrugService {
+    public Drug getById(int id) throws ServiceException {
+        Drug drug = new Drug();
+        drug.setId(id);
+        try {
+            List<Drug> drugList = drugRepository.getQuery(drug, new GetDrugById());
+            if (drugList.isEmpty()) {
+                return null;
+            }
+            return drugList.get(0);
+        } catch (RepositoryException e) {
+            throw new ServiceException("Cant't get drug ", e);
+        }
+    }
     public Drug add(String name, boolean isPrescriptionRequired, int price, Manufacturer manufacturer, ReleaseForm releaseForm,int availableAmount) throws ServiceException {
         Drug drug = new Drug(name, isPrescriptionRequired, price, manufacturer, releaseForm,availableAmount);
         try {

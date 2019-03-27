@@ -43,7 +43,7 @@ public class DrugRepository extends AbstractJdbcRepository<Drug, Integer> implem
     public void update(Drug drug) throws RepositoryException {
 
         String query = "UPDATE drug " +
-                "SET name=?, is_prescription_required=?, price=?, available_amount=?" +
+                "SET name=?, is_prescription_required=?, price=?, available_amount=? " +
                 "WHERE id = ?";
 
         try {

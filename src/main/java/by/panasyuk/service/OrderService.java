@@ -1,15 +1,14 @@
 package by.panasyuk.service;
 
+import by.panasyuk.domain.Drug;
 import by.panasyuk.domain.Item;
 import by.panasyuk.domain.Order;
 import by.panasyuk.repository.Repository;
 import by.panasyuk.repository.RepositoryFactory;
 import by.panasyuk.repository.exception.RepositoryException;
-import by.panasyuk.repository.impl.ItemRepository;
-import by.panasyuk.repository.impl.JdbcRepositoryFactory;
-import by.panasyuk.repository.impl.OrderRepository;
-import by.panasyuk.repository.impl.TransactionManager;
+import by.panasyuk.repository.impl.*;
 import by.panasyuk.repository.specification.Specification;
+import by.panasyuk.repository.specification.drug.GetDrugById;
 import by.panasyuk.repository.specification.item.GetItemsByOrderId;
 import by.panasyuk.repository.specification.order.GetOrderById;
 import by.panasyuk.repository.specification.order.GetOrdersByUserId;
@@ -22,6 +21,7 @@ public class OrderService {
     private Repository<Order, Integer> orderRepository = repositoryFactory.getRepository(OrderRepository::new);
     private Repository<Order, Integer> orderTransactionalRepository = repositoryFactory.getTransactionalRepository(OrderRepository::new);
     private Repository<Item, Integer> itemTransactionalRepository = repositoryFactory.getTransactionalRepository(ItemRepository::new);
+    private Repository<Drug, Integer> drugTransactionalRepository = repositoryFactory.getTransactionalRepository(DrugRepository::new);
 
     public void confirm(Order order) throws ServiceException {
         try {
@@ -65,11 +65,19 @@ public class OrderService {
         TransactionManager manager = new TransactionManager();
         List<Item> itemList = order.getItemList();
         try {
-            manager.begin(itemTransactionalRepository, orderTransactionalRepository);
+            manager.begin(itemTransactionalRepository, orderTransactionalRepository,drugTransactionalRepository);
             Order resultOrder = orderTransactionalRepository.add(order);
             for (Item item : itemList) {
                 item.setOrderId(resultOrder.getId());
                 itemTransactionalRepository.add(item);
+                List<Drug> drugList = drugTransactionalRepository.getQuery(item.getDrug(),new GetDrugById());
+                if (drugList.isEmpty()){
+                    throw new ServiceException("can't get drug by Id");
+                }
+                Drug drug = drugList.get(0);
+                int resultAmount = drug.getAvailableAmount() - item.getAmount();
+                drug.setAvailableAmount(resultAmount);
+                drugTransactionalRepository.update(drug);
             }
             manager.commit();
             return order;

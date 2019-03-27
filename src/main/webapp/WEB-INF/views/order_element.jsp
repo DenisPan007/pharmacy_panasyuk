@@ -22,7 +22,6 @@
         </td>
         <td><c:out value="${elem.id}"></c:out></td>
         <td><c:out value="${elem.price}"></c:out></td>
-        <td></td>
         <c:choose>
             <c:when test="${elem.status=='AT_WORK'}">
                 <td><fmt:message key="label.payed" bundle="${ rb }"/></td>

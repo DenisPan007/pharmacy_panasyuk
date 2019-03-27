@@ -12,4 +12,11 @@ public class ServiceException extends Exception {
         super(cause);
     }
 
+    public ServiceException() {
+        super();
+    }
+
+    public ServiceException(String message) {
+        super(message);
+    }
 }
