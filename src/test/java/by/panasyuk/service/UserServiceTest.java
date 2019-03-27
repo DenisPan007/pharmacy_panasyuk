@@ -39,9 +39,10 @@ public class UserServiceTest {
                 "  firstname varchar(45) ,\n" +
                 "  lastname varchar(45) ,\n" +
                 "  email varchar(45) ,\n" +
-                "  role varchar(45))");
-        statement.executeQuery(" INSERT INTO user (login,password,firstname,lastname,email,role) " +
-                "VALUES('admin','passwordTest','Denis','Panasyuk','@email','client')");
+                "  role varchar(45),\n" +
+                "  address varchar(45))");
+        statement.executeQuery(" INSERT INTO user (login,password,firstname,lastname,email,role,address) " +
+                "VALUES('admin','passwordTest','Denis','Panasyuk','@email','client','address')");
         statement.executeQuery(" INSERT INTO user (login,role,email) " +
                 "VALUES('den2','client','@mail')");
     }
@@ -67,10 +68,11 @@ public class UserServiceTest {
         String email = "@mail";
         String firstName = "name";
         String lastName = "lastName";
-        User expectedUser = new User(login,password,email,firstName,lastName);
+        String address = "adress";
+        User expectedUser = new User(login,password,email,firstName,lastName,address);
         expectedUser.setId(2);
         SignUpService signUpService = new SignUpService();
-            User actualUser = signUpService.signUp(login,password,email,firstName,lastName);
+            User actualUser = signUpService.signUp(login,password,email,firstName,lastName,address);
             assertEquals(expectedUser,actualUser);
     }
 }

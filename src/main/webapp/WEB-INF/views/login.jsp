@@ -20,6 +20,11 @@
 <body>
 <c:import url="header.jsp"/>
 <main role="main" class="container">
+    <c:if test="${message=='success'}">
+        <div class="alert alert-success" role="alert">
+            <fmt:message key="alert.successfully-sending" bundle="${ messageRb }"/>
+        </div>
+    </c:if>
     <form method="POST" action="${pageContext.request.contextPath}/">
         <input type="hidden" name="initialCommand" value=${initialCommand}>
         <input type="hidden" name="command" value="login">

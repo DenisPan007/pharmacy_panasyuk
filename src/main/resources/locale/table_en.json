@@ -2,6 +2,7 @@
   "search": "Search...",
   "lengthMenu": "Show _MENU_ entries",
   "info": "Showing _START_  to  _END_ from _TOTAL_ entries",
+  "infoEmpty":      "",
   "paginate": {
     "previous": "Previous",
     "next": "Next"

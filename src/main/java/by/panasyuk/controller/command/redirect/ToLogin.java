@@ -20,6 +20,8 @@ public class ToLogin implements Command {
         }
         String errorType = request.getParameter("error");
         request.setAttribute("error",errorType);
+        String message = request.getParameter("message");
+        request.setAttribute("message",message);
         request.setAttribute("route",Router.Type.FORWARD);
         return PathManager.getProperty("forward.login");
     }

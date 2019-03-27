@@ -5,10 +5,7 @@ import by.panasyuk.service.user.PasswordService;
 import by.panasyuk.service.user.UserPresentChecker;
 import by.panasyuk.service.user.SignUpService;
 import by.panasyuk.service.exception.ServiceException;
-import by.panasyuk.service.validation.EmailValidator;
-import by.panasyuk.service.validation.LoginValidator;
-import by.panasyuk.service.validation.PasswordValidator;
-import by.panasyuk.service.validation.ValidationService;
+import by.panasyuk.service.validation.*;
 import by.panasyuk.util.PathManager;
 import by.panasyuk.util.RoleEnum;
 
@@ -31,6 +28,7 @@ public class SignUp implements Command {
         ValidationService loginValidator = new LoginValidator();
         ValidationService passwordValidator = new PasswordValidator();
         ValidationService emailValidator = new EmailValidator();
+        ValidationService lengthValidator = new LengthValidator();
         if(login==null||!loginValidator.isValid(login)){
             req.setAttribute("route", Router.Type.REDIRECT);
             return PathManager.getProperty("redirect.sign.up") +"&error=invalidLogin";
@@ -42,6 +40,18 @@ public class SignUp implements Command {
         if(email==null||!emailValidator.isValid(email)){
             req.setAttribute("route", Router.Type.REDIRECT);
             return PathManager.getProperty("redirect.sign.up")+"&error=invalidEmail";
+        }
+        if(address ==null||!lengthValidator.isValid(address)){
+            req.setAttribute("route", Router.Type.REDIRECT);
+            return PathManager.getProperty("redirect.sign.up")+"&error=invalidAddress";
+        }
+        if(name ==null||!lengthValidator.isValid(name)){
+            req.setAttribute("route", Router.Type.REDIRECT);
+            return PathManager.getProperty("redirect.sign.up")+"&error=invalidName";
+        }
+        if(lastName ==null||!lengthValidator.isValid(lastName)){
+            req.setAttribute("route", Router.Type.REDIRECT);
+            return PathManager.getProperty("redirect.sign.up")+"&error=invalidLastName";
         }
         UserPresentChecker presentChecker = new UserPresentChecker();
         SignUpService signUpService = new SignUpService();

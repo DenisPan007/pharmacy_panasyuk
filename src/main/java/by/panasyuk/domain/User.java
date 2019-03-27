@@ -25,7 +25,18 @@ public class User implements Identified<Integer> {
         setRole(role);
     }
 
-    public User(String login, String password, String firstName, String lastName, String email,String address) {
+    public User(int id, String login, String password, String firstName, String lastName, String email, String role , String address) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.address = address;
+        setRole(role);
+    }
+
+    public User(String login, String password, String firstName, String lastName, String email, String address) {
         this.login = login;
         this.password = password;
         this.email = email;

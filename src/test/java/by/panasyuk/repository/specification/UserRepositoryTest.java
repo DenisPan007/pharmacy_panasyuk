@@ -54,7 +54,8 @@ public class UserRepositoryTest {
                 "  firstname varchar(45) ,\n" +
                 "  lastname varchar(45) ,\n" +
                 "  email varchar(45) ,\n" +
-                "  role varchar(45))");
+                "  role varchar(45), " +
+                "address varchar(45))");
 
     }
 
@@ -71,8 +72,8 @@ public class UserRepositoryTest {
     }
 
     private List<User> getBySpecification(User user, Specification<User> specification) throws SQLException, RepositoryException {
-        statement.executeQuery(" INSERT INTO user (login,password,firstname,lastname,email,role) " +
-                "VALUES('den1','passwordTest','Denis','Panasyuk','@mail','client')");
+        statement.executeQuery(" INSERT INTO user (login,password,firstname,lastname,email,role,address) " +
+                "VALUES('den1','passwordTest','Denis','Panasyuk','@mail','client','address')");
         statement.executeQuery(" INSERT INTO user (login,role,email) " +
                 "VALUES('den2','client','@mail')");
         return userDao.getQuery(user, specification);
@@ -82,8 +83,8 @@ public class UserRepositoryTest {
     public void GetByEmail() throws SQLException, RepositoryException {
         User user = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client");
         Specification<User> spec = new GetByEmail();
-        User expectedUser1 = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client");
-        User expectedUser2 = new User(1, "den2", null, null, null, "@mail", "client");
+        User expectedUser1 = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client","address");
+        User expectedUser2 = new User(1, "den2", null, null, null, "@mail", "client",null);
         List<User> expectedList = new ArrayList<>(Arrays.asList(expectedUser1,expectedUser2));
         List<User> actualList = getBySpecification(user, spec);
         assertEquals(expectedList, actualList);
@@ -91,18 +92,18 @@ public class UserRepositoryTest {
 
     @Test
     public void getById() throws RepositoryException, SQLException {
-        User user = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client");
+        User user = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client","address");
         Specification<User> spec = new GetUserById();
-        User expectedUser1 = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client");
+        User expectedUser1 = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client","address");
         List<User> expectedList = new ArrayList<>(Arrays.asList(expectedUser1));
         List<User> actualList = getBySpecification(user, spec);
         assertEquals(expectedList, actualList);
     }
     @Test
     public void GetByLogin() throws RepositoryException, SQLException {
-        User user = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client");
+        User user = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client","address");
         Specification<User> spec = new GetByLogin();
-        User expectedUser1 = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client");
+        User expectedUser1 = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client","address");
         List<User> expectedList = new ArrayList<>(Arrays.asList(expectedUser1));
         List<User> actualList = getBySpecification(user, spec);
         assertEquals(expectedList, actualList);
@@ -110,7 +111,7 @@ public class UserRepositoryTest {
 
     @Test
     public void add() throws RepositoryException, SQLException {
-        User expectedUser = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client");
+        User expectedUser = new User(0, "den1", "passwordTest", "Denis", "Panasyuk", "@mail", "client",null);
         User actualUser = userDao.add(expectedUser);
         assertEquals(expectedUser, actualUser);
     }
