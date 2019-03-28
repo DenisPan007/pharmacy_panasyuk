@@ -1,6 +1,7 @@
 package by.panasyuk.repository.impl;
 
 import by.panasyuk.repository.exception.ConnectionPoolException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;

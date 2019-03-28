@@ -3,7 +3,10 @@ package by.panasyuk.controller;
 import by.panasyuk.controller.command.Command;
 import by.panasyuk.controller.command.CommandException;
 import by.panasyuk.controller.command.Router;
+import by.panasyuk.controller.command.SignUp;
 import by.panasyuk.util.PathManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +17,7 @@ import java.io.IOException;
 
 @WebServlet(name = "controller", urlPatterns = {"/"})
 public class FrontController extends HttpServlet {
+    private static Logger LOGGER = LogManager.getLogger(FrontController.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         processRequest(req, resp);
@@ -36,10 +40,12 @@ public class FrontController extends HttpServlet {
                 response.sendRedirect(contextPath + path);
             }
         } catch (CommandException e) {
+            LOGGER.error(e);
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher(PathManager.getProperty("error-page")).forward(request, response);
         }
         catch (Exception e){
+            LOGGER.error(e);
             request.setAttribute("error", "Something going wrong, go to start - page");
             request.getRequestDispatcher(PathManager.getProperty("error-page")).forward(request, response);
         }
