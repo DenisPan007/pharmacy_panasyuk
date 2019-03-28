@@ -19,8 +19,8 @@ public class GetDrugList implements Command {
                     .map(Drug::getName)
                     .collect(Collectors.toList());
             Gson gson = new Gson();
-            String jasonList = gson.toJson(drugNameList);
-            return jasonList;
+            String jsonList = gson.toJson(drugNameList);
+            return jsonList;
         } catch (ServiceException e) {
             throw new CommandException();
         }
