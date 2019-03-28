@@ -4,6 +4,7 @@
 <html>
 <fmt:setLocale value="${cookie['lang'].value}"/>
 <fmt:setBundle  basename="pagecontent" var="rb" scope="request" />
+<fmt:setBundle basename="messages" var="messageRb" scope="request"/>
 <head>
     <title>welcome</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
@@ -45,7 +46,7 @@
                         <c:import url="prescription_list.jsp"/>
                     </div>
                     <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                        Settings
+                        <c:import url="changing_password.jsp"/>
                     </div>
                 </div>
             </div>

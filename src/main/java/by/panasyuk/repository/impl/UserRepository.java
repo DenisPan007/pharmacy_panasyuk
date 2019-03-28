@@ -44,7 +44,7 @@ public class UserRepository extends AbstractJdbcRepository<User, Integer> implem
     public void update(User user) throws RepositoryException {
 
         String query = "UPDATE user " +
-                "SET login=?, password=?, firstname=?, lastname=?, email=?, role=?,address=?" +
+                "SET login=?, password=?, firstname=?, lastname=?, email=?, role=?,address=? " +
                 "WHERE id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {

@@ -32,7 +32,7 @@ public class Login implements Command {
             session.setAttribute("user", loginedUser);
             req.setAttribute("route", Router.Type.REDIRECT);
             return PathManager.getProperty("redirect.initial");
-        } catch (ServiceException | NoSuchAlgorithmException e) {
+        } catch (ServiceException e) {
             throw new CommandException(e);
         }
 

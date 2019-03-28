@@ -48,6 +48,8 @@ public class CommandProvider {
         commandMap.put("getTableLocale", new GetTableLocale());
         commandMap.put("changeUser", new ChangeUser());
         commandMap.put("changeDrug", new ChangeDrug());
+        commandMap.put("changeUserPassword", new ChangeUserPassword());
+
     }
 
     /**

@@ -51,7 +51,7 @@
                         <c:import url="order_list.jsp"/>
                     </div>
                     <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                       Settings
+                       <c:import url="changing_password.jsp"/>
                     </div>
                 </div>
             </div>

@@ -73,8 +73,6 @@ public class SignUp implements Command {
                 return PathManager.getProperty("redirect.account");
         } catch (ServiceException e) {
             throw new CommandException(e);
-        } catch (NoSuchAlgorithmException e) {
-            throw new CommandException("There is no such algorithm", e);
         }
     }
 }

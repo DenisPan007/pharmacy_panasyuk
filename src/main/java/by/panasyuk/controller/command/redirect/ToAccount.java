@@ -26,6 +26,8 @@ public class ToAccount implements Command,RedirectCommand{
             request.setAttribute("orderList",orderList);
             String message = request.getParameter("message");
             request.setAttribute("message",message);
+            String errorType = request.getParameter("error");
+            request.setAttribute("error",errorType);
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
@@ -37,6 +39,10 @@ public class ToAccount implements Command,RedirectCommand{
         try {
             prescriptionList = service.getAllDoctorPrescriptions(user.getId());
             request.setAttribute("prescriptionList",prescriptionList);
+            String errorType = request.getParameter("error");
+            String message = request.getParameter("message");
+            request.setAttribute("message",message);
+            request.setAttribute("error",errorType);
         } catch (ServiceException e) {
             throw new CommandException(e);
         }

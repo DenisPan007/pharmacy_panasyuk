@@ -33,7 +33,7 @@
     <thead class="thead-dark">
     <tr>
         <th></th>
-        <th><fmt:message key="label.order-number" bundle="${ rb }"/></th>
+        <th><fmt:message key="label.prescription-number" bundle="${ rb }"/></th>
         <th><fmt:message key="label.user" bundle="${ rb }"/></th>
         <th><fmt:message key="label.drug" bundle="${ rb }"/></th>
         <th><fmt:message key="label.status" bundle="${ rb }"/></th>

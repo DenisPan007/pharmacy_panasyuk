@@ -26,23 +26,28 @@ public class PasswordService extends UserService {
             user.setPassword(passwordHash(newPassword));
             userRepository.update(user);
             return newPassword;
-        } catch (RepositoryException | NoSuchAlgorithmException e) {
+        } catch (RepositoryException e) {
             throw new ServiceException("Failed to change user password. ", e);
         }
     }
 
-    public String passwordHash(String password) throws NoSuchAlgorithmException {
-        MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
-        byte[] passwordByte = sha256.digest(password.getBytes());
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < passwordByte.length; i++) {
-            String s = Integer.toHexString(passwordByte[i] & 0xff);
-            if (s.length() == 1) {
-                s = "0" + s;
+    public String passwordHash(String password) throws ServiceException {
+        try {
+            MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+            byte[] passwordByte = sha256.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < passwordByte.length; i++) {
+                String s = Integer.toHexString(passwordByte[i] & 0xff);
+                if (s.length() == 1) {
+                    s = "0" + s;
+                }
+                sb.append(s);
             }
-            sb.append(s);
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new ServiceException(e);
         }
-        return sb.toString();
+
     }
 
 }
