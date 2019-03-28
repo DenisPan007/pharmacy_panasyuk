@@ -22,7 +22,9 @@ public class TotalPriceTag extends TagSupport {
     @Override
     public int doStartTag() throws JspException {
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
-        int price = itemList.stream().mapToInt((item) -> item.getDrug().getPrice()).sum();
+        int price = itemList.stream()
+                .mapToInt((item) -> item.getDrug().getPrice() * item.getAmount())
+                .sum();
         request.setAttribute(var, price);
         return SKIP_BODY;
 

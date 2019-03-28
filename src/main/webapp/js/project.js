@@ -265,14 +265,17 @@ function drugMenu() {
         if (req.readyState === 4) {
             if (req.status === 200) {
                 var drugsInfoJson = JSON.parse(req.responseText);
+                alert(drugsInfoJson);
+                $("#releaseForm").empty();
+                $("#manufacturer").empty();
                 $.each(drugsInfoJson[0], function (i, releaseForm) {
                     var option = document.createElement("option");
-                    $("#releaseForm").empty().append(option);
+                    $("#releaseForm").append(option);
                     option.append(document.createTextNode(releaseForm.description));
                 });
                 $.each(drugsInfoJson[1], function (i, manufacturer) {
                     var option = document.createElement("option");
-                    $("#manufacturer").empty().append(option);
+                    $("#manufacturer").append(option);
                     option.append(document.createTextNode(manufacturer.name));
                 });
                 $("#addDrugMenu").modal();
