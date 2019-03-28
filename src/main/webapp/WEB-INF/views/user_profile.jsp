@@ -39,7 +39,7 @@
             <label><fmt:message key="label.address" bundle="${ rb }"/></label>
         </div>
         <div class="col-md-6">
-            <%--  <p><c:out value="${user.address}"></c:out></p> --%>
+              <p><c:out value="${user.address}"></c:out></p>
         </div>
     </div>
 </div>
