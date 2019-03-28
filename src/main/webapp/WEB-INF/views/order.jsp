@@ -80,7 +80,7 @@
                     <input id="cvc" type="text" class="form-control" placeholder="CVC" aria-label="Card Holder" aria-describedby="basic-addon1">
                 </div>
 
-                    <button type="submit" class="btn btn-primary btn-block">Proceed</button>
+                    <button type="submit" class="btn btn-primary btn-block"><fmt:message key="button.pay" bundle="${ rb }"/></button>
                 </form>
             </div>
         </div>
