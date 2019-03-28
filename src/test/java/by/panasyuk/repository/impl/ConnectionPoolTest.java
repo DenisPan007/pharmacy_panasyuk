@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 @RunWith(JUnit4.class)
 public class ConnectionPoolTest {
     private static final Logger LOGGER = LogManager.getLogger(ConnectionPoolTest.class);
-    private static final int N_THREADS = 20 ;
+    private static final int N_THREADS = 35 ;
     private static final int POOL_CAPACITY = 5 ;
     @Test
     public void shouldGetConnection () throws InterruptedException, ConnectionPoolException {
@@ -32,14 +32,11 @@ public class ConnectionPoolTest {
         ExecutorService executorService = Executors. newFixedThreadPool (N_THREADS);
         for (int i = 0; i<N_THREADS;i++) {
             Runnable run = () -> {
-                LOGGER.info("Try to get connection");
                 try (Connection connection = connectionPool.getConnection()) {
-                    //LOGGER. info ( "working with connection..." );
                     Thread.sleep(1_00L);
                     Assert.assertTrue(connection instanceof Proxy);
                     int hashCode = connection.hashCode();
                     hashCodes.add(hashCode);
-                    //LOGGER. info ( "release connection: " + hashCode);
                 } catch (SQLException | IllegalStateException|ConnectionPoolException e) {
                     LOGGER.error(e);
                 } catch (InterruptedException e) {

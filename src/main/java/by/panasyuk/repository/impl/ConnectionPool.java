@@ -94,7 +94,6 @@ public class ConnectionPool {
 
     public Connection getConnection() throws ConnectionPoolException {
         try {
-            lock.lock();
             availableConnectionAmount.acquire();
             Connection connection = connectionDeque.poll();
             if(!connection.isValid(3)){
@@ -104,9 +103,6 @@ public class ConnectionPool {
             return (Connection) Proxy.newProxyInstance(connection.getClass().getClassLoader(), connection.getClass().getInterfaces(), handler);
         } catch (SQLException|InterruptedException e){
             throw new ConnectionPoolException(e);
-        }
-        finally {
-            lock.unlock();
         }
     }
 
