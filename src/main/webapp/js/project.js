@@ -265,7 +265,6 @@ function drugMenu() {
         if (req.readyState === 4) {
             if (req.status === 200) {
                 var drugsInfoJson = JSON.parse(req.responseText);
-                alert(drugsInfoJson);
                 $("#releaseForm").empty();
                 $("#manufacturer").empty();
                 $.each(drugsInfoJson[0], function (i, releaseForm) {
