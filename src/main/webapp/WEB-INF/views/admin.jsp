@@ -90,8 +90,6 @@
                    aria-controls="v-pills-home" aria-selected="true"><fmt:message key="admin-account.users" bundle="${ rb }"/></a>
                 <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
                    aria-controls="v-pills-profile" aria-selected="false"><fmt:message key="admin-account.drugs" bundle="${ rb }"/></a>
-                <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
-                   aria-controls="v-pills-settings" aria-selected="false"><fmt:message key="admin-account.settings" bundle="${ rb }"/></a>
             </div>
         </div>
         <div class="col-9">
@@ -105,12 +103,6 @@
                         <button class="btn-dark" onclick="addDrugMenu()"><fmt:message key="button.add" bundle="${ rb }"/></button>
                     </div>
                     <c:import url="drug_list.jsp"/>
-                </div>
-                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                    Yes
-                </div>
-                <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                    another message
                 </div>
             </div>
         </div>
